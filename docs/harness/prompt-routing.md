@@ -2,17 +2,17 @@
 
 이 문서는 사용자 요청을 intent, scope, risk로 분류하고 필요한 skill과 문서를 선택하는 기준이다. 중앙 router skill을 강제하지 않는다. Antigravity/AGY는 각 skill의 `name`과 `description`을 보고 필요한 최소 skill을 선택한다.
 
-## Routing Order
+## Routing Order (SAD Architecture)
 
-1. `AGENTS.md`를 읽고 최상위 정책을 확인한다.
-2. 사용자 요청의 intent를 하나 이상 고른다.
-3. 변경 범위인 scope를 고른다.
-4. risk를 분류하고, 필요하면 `docs/harness/risk-policy.md`를 확인한다.
-5. 필요한 최소 skill set을 선택한다.
-6. 선택된 skill의 `Context Loading`에서 필요한 문서만 읽는다.
-7. Blocking question이 있으면 파일 수정이나 명령 실행 전에 사용자에게 질문한다.
-8. 작업 후 `docs/harness/quality-gates.md`와 skill script 기준에 따라 검증한다.
-9. 완료 응답에는 변경 내용, 검증 결과, 남은 위험을 짧게 보고한다.
+SKILLWEAVER의 **SAD (Skill-Aware Decomposition)** 파이프라인에 따라 동적이고 유연하게 스킬을 라우팅한다.
+
+1. **[Pass 1: Decompose]** `AGENTS.md`를 읽고 사용자 요청을 원자 단위의 하위 작업(Atomic sub-tasks)으로 초기 분해한다.
+2. **[Retrieve]** 1차 분해된 쿼리를 바탕으로 백그라운드 벡터 인덱서(`.agents/skills/self-evolution/scripts/skill_indexer.py --search`)를 호출하여 상위 15개의 후보 스킬 힌트를 검색한다.
+3. **[Pass 2: Compose]** 검색된 15개 스킬 어휘(Vocabulary)에 맞춰 하위 작업을 재분해하고, 각 원자 작업에 정확히 1개의 실제 스킬을 매핑하여 DAG(실행 계획)를 확정한다.
+4. 사용자 요청의 intent, scope, risk를 분류하고 `docs/harness/risk-policy.md`를 확인한다.
+5. 확정된 DAG에 따라 Worker에게 단일 작업/단일 스킬 컨텍스트만을 부여해 실행을 지시한다.
+6. 작업 후 `docs/harness/quality-gates.md`와 스킬 스크립트 기준에 따라 검증한다.
+7. 완료 응답에는 변경 내용, 검증 결과, 남은 위험을 짧게 보고한다.
 
 ## Intent
 

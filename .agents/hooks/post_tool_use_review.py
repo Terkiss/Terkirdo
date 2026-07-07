@@ -81,6 +81,7 @@ def main() -> int:
     _ = load_payload()
     root = repo_root()
     changed = changed_paths(root)
+    
     risky = [
         path
         for path in changed
