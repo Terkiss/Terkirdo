@@ -76,7 +76,7 @@
 │
 ├── 📁 .agents/
 │   ├── 📁 hooks/                 ← 안전장치 (파괴적 명령 차단·민감정보 감시)
-│   └── 📁 skills/                ← 에이전트 업무 매뉴얼 (14개 스킬)
+│   └── 📁 skills/                ← 에이전트 업무 매뉴얼 (15개 스킬)
 │       │
 │       │  ── 🔧 개발 생명주기 스킬 (7개) ──
 │       ├── plan-product/             기획·방향성 수립
@@ -93,10 +93,11 @@
 │       ├── ui-visual-validator/      디자인 의도 vs 실제 구현 시각적 검증
 │       └── prompt-engineering-patterns/  AI 추론력 극대화 패턴
 │       │
-│       │  ── ⚡ 확장·진화 스킬 (3개) ──
+│       │  ── ⚡ 확장·진화 스킬 (4개) ──
 │       ├── agent-tool-builder/       견고한 에이전트 도구 설계 가이드
 │       ├── mcp-builder/              MCP(Model Context Protocol) 서버 구축
-│       └── self-evolution/           SkillOpt 기반 에이전트 자기 진화 엔진
+│       ├── self-evolution/           SkillOpt 기반 에이전트 자기 진화 엔진
+│       └── cluedoc/                  코드 변경 시 기능별 문서 자동 생성·유지
 │
 └── 📁 docs/                      ← 프로젝트 단일 진실 공급원 (SSOT)
     ├── project/                      프로젝트 개요·제약 사항
@@ -140,6 +141,17 @@
 
 ---
 
+## 📝 Cluedoc: 자동 코드베이스 문서화
+
+에이전트가 코드를 빠르게 바꿔놓으면, 인간이 "지금 시스템이 뭘 하는 건지" 따라잡기 어렵습니다. **[Cluedoc](https://github.com/KeunwooPark/cluedoc)** 스킬이 이 문제를 해결합니다.
+
+- 코드 변경 시 **기능(Feature) 단위**로 시각적인 "논문(Paper)"을 `.cluedoc/` 폴더에 자동 생성·유지
+- 변경 사항이 **상위·하위 기능 문서로 양방향 전파** — 한 곳만 고쳐도 관련 문서 전체가 갱신
+- 코드 스니펫을 포함하지 않는 **추상적 산문체**로 작성되어, 리팩터링에도 안정적
+- `init` 명령어로 프로젝트 초기 문서 골격을 한 번에 생성
+
+---
+
 ## 🎨 UI/UX Pro Max Intelligence
 
 `design-ui` 스킬에는 **UI/UX Pro Max** 디자인 지능이 통합되어 있습니다. 2,000개 이상의 디자인 패턴과 접근성 규칙을 내장한 검색 엔진을 통해, 디자인 관련 작업 시 데이터 기반의 정확한 판단을 제공합니다.
@@ -150,6 +162,7 @@
 
 | 날짜 | 브랜치 | 내용 |
 |------|--------|------|
+| 2026-07-08 | `20260708c` | Cluedoc 자동 문서화 스킬 도입, Claude Fable 5 시스템 프롬프트 참고자료 보관 |
 | 2026-07-08 | `20260708b` | Self-Evolution(SkillOpt) 스킬 도입, 범용 품질 강화 스킬 6종 추가 |
 | 2026-07-08 | `20260708a` | UI/UX Pro Max Intelligence 통합, Antigravity CLI 컨버트 |
 | 2026-07-08 | `main` | Terukirdo v5.2 Universal Orchestration Template 초기 마이그레이션 |
