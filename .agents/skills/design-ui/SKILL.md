@@ -33,13 +33,24 @@ description: Design or review app UX/UI changes, including screens, flows, layou
 ## Workflow
 
 1. 요청을 design task type으로 분류한다: `flow`, `screen`, `component`, `state`, `accessibility`, `visual-check`.
-2. 기존 앱 관례와 디자인 시스템을 확인한다.
+2. 기존 앱 관례와 디자인 시스템을 확인한다. (디자인 영감이나 구체적 지침이 필요하면 UI/UX Pro Max 검색 스크립트를 활용한다.)
 3. 사용자 목표와 화면의 primary action을 정한다.
 4. 필요한 상태를 정의한다: empty, loading, error, success, disabled, permission.
 5. 화면 크기, 입력 방식, 접근성 제약을 함께 확인한다.
 6. 새 데이터, API, 권한, 저장소 요구가 생기는지 확인한다.
 7. 문서 갱신 필요성을 보고하고, 사용자 요청 또는 승인 후 반영하며 구현/검증 handoff를 정한다.
 8. 완료 전 `.agents/skills/design-ui/scripts/verify.ps1`을 실행하거나, 실행하지 못한 이유를 남긴다.
+
+## UI/UX Pro Max Intelligence
+
+디자인 영감이 필요하거나 구체적인 가이드라인(색상, 폰트, 스타일, 차트, GSAP 애니메이션 등)을 참조해야 할 때는 파이썬 기반의 검색 스크립트를 활용한다.
+
+- 검색 실행: `python .agents/skills/design-ui/scripts/ui-ux-pro-max/scripts/search.py "<검색어>" --domain <domain>`
+- `<domain>` 종류: `product`, `style`, `typography`, `color`, `landing`, `chart`, `ux`, `gsap`
+- 기술 스택 지정: `--stack flutter` 등 (기본: html-tailwind)
+- 디자인 시스템 다이얼(선택): `--design-system --variance <1-10> --motion <1-10> --density <1-10>`
+
+이 도구에서 얻은 추천 결과를 바탕으로 앱 관례와 디자인 시스템을 구체화한다.
 
 ## Decision Rules
 
