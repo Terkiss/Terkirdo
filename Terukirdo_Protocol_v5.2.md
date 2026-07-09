@@ -114,7 +114,7 @@ git diff --name-status
 git diff --cached --name-status
 git diff --check
 git diff --cached --check
-dotnet build -p:UseAppHost=false
+# 프로젝트별 빌드/테스트 명령 (예: dotnet build, npm run build, flutter build 등)
 ```
 
 프로젝트가 release gate를 요구하면 반드시 실행한다.
@@ -137,7 +137,7 @@ dotnet build -p:UseAppHost=false
 
 ### 5.3 SSOT 선점 금지
 
-`Documents/Implementation_Plan.md`와 `IMPLEMENTATION_PROGRESS.md`는 작업 상태의 기준이다.
+프로젝트별 구현 계획 문서(예: `Implementation_Plan.md`)와 진행 상황 문서(예: `IMPLEMENTATION_PROGRESS.md`)는 작업 상태의 기준이다.
 
 - 사용자 또는 최종관제 승인 없이 다음 마일스톤을 Active/In Progress로 올리지 않는다.
 - 다음 마일스톤은 기본적으로 `Not selected` 또는 `Awaiting user/final-controller decision` 상태로 둔다.
@@ -145,17 +145,17 @@ dotnet build -p:UseAppHost=false
 - 과거 마일스톤 수치는 당시의 실제 evidence로 보존한다.
 - 문서가 실제 git 상태와 충돌하면 문서를 고치거나 반려한다. 충돌을 덮지 않는다.
 
-### 5.4 CommandRegistry 및 기존 기능 보호
+### 5.4 공유 표면 보호
 
 명령 레지스트리, provider, permission, checkpoint, memory, dashboard control plane처럼 공유 표면이 큰 파일은 최소 diff 원칙을 적용한다.
 
-특히 `CommandRegistry.cs`를 수정할 때는 다음을 반드시 확인한다.
+프로젝트의 핵심 공유 파일(예: 라우터, 레지스트리, 설정 파일 등)을 수정할 때는 다음을 반드시 확인한다.
 
-- 기존 명령이 의도 없이 삭제되지 않았는가
+- 기존 기능이 의도 없이 삭제되지 않았는가
 - 기존 출력 상세가 축소되지 않았는가
-- smoke test를 위해 문자열을 고칠 때 다른 명령 로직까지 재작성하지 않았는가
-- `/exit`, `/usage`, `/reset`, `/coordinate`, `/model`, `/env`, `/doctor`, `/status` 등 핵심 명령이 보존되는가
-- 새 명령은 별도 테스트와 문서 근거가 있는가
+- 부분 수정 시 다른 기능의 로직까지 재작성하지 않았는가
+- 핵심 명령/진입점이 보존되는가
+- 새 기능은 별도 테스트와 문서 근거가 있는가
 
 ### 5.5 스테이징 경계 규칙
 

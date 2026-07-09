@@ -10,7 +10,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # Paths configuration
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')) # Project root
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')) # Project root
 SKILLS_DIR = os.path.join(BASE_DIR, '.agents', 'skills')
 INDEX_DIR = os.path.join(os.path.dirname(__file__), 'index')
 INDEX_FILE = os.path.join(INDEX_DIR, 'skills.index')

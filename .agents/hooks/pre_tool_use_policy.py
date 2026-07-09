@@ -76,31 +76,8 @@ def extract_command(payload: Any) -> str:
     return ""
 
 
-def inject_sad_context(payload: Any) -> Any:
-    """Inject exactly 1 target SKILL.md dynamically to save context window (Phase 3)."""
-    # Assuming standard subagent or tool calls mention "Target Skill: <skill>"
-    # We dynamically load and attach it to the payload if found.
-    if isinstance(payload, dict):
-        # 1. Subagent invocation check
-        subagents = payload.get("Subagents", [])
-        if isinstance(subagents, list):
-            for sa in subagents:
-                prompt = sa.get("Prompt", "")
-                match = re.search(r"Target Skill:\s*([a-zA-Z0-9_-]+)", prompt)
-                if match:
-                    skill_name = match.group(1)
-                    skill_path = os.path.join(os.path.dirname(__file__), "..", "skills", skill_name, "SKILL.md")
-                    if os.path.exists(skill_path):
-                        with open(skill_path, "r", encoding="utf-8") as f:
-                            skill_content = f.read()
-                        sa["Prompt"] = f"{prompt}\n\n=== INJECTED TARGET SKILL CONTEXT ({skill_name}) ===\n{skill_content}\n=========================================\n"
-    return payload
-
-
 def main() -> int:
     payload = load_payload()
-    payload = inject_sad_context(payload) # Inject SAD targeted skill
-    
     command = extract_command(payload)
 
     if command and os.environ.get(ALLOW_ENV) != "1":
@@ -124,8 +101,6 @@ def main() -> int:
             )
             return 2
 
-    # Print the potentially modified payload back to stdout so the harness can use the updated context
-    print(json.dumps(payload, ensure_ascii=False))
     return 0
 
 
