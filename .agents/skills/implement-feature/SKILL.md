@@ -32,6 +32,7 @@ description: Implement project code, features, bug fixes, refactors, configurati
 
 모든 문서를 한 번에 읽지 않는다. 먼저 주변 코드를 보고, 부족한 결정이나 규칙에 해당하는 문서만 읽는다.
 
+**[Reference-First Policy]** 프로젝트 내에 `reference/` 폴더가 존재한다면 구현에 착수하기 전에 반드시 해당 레퍼런스의 핵심 설계와 기술 선택을 분석하고 그 근거를 파악해야 한다.
 ## Workflow
 
 1. 요청을 implementation task type으로 분류한다: `feature`, `bugfix`, `refactor`, `config`, `dependency`, `ui-code`.

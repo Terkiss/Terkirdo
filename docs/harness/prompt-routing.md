@@ -56,10 +56,23 @@ SKILLWEAVER의 **SAD (Skill-Aware Decomposition)** 파이프라인에 따라 동
 `AGENTS.md`는 전체 문서 목록을 담지 않는다. 문서 선택은 선택된 skill의 `Context Loading`을 따른다.
 
 - 먼저 관련 코드와 현재 변경사항을 확인한다.
+- **[Reference-First Policy]** 프로젝트 내에 `reference/` 디렉토리가 존재하면, 구현 착수 전에 반드시 해당 레퍼런스의 핵심 구조와 기술 선택을 분석한다.
 - 문서는 요청과 직접 연결된 것만 읽는다.
 - 문서와 코드가 충돌하면 코드를 확인하고 충돌을 보고한다.
 - 앱별 사실을 추측으로 채우지 않는다.
 - 미확정 질문은 먼저 대화에서 확인하고, 사용자 요청 또는 승인 후 `docs/handoff/open-questions.md`에 남긴다.
+
+## Exploration & Spike Policy (New)
+
+새로운 기술 도메인(처음 도입하는 기술, 아키텍처 결정 등)에 진입할 때 다음 기준에 따라 분기한다:
+
+1. **사전 조사가 가능한 알려진 기술 (Spike Policy)**:
+   - 구현 전 반드시 웹 검색 및 오픈소스 조사를 통해 성숙한 대안을 비교한다.
+   - 불확실성이 크면 `scratch/`에서 PoC를 진행한다.
+   - 결과를 `docs/architecture/`에 기록 후 본 구현에 착수한다.
+2. **선행 사례가 없는 선도 기술 (Exploration Mode)**:
+   - 에이전트는 "탐색 모드"를 선언한다.
+   - 각 시도의 [가설 → 결과 → 교훈]을 반드시 기록하며, 실패를 감점이 아닌 학습 자산으로 취급한다.
 
 ## Blocking Questions
 

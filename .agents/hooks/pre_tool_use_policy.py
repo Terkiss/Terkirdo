@@ -29,6 +29,13 @@ BLOCK_PATTERNS: tuple[tuple[str, str], ...] = (
     (r"\bkubectl\s+(apply|delete|rollout|scale)\b", "Kubernetes production-impacting action"),
     (r"\bterraform\s+(apply|destroy)\b", "Terraform mutates infrastructure"),
     (r"\bsupabase\s+db\s+(reset|push)\b", "database mutation"),
+    # Windows / .NET dangerous patterns
+    (r"(?i)\bDrop-Database\b", "EF Core Drop-Database is destructive"),
+    (r"(?i)\bRemove-Migration\b", "EF Core Remove-Migration alters history"),
+    (r"\bdotnet\s+ef\s+database\s+drop\b", "dotnet ef database drop is destructive"),
+    (r"(?i)\bFormat-Volume\b", "Format-Volume destroys disk data"),
+    (r"(?i)\bClear-Content\b", "Clear-Content truncates files"),
+    (r"(?i)\bRemove-Item\s+-[^;\n]*Recurse[^;\n]*Force\b", "Recursive force delete in PowerShell"),
 )
 
 SECRET_PATTERNS: tuple[tuple[str, str], ...] = (

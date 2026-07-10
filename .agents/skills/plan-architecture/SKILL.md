@@ -30,6 +30,7 @@ description: Plan or review app/project architecture, module boundaries, API con
 
 모든 아키텍처 문서를 한 번에 읽지 않는다. API, data, auth, module boundary 중 요청과 직접 연결된 문서부터 읽는다.
 
+**[Spike / 사전 조사]** 프로젝트에 처음 도입하는 기술이나 아키텍처 결정인 경우, 관련된 내부 문서를 읽는 것에 그치지 말고 반드시 웹 검색이나 오픈소스 조사를 통해 성숙한 대안을 비교하고, 필요시 `scratch/`에서 PoC를 수행한다.
 ## Workflow
 
 1. 요청을 architecture task type으로 분류한다: `structure`, `api`, `data`, `auth`, `storage`, `migration`, `adr`.

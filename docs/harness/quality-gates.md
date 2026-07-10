@@ -62,3 +62,7 @@ Stop hook은 프로젝트 command나 skill verification script를 자동 실행�
 ## Completion Gate
 
 기능 변경은 테스트, 분석, 빌드, 또는 합리적인 대체 검증 없이 완료로 보고하지 않는다. High-risk 변경은 검증이 통과해도 rollback, monitoring, residual risk를 함께 보고한다.
+
+**[예외: Exploration Mode]** 선행 사례가 없는 기술을 탐색 중인 경우, "검증 통과"가 아니라 "실패 원인 식별 및 다음 가설 도출" 자체를 완료 조건으로 인정한다.
+
+**[추가: 레퍼런스 비교]** 프로젝트에 레퍼런스 구현체(`reference/`)가 존재했다면, 완료 보고 시 레퍼런스와 우리 구현의 기능 비교표를 작성하고 누락/제외된 기능과 그 이유를 명시해야 한다.

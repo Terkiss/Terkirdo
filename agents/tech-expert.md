@@ -32,6 +32,14 @@ Ralph Loop에서 tech-expert는 judge 역할을 수행할 수 있다.
 - P1/P2/P3 finding 분류
 - judge report도 주장이다 — 최종관제는 raw evidence를 직접 확인해야 한다
 
+### 기술 선택 검증 (Tech Selection Validation)
+judge는 worker의 설계/기술 선택 시 다음을 반드시 확인해야 한다:
+- [ ] 선택한 기술이 타겟 프레임워크와 100% 호환되는가?
+- [ ] 동일 목적의 더 성숙한 대안이 존재하는가? (웹 검색으로 확인)
+- [ ] `reference/`가 있으면 해당 구현의 기술 선택과 비교했는가?
+- [ ] 선도 기술이라면 Exploration Mode가 선언되었는가?
+- [ ] 이전 시도에서 실패한 접근을 맹목적으로 반복하고 있지 않은가?
+
 ## 참조
 - Terukirdo Protocol v5.2 §4
 - Clean Architecture
