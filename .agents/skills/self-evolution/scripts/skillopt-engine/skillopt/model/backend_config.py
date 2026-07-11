@@ -64,10 +64,10 @@ def get_optimizer_backend() -> str:
 def set_target_backend(backend: str) -> None:
     global TARGET_BACKEND
     TARGET_BACKEND = normalize_backend_name(backend or "openai_chat")
-    if TARGET_BACKEND not in {"openai_chat", "claude_chat", "qwen_chat", "minimax_chat", "codex_exec", "claude_code_exec"}:
+    if TARGET_BACKEND not in {"openai_chat", "claude_chat", "qwen_chat", "minimax_chat", "codex_exec", "claude_code_exec", "agy_exec"}:
         raise ValueError(
             f"Unsupported target backend: {TARGET_BACKEND!r}. "
-            "Supported values are 'openai_chat', 'claude_chat', 'qwen_chat', 'minimax_chat', 'codex_exec', and 'claude_code_exec'."
+            "Supported values are 'openai_chat', 'claude_chat', 'qwen_chat', 'minimax_chat', 'codex_exec', 'claude_code_exec', and 'agy_exec'."
         )
     os.environ["TARGET_BACKEND"] = TARGET_BACKEND
 
@@ -77,7 +77,7 @@ def get_target_backend() -> str:
 
 
 def is_target_exec_backend() -> bool:
-    return TARGET_BACKEND in {"codex_exec", "claude_code_exec"}
+    return TARGET_BACKEND in {"codex_exec", "claude_code_exec", "agy_exec"}
 
 
 def is_optimizer_chat_backend() -> bool:

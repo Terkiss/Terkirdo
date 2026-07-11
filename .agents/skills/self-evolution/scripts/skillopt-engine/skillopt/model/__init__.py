@@ -8,6 +8,7 @@ from skillopt.model import azure_openai as _openai
 from skillopt.model import claude_backend as _claude
 from skillopt.model import minimax_backend as _minimax
 from skillopt.model import qwen_backend as _qwen
+from skillopt.model import agy_backend as _agy
 from skillopt.model.backend_config import (  # noqa: F401
     configure_claude_code_exec,
     configure_codex_exec,
@@ -43,10 +44,14 @@ def set_backend(name: str | None) -> str:
         set_optimizer_backend("openai_chat")
         set_target_backend("codex_exec")
         return "codex"
-    if normalized in {"codex_exec", "claude_code_exec"}:
+    if normalized in {"codex_exec", "claude_code_exec", "agy_exec"}:
         set_optimizer_backend("openai_chat")
         set_target_backend(normalized)
         return normalized
+    if normalized == "agy":
+        set_optimizer_backend("openai_chat")
+        set_target_backend("agy_exec")
+        return "agy"
     if normalized in {"qwen", "qwen_chat"}:
         set_optimizer_backend("openai_chat")
         set_target_backend("qwen_chat")
@@ -70,6 +75,8 @@ def get_backend_name() -> str:
         return "azure_openai"
     if optimizer == "openai_chat" and target == "codex_exec":
         return "codex"
+    if optimizer == "openai_chat" and target == "agy_exec":
+        return "agy"
     if optimizer == "openai_chat" and target == "qwen_chat":
         return "qwen_chat"
     if optimizer == "openai_chat" and target == "minimax_chat":
@@ -152,6 +159,16 @@ def chat_target(
             retries=retries,
             stage=stage,
             reasoning_effort=reasoning_effort,
+        )
+    if get_target_backend() == "agy_exec":
+        return _agy.chat_target(
+            system=system,
+            user=user,
+            max_completion_tokens=max_completion_tokens,
+            retries=retries,
+            stage=stage,
+            reasoning_effort=reasoning_effort,
+            timeout=timeout,
         )
     if not is_target_chat_backend():
         raise NotImplementedError(
@@ -263,6 +280,18 @@ def chat_target_messages(
             tool_choice=tool_choice,
             return_message=return_message,
         )
+    if get_target_backend() == "agy_exec":
+        return _agy.chat_target_messages(
+            messages=messages,
+            max_completion_tokens=max_completion_tokens,
+            retries=retries,
+            stage=stage,
+            reasoning_effort=reasoning_effort,
+            tools=tools,
+            tool_choice=tool_choice,
+            return_message=return_message,
+            timeout=timeout,
+        )
     if not is_target_chat_backend():
         raise NotImplementedError(
             "chat_target_messages is only supported with target_backend=openai_chat, claude_chat, qwen_chat, or minimax_chat. "
@@ -365,6 +394,17 @@ def get_token_summary() -> dict:
         summary[stage]["prompt_tokens"] += values["prompt_tokens"]
         summary[stage]["completion_tokens"] += values["completion_tokens"]
         summary[stage]["total_tokens"] += values["total_tokens"]
+    agy_summary = _agy.get_token_summary()
+    for stage, values in agy_summary.items():
+        if stage == "_total":
+            continue
+        if stage not in summary:
+            summary[stage] = values
+            continue
+        summary[stage]["calls"] += values["calls"]
+        summary[stage]["prompt_tokens"] += values["prompt_tokens"]
+        summary[stage]["completion_tokens"] += values["completion_tokens"]
+        summary[stage]["total_tokens"] += values["total_tokens"]
     total = {
         "calls": 0,
         "prompt_tokens": 0,
@@ -387,6 +427,7 @@ def reset_token_tracker() -> None:
     _claude.reset_token_tracker()
     _qwen.reset_token_tracker()
     _minimax.reset_token_tracker()
+    _agy.reset_token_tracker()
 
 
 def configure_azure_openai(

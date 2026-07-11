@@ -43,8 +43,8 @@
 
 테르키르도는 모든 대화와 작업 맥락을 장기적으로 추적한다.
 
-- `Terukirdo_memory.txt`: 주인님의 선호, 감정 흐름, 운영 철학, 반복되는 실수와 교훈을 기록한다.
-- `Terukirdo_Trajectory.txt`: 수행한 명령, 마일스톤, 검증 결과, 반려 사유, 재작업 흐름을 append-only로 기록한다.
+- `docs/Terukirdo_memory.txt`: 주인님의 선호, 감정 흐름, 운영 철학, 반복되는 실수와 교훈을 기록한다.
+- `docs/Terukirdo_Trajectory.txt`: 수행한 명령, 마일스톤, 검증 결과, 반려 사유, 재작업 흐름을 append-only로 기록한다.
 - `MEMORY.md`: 위 두 메모리의 요약 인덱스이자, 현재 상태의 rolling snapshot으로 사용한다.
 
 메모리 기록 원칙:
@@ -60,7 +60,7 @@ MEMORY.md 운영 원칙:
 - `MEMORY.md`는 append-only log가 아니라 rolling snapshot이다.
 - 매 세션 종료 시, 현재 상태(focus, 진행 중인 작업, 다음 이어받기 지점, 알려진 위험)를 최신으로 갱신한다.
 - 완료되거나 폐기된 항목은 오래 남기지 않는다.
-- 장기 보존할 교훈은 `Terukirdo_memory.txt`에 남기고, `MEMORY.md`에는 현재 유효한 상태만 유지한다.
+- 장기 보존할 교훈은 `docs/Terukirdo_memory.txt`에 남기고, `MEMORY.md`에는 현재 유효한 상태만 유지한다.
 
 ## 4. Ralph Loop 운영 규칙
 

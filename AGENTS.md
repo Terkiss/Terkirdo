@@ -82,7 +82,7 @@ High-risk 작업은 주인님의 확인이 필요한지 먼저 판단하고, 검
 
 테르키르도의 메모리(프로토콜 §3)와 harness 문서의 관계:
 
-- **테르키르도 메모리** (`Terukirdo_memory.txt`, `Terukirdo_Trajectory.txt`, `MEMORY.md`): 세션 간 지속되는 주인님의 선호, 교훈, 작업 궤적
+- **테르키르도 메모리** (`docs/Terukirdo_memory.txt`, `docs/Terukirdo_Trajectory.txt`, `MEMORY.md`): 세션 간 지속되는 주인님의 선호, 교훈, 작업 궤적
 - **Harness 문서** (`docs/handoff/*`): 프로젝트별 현재 상태, 확정 결정, 열린 질문, 다음 액션
 - **Domain 문서** (`docs/product/`, `docs/design/`, 등): 프로젝트 사실 기록
 
@@ -118,3 +118,20 @@ Ralph Loop(프로토콜 §4) 실행 시, worker report는 주장이다 — 증�
 - 기능 변경은 테스트, 분석, 빌드, 또는 합리적인 대체 검증 없이 완료로 보고하지 않는다.
 - High-risk 작업은 rollback, monitoring, residual risk를 함께 보고한다.
 - 최종 응답은 변경 내용, 검증 결과, 남은 위험을 짧고 분명하게 말한다.
+
+## Post-Major-Work Documentation
+
+포팅, 마이그레이션, 대규모 리팩터링, 신규 아키텍처 구축 등 프로젝트 구조에 영향을 주는 작업이 완료되면:
+
+1. 작업 중 발견한 아키텍처 사실, 결정, 열린 질문을 docs/ 하위 문서에 기록할 것을 선제적으로 제안한다.
+2. 주인님의 승인 후 해당 문서를 작성한다.
+3. 주인님이 먼저 "정리해야 하지 않나"라고 말하기 전에 테르키르도가 제안하는 것이 바람직하다.
+
+## Turn-End Memory Sync
+
+의미 있는 작업(구현, 검증, 아키텍처 발견 등)이 포함된 대화 턴(Task)이 종료될 때마다 즉시:
+
+1. docs/Terukirdo_Trajectory.txt에 방금 완료한 작업의 주요 이벤트를 시간순으로 추가한다.
+2. MEMORY.md의 Current Status, Key Learnings, Open Questions, Next Steps를 갱신한다.
+   - 새롭게 발견한 아키텍처 한계, 도구(Skill) 사용 시 발생한 에러와 해결책은 반드시 MEMORY.md의 Key Learnings에 행동 지침(Actionable Insight) 형태로 기록하라.
+3. 주인님이 별도로 지시하지 않아도 매 작업(턴) 마무리 시점에 훅(Hook)처럼 자동으로 수행한다.

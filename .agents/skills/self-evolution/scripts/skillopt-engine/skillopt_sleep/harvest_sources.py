@@ -5,6 +5,7 @@ from typing import Optional
 
 from skillopt_sleep.harvest import harvest
 from skillopt_sleep.harvest_codex import harvest_codex
+from skillopt_sleep.harvest_docs import harvest_docs
 from skillopt_sleep.types import SessionDigest
 
 
@@ -12,6 +13,14 @@ def harvest_for_config(cfg, *, since_iso: Optional[str] = None, limit: int = 0) 
     source = cfg.get("transcript_source", "claude")
     scope = cfg.get("projects", "invoked")
     invoked_project = cfg.get("invoked_project", "")
+
+    if source == "docs":
+        workspace_dir = invoked_project if invoked_project else os.getcwd()
+        digests = harvest_docs(workspace_dir)
+        if not digests or len(str(digests)) < 50:
+            print("[WARN] 진화에 필요한 충분한 교훈(Key Learnings)이 문서에 없습니다. 학습을 스킵합니다.")
+            return []
+        return digests
 
     if source == "codex":
         return harvest_codex(

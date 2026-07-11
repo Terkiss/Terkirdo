@@ -48,6 +48,16 @@ description: Add, update, or run project verification, including unit tests, UI 
 - 테스트가 없는 영역에 동작 변경이 들어가면 최소한의 회귀 검증 방법을 제안한다.
 - 건너뛴 검증을 숨기지 않는다.
 
+## Porting / Migration Verification
+
+포팅, 마이그레이션, 대규모 코드 이관 검증 시에는 빌드 성공만으로 완료로 보지 않는다.
+
+1. **구조 대조**: 원본과 이관본의 파일/디렉터리 수를 robocopy dry-run 또는 동등한 도구로 대조한다.
+2. **실제 호출 추적**: 프론트엔드가 실제로 `fetch`/`axios` 등으로 호출하는 API를 grep으로 추출하여, 백엔드 엔드포인트와 교차 대조한다.
+3. **스토리지 방식 확인**: 데이터가 REST API, IndexedDB, localStorage, OPFS 중 어디에 저장되는지 소스코드에서 확인한다.
+4. **외부 의존성 경계**: 원본 범위 내에 핸들러가 없는 API 호출은 "외부 의존성"으로 분류하고, 포팅 누락과 구분한다.
+5. **변경 파일 목록**: 의도적 변경과 비의도적 변경을 명확히 구분하여 보고한다.
+
 ## Documentation Updates
 
 문서 갱신이 필요하면 먼저 필요성을 보고하고, 사용자 요청 또는 승인 후 갱신한다.

@@ -63,11 +63,26 @@ def auto_evolve():
         print(f"  python -m venv venv && pip install -e .")
         return 1
 
+    api_key_set = "AZURE_OPENAI_API_KEY" in os.environ or "OPENAI_API_KEY" in os.environ
+    backend_args = []
+    if not api_key_set:
+        try:
+            agy_check = run_cmd(["agy", "--version"], cwd=BASE_DIR)
+            if agy_check.returncode == 0:
+                print("\n[INFO] No API key found. Using local 'agy' backend.")
+                backend_args = ["--backend", "agy"]
+            else:
+                print("\n[ERROR] No API key found and 'agy' CLI is not available.")
+                return 1
+        except Exception:
+            print("\n[ERROR] No API key found and 'agy' CLI is not available.")
+            return 1
+
     print("\nRunning SkillOpt-Sleep pipeline...")
     try:
         engine_dir = os.path.join(os.path.dirname(__file__), 'skillopt-engine')
         run_cmd(
-            [venv_python, "-m", "skillopt_sleep", "--harvest", "--mine", "--rollout"],
+            [venv_python, "-m", "skillopt_sleep", "--source", "docs", "--mine", "--rollout"] + backend_args,
             cwd=engine_dir
         )
     except Exception as e:
