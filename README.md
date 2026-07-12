@@ -271,6 +271,11 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 │   │   ├── post_tool_use_review.py         민감 파일 변경 경고
 │   │   └── stop_quality_gate.py            검증 누락 방지
 │   │
+│   ├── 📁 schemas/                     ← 증거 및 보고서 JSON Schema (5개)
+│   │
+│   ├── 📁 state/                       ← 에이전트 루프 상태 저장소
+│   │
+
 │   └── 📁 skills/                      ← 에이전트 스킬 라이브러리 (15개)
 │       ├── plan-product/                   🔧 기획·방향성 수립
 │       ├── design-ui/                      🔧 UI/UX 설계 + Pro Max 지능
@@ -315,6 +320,7 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 
 | 날짜 | 브랜치 | 내용 |
 |------|--------|------|
+| 2026-07-13 | `20260713a` | Terukirdo v5.3 Runtime-First 통합 개선 (Hook matcher 변경, Secret 감지 강화, 상태 폴더 추가) |
 | 2026-07-08 | `20260708d` | SKILLWEAVER SAD 라우팅 아키텍처 적용, FAISS 스킬 검색기 구축, Hook 컨텍스트 최적화 |
 | 2026-07-08 | `20260708c` | Cluedoc 자동 문서화 스킬 도입, Claude Fable 5 시스템 프롬프트 참고자료 보관 |
 | 2026-07-08 | `20260708b` | Self-Evolution(SkillOpt) 스킬 도입, 범용 품질 강화 스킬 6종 추가 |
