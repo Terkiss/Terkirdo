@@ -151,8 +151,8 @@ Orchestrator Mode에 진입하면 아래 **7명의 전문 에이전트 파이프
 
 | 파일 | 역할 |
 |------|------|
-| `self-evolution/scripts/skill_indexer.py` | `.agents/skills/` 내 모든 SKILL.md를 `all-MiniLM-L6-v2`로 임베딩하여 FAISS `IndexFlatIP` 인덱스 빌드. `--daemon` 모드로 스킬 변경 시 실시간 갱신 |
-| `agents/ralph-orchestrator.md` | SAD 3단계 파이프라인을 기본 루프로 채택한 오케스트레이터 프롬프트 |
+| `.agents/skills/self-evolution/scripts/skill_indexer.py` | `.agents/skills/` 내 모든 SKILL.md를 `all-MiniLM-L6-v2`로 임베딩하여 FAISS `IndexFlatIP` 인덱스 빌드. |
+| `.agents/agents/ralph-orchestrator/agent.md` | SAD 3단계 파이프라인을 기본 루프로 채택한 오케스트레이터 프롬프트 |
 | `docs/harness/prompt-routing.md` | Decompose → Retrieve → Compose 순서를 정책으로 명문화 |
 | `.agents/hooks/pre_tool_use_policy.py` | 워커 실행 시 전체 스킬 대신 **매칭된 단 1개의 타겟 SKILL.md만 동적 주입**하여 토큰 절약 |
 
@@ -253,19 +253,19 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 📦 프로젝트 루트
 │
 ├── 📄 AGENTS.md                        ← 테르키르도 harness 설정 (진입점)
-├── 📄 Terukirdo_Protocol_v5.2.md       ← 정체성·모드·메모리·보안 프로토콜
+├── 📄 Terukirdo_Protocol_v5.3.md       ← 정체성·모드·메모리·보안 프로토콜
 ├── 📄 README.md                        ← 지금 읽고 계신 이 문서
 │
-├── 📁 agents/                          ← Ralph Loop 에이전트 정의 (7인)
-│   ├── ralph-orchestrator.md               SAD 기반 오케스트레이터
-│   ├── terukirdo_plan.md                   구현 계획 수립
-│   ├── agy-worker.md                       코드 구현 행동대장
-│   ├── first-reviewer.md                   1차 코드 리뷰
-│   ├── tech-expert.md                      아키텍처 심판 (Judge)
-│   ├── universal-final-controller.md       빌드·테스트·문서 최종 검증
-│   └── Final_Approach_Control.md           커밋 직전 최종 관제탑
-│
 ├── 📁 .agents/
+│   ├── 📁 agents/                      ← Ralph Loop 에이전트 정의 (7인)
+│   │   ├── ralph-orchestrator/            SAD 기반 오케스트레이터
+│   │   ├── terukirdo-plan/                구현 계획 수립
+│   │   ├── agy-worker/                    코드 구현 행동대장
+│   │   ├── first-reviewer/                1차 코드 리뷰
+│   │   ├── tech-expert/                   아키텍처 심판 (Judge)
+│   │   ├── universal-final-controller/    빌드·테스트·문서 최종 검증
+│   │   └── final-approach-control/        커밋 직전 최종 관제탑
+│   │
 │   ├── 📁 hooks/                       ← 3중 안전장치
 │   │   ├── pre_tool_use_policy.py          파괴적 명령 차단 + SAD 컨텍스트 주입
 │   │   ├── post_tool_use_review.py         민감 파일 변경 경고
@@ -288,9 +288,15 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 │       ├── self-evolution/                 ⚡ SkillOpt 자기 진화 엔진
 │       │   └── scripts/
 │       │       ├── skill_indexer.py            FAISS 벡터 인덱서
-│       │       ├── auto_evolve.py              진화 래퍼 (수동 전용)
 │       │       └── skillopt-engine/            SkillOpt 코어 엔진
 │       └── cluedoc/                        ⚡ 자동 코드베이스 문서화
+│
+├── 📁 scripts/                         ← 하네스 검증 및 자가진화 스크립트
+│   ├── harness/
+│   │   ├── run_quality_gate.py             크로스플랫폼 통합 품질 검증 엔진
+│   │   └── validate_harness.py             하네스 탐색 및 유효성 검사
+│   └── self-evolution/
+│       └── run_candidate_evolution.py      격리된 자가진화 엔진 실행기
 │
 └── 📁 docs/                            ← 프로젝트 SSOT (Single Source of Truth)
     ├── project/                            프로젝트 개요·제약 사항
