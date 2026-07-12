@@ -96,7 +96,7 @@ Orchestrator Mode에 진입하면 아래 **7명의 전문 에이전트 파이프
 │         │            │ Reviewer      │  P1/P2 발견 시 Rework            │
 │         │            └───────────────┘                                  │
 │         ▼                                                               │
-│    ✅ APPROVED  또는  🔄 REWORK                                         │
+│    ✅ APPROVED FOR COMMIT ONLY  또는  🔄 REWORK                            │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 

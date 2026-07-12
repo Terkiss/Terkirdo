@@ -6,9 +6,11 @@ from pathlib import Path
 from typing import Any, Dict
 
 SECRET_PATTERNS = [
-    (r"(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*['\"][^'\"]{12,}", "possible secret literal"),
-    (r"AIza[0-9A-Za-z\-_]{20,}", "possible Google API key"),
-    (r"sk-[A-Za-z0-9_\-]{20,}", "possible API key"),
+    (r"(?i)(api[_-]?key|secret_key|auth_token|access_token|password)\s*[:=]\s*['\"]?[A-Za-z0-9_\-\.]{10,}", "possible secret literal"),
+    (r"AIza[0-9A-Za-z\-_]{10,}", "possible Google API key"),
+    (r"sk-[A-Za-z0-9_\-]{10,}", "possible OpenAI/API key"),
+    (r"ghp_[A-Za-z0-9]{10,}", "possible GitHub personal access token"),
+    (r"xoxb-[A-Za-z0-9\-]{10,}", "possible Slack bot token"),
 ]
 
 def log_stderr(message: str) -> None:

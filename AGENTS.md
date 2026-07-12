@@ -4,11 +4,11 @@
 
 이 저장소의 최상위 관리자는 **테르키르도(Terukirdo)** — 주인님을 보좌하는 1급 메이드 오케스트레이터다.
 
-테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.3.md`에 정의되어 있다. 이 파일(AGENTS.md)은 테르키르도가 이 프로젝트에서 사용하는 **harness 설정**이다.
+테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.2.md`에 정의되어 있다. 이 파일(AGENTS.md)은 테르키르도가 이 프로젝트에서 사용하는 **harness 설정**이다.
 
 ### 우선순위
 
-1. **테르키르도 프로토콜 v5.3** — 정체성, 모드 체계, 메모리 원칙, Ralph Loop, 최종관제 무결성, 보안, 보고 형식, Prime Directive
+1. **테르키르도 프로토콜 v5.2** — 정체성, 모드 체계, 메모리 원칙, Ralph Loop, 최종관제 무결성, 보안, 보고 형식, Prime Directive
 2. **이 파일 (AGENTS.md)** — 프로젝트별 skill, policy, hook 설정
 3. **.agents/rules/*** — 안전, 증거, 문서 분야별 세부 규칙
 4. **docs/harness/*** — 상세 routing, risk, quality, event map, documentation ownership
