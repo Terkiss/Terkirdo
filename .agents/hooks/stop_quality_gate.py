@@ -74,41 +74,51 @@ def main() -> int:
         return 0
 
     root = find_repo_root()
-    
-    # 1. Check if workspace has code modifications.
-    # Ignore harness, scripts, test, and documentation files when determining if project code was modified.
+
+    # 1. Check if workspace has meaningful modifications
     status_lines = get_git_status_porcelain(root)
     code_modified = False
+    meaningful_work = False
+    memory_synced = False
+
     for line in status_lines:
         parts = line.split(None, 1)
         if len(parts) < 2:
             continue
         path_str = parts[1].strip()
         p_lower = path_str.replace('\\', '/').lower()
+
+        if p_lower == ".agents/state/stop_gate_state.json":
+            continue
+
+        if p_lower in ["memory.md", "docs/terukirdo_trajectory.txt"]:
+            memory_synced = True
+            continue
+
+        meaningful_work = True
+
         # Harness files prefixes
         is_harness = any(p_lower.startswith(pref) for pref in [
             ".agents/", "scripts/", "tests/", "docs/", "agents/",
             "terukirdo_protocol_", "agents.md", "readme.md", "테르키르도.zip", ".gitignore"
         ])
         if not is_harness and not path_str.endswith(".md"):
-            log_stderr(f"Code modification detected: {path_str} (is_harness={is_harness})")
             code_modified = True
-            break
 
-    if not code_modified:
-        log_stderr("No code files modified. Tier 0/1 chat/query bypass active.")
-        respond_json({"status": "passed", "reason": "No code modifications detected."})
+    if not meaningful_work and not memory_synced:
+        log_stderr("No files modified. Tier 0/1 chat/query bypass active.")
+        respond_json({"status": "passed", "reason": "No modifications detected."})
         return 0
 
     # 2. Track attempts to prevent infinite loop
     state = load_stop_state()
     state["attempt"] += 1
     save_stop_state(state)
-    
+
     log_stderr(f"Evaluating Stop Gate (Attempt {state['attempt']}/{MAX_ATTEMPTS})")
-    
+
     failures = []
-    
+
     # Check 1: validate_harness.py
     if not run_harness_validator(root):
         failures.append("Harness structural validation failed (validate_harness.py)")
@@ -116,7 +126,11 @@ def main() -> int:
     # Check 2: Git diff --check
     if not run_git_diff_check(root):
         failures.append("Git diff whitespace or conflict checks failed (git diff --check)")
-    
+
+    # Check 3: Deterministic Memory Sync
+    if meaningful_work and not memory_synced:
+        failures.append("Turn-End Memory Sync required: You have modified files but didn't update MEMORY.md or docs/Terukirdo_Trajectory.txt.")
+
     if failures:
         reason = "; ".join(failures)
         if state["attempt"] >= MAX_ATTEMPTS:
@@ -130,7 +144,7 @@ def main() -> int:
         log_stderr("Stop Hook PASSED.")
         save_stop_state({"attempt": 0})
         respond_json({"status": "passed", "reason": "All checks passed successfully."})
-        
+
     return 0
 
 if __name__ == "__main__":

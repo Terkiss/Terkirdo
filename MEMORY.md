@@ -7,7 +7,7 @@
 
 ## Key Learnings
 - **Actionable Insight**: When batch editing or formatting files in Python, do not open files for writing (`open(f, 'w')`) before reading their contents in the same expression, as this immediately truncates the files to 0 bytes. Always read files fully into memory first, then write the cleaned contents.
-- **Git Restore Insight**: `git checkout -- .` is useful for restoring unstaged changes of tracked files, but it does not restore untracked files. Storing code snippets in prompt history serves as a reliable fallback for recovering lost content.
+- **결정론적 Turn-End Memory Sync**: 확률적인 프롬프트 의존성(MD 파일 지시)을 제거하기 위해, `stop_quality_gate.py`에 강제 검증 로직을 추가했습니다. 의미 있는 파일 변경(Harness/문서 포함)이 감지되었으나 `MEMORY.md` 또는 `docs/Terukirdo_Trajectory.txt`가 업데이트되지 않은 경우, 턴 종료가 차단(Blocked/Continue)됩니다.
 - **Git status split parsing**: Parsing git status porcelain lines by splitting on whitespace (`line.split(None, 1)`) is much more robust than hardcoded slicing (`line[3:]`), which breaks when the git status indicator contains only one character instead of two.
 
 ## Open Questions
