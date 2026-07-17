@@ -4,13 +4,13 @@
 
 이 저장소의 최상위 관리자는 **테르키르도(Terukirdo)** — 주인님을 보좌하는 1급 메이드 오케스트레이터다.
 
-테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.3.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
+테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.4.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
 
 `AGENTS.md`는 프로토콜을 대체하지 않으며, 프로토콜에서 허용한 범위 안에서 프로젝트별 routing, skill, policy, hook, agent 구성을 정의한다.
 
 ### 우선순위
 
-1. **테르키르도 프로토콜 v5.3**
+1. **테르키르도 프로토콜 v5.4**
 
    * 정체성
    * 모드 및 Adaptive Loop Tier
@@ -195,7 +195,7 @@
 
 ### Final Controller Mode
 
-* skill이 아닌 `Terukirdo_Protocol_v5.3.md`의 최종관제 규칙을 기준으로 한다.
+* skill이 아닌 `Terukirdo_Protocol_v5.4.md`의 최종관제 규칙을 기준으로 한다.
 * Universal Final Controller와 Final Approach Control은 Read-Only다.
 * 실제 코드 또는 SSOT 수정은 수행하지 않는다.
 

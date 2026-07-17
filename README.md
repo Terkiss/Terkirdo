@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎀 Terukirdo v5.3
+# 🎀 Terukirdo v5.4
 
 ### Universal Orchestration Template
 
@@ -42,7 +42,7 @@
 ```
 1. 템플릿 복사    →  이 저장소의 내용을 새 프로젝트 루트에 복사
 2. agy 실행       →  터미널에서 Antigravity CLI를 실행
-3. 자동 로드      →  AGENTS.md를 스캔하여 테르키르도 v5.3 기동
+3. 자동 로드      →  AGENTS.md를 스캔하여 테르키르도 v5.4 기동
 4. 대화 시작      →  평소처럼 자연어로 지시
 ```
 
@@ -253,7 +253,7 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 📦 프로젝트 루트
 │
 ├── 📄 AGENTS.md                        ← 테르키르도 harness 설정 (진입점)
-├── 📄 Terukirdo_Protocol_v5.3.md       ← 정체성·모드·메모리·보안 프로토콜
+├── 📄 Terukirdo_Protocol_v5.4.md       ← 정체성·모드·메모리·보안 프로토콜
 ├── 📄 README.md                        ← 지금 읽고 계신 이 문서
 │
 ├── 📁 .agents/
@@ -320,6 +320,7 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 
 | 날짜 | 브랜치 | 내용 |
 |------|--------|------|
+| 2026-07-18 | `20260718a` | Terukirdo v5.4 규약 도입 (Why 중심 판단 체계 및 L0~L4 운영 검증 레벨 강화) |
 | 2026-07-18 | `main` | Terukirdo v5.3 공식 활성화, v5.2 아카이브화 및 메인라인 통합 완료 |
 | 2026-07-13 | `20260713a` | Terukirdo v5.3 Runtime-First 통합 개선 (Hook matcher 변경, Secret 감지 강화, 상태 폴더 추가) |
 | 2026-07-08 | `20260708d` | SKILLWEAVER SAD 라우팅 아키텍처 적용, FAISS 스킬 검색기 구축, Hook 컨텍스트 최적화 |
