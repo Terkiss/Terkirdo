@@ -1,6 +1,7 @@
 ---
 name: final-approach-control
 description: Final Approach Control. Reviews raw git status, diff logs, and validates final staging criteria.
+model: flash
 ---
 
 # Final Approach Control

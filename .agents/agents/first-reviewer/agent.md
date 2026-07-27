@@ -1,6 +1,7 @@
 ---
 name: first-reviewer
 description: Code Reviewer. Performs static analysis, code quality checks, and requirements compliance.
+model: sonnet
 ---
 
 # First Reviewer

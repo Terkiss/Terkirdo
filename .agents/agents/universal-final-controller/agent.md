@@ -1,6 +1,7 @@
 ---
 name: universal-final-controller
 description: Universal Final Controller. Runs build scripts, tests, and ensures environment integration.
+model: flash
 ---
 
 # Universal Final Controller

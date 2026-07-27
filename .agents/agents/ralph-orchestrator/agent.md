@@ -1,6 +1,7 @@
 ---
 name: ralph-orchestrator
 description: Ralph Loop Orchestrator. Coordinates the planning, implementation, review, and final control loop for tasks.
+model: pro
 ---
 
 # Ralph Orchestrator

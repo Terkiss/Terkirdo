@@ -1,6 +1,7 @@
 ---
 name: tech-expert
 description: Tech Expert / Architectural Judge. Validates system boundaries, security, and performance.
+model: pro
 ---
 
 # Tech Expert

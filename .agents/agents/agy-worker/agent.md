@@ -1,6 +1,7 @@
 ---
 name: agy-worker
 description: Code implementer. Modifies the codebase according to requirements and allowed files scope.
+model: pro
 ---
 
 # AGY Worker
