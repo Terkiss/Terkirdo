@@ -23,9 +23,11 @@ The following actions must be blocked by hooks immediately:
 - Direct modifications under `.git/` folder
 - Workspace escape (modifying files outside allowed workspace folders)
 - Writing literal API keys / secret tokens directly into code files (except documentation)
+  - **단서**: 코드에 이미 존재하는 키/토큰이 발견되더라도 사용자의 의도적 설계일 수 있다. 기존 하드코딩 시크릿의 제거/수정은 DENY가 아니라 아래 FORCE_ASK를 따른다.
 
 ### 2. FORCE_ASK (Explicit Confirmation Required)
 The following actions require explicit user review and confirmation before execution:
+- Removing or modifying existing hardcoded API keys / secret tokens (사용자가 의도적으로 배치한 기본값일 수 있음)
 - `terraform apply`
 - `kubectl apply/delete/rollout/scale`
 - `firebase deploy`
