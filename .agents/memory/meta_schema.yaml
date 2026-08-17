@@ -1,0 +1,80 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: Memory Scape Frontmatter Schema
+type: object
+required:
+  - id
+  - type
+  - tags
+  - created_at
+  - updated_at
+  - confidence
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier for the memory node.
+  type:
+    type: string
+    enum: [Entity, Event, Concept, Rule, Stub]
+    description: The category of memory.
+  tags:
+    type: array
+    items:
+      type: string
+    description: Hierarchical tags for taxonomy classification.
+  created_at:
+    type: string
+    format: date-time
+    description: |
+      Initialization timestamp.
+      Note: PyYAML may parse this as a datetime object. Ensure string serialization before JSON Schema validation.
+  updated_at:
+    type: string
+    format: date-time
+    description: |
+      Last modification timestamp.
+      Note: PyYAML may parse this as a datetime object. Ensure string serialization before JSON Schema validation.
+  confidence:
+    type: number
+    minimum: 0
+    maximum: 1
+    description: Epistemic certainty of the information.
+  parents:
+    type: array
+    items:
+      type: string
+      format: uuid
+    description: IDs of parent concepts/folders.
+  children:
+    type: array
+    items:
+      type: string
+      format: uuid
+    description: IDs of granular sub-concepts.
+  related:
+    type: array
+    items:
+      type: string
+      format: uuid
+    description: Lateral semantic connections.
+  conflicts_with:
+    type: array
+    items:
+      type: string
+      format: uuid
+    description: Known contradictory memory nodes.
+  ttl:
+    type: integer
+    description: Time-to-Live in seconds.
+  access_count:
+    type: integer
+    description: Frequency of RAG retrieval.
+  last_accessed:
+    type: string
+    format: date-time
+    description: |
+      Timestamp of last RAG hit.
+      Note: PyYAML may parse this as a datetime object. Ensure string serialization before JSON Schema validation.
+  archived:
+    type: boolean
+    description: If true, excluded from active hot-path retrieval.
