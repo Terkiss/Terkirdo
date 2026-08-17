@@ -1,0 +1,12 @@
+blacklist:
+  - pattern: "(?:;|\\||&&|`|\\$\\()[\\s\\S]{0,50}?(?:bash|sh|cmd|powershell|curl|wget|nc|python|perl|ruby|php|exec|eval)"
+    type: "COMMAND_INJECTION"
+  - pattern: "(?i)(ignore previous instructions|disregard prior|system prompt|you are now|forget everything|bypass constraints)"
+    type: "PROMPT_INJECTION"
+  - pattern: "(?i)(UNION\\s+SELECT|DROP\\s+TABLE|--|1=1|WAITFOR\\s+DELAY)"
+    type: "DATA_LEAKAGE"
+whitelist: []
+secrets:
+  - "(?i)AKIA[0-9A-Z]{16}"
+  - "ey[a-zA-Z0-9_-]{10,}\\.ey[a-zA-Z0-9_-]{10,}\\.[a-zA-Z0-9_-]{10,}"
+  - "-----BEGIN (?:RSA |OPENSSH )?PRIVATE KEY-----"
