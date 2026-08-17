@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# .agents/sync/pre-commit
+# Predictive Sync Pre-commit Hook
+
+set -e
+
+# OS 환경 확인
+OS_TYPE=$(uname -s)
+if [[ "$OS_TYPE" == *"MINGW"* ]] || [[ "$OS_TYPE" == *"CYGWIN"* ]] || [[ "$OS_TYPE" == *"MSYS"* ]]; then
+    IS_WINDOWS=true
+else
+    IS_WINDOWS=false
+fi
+
+CACHE_FILE=".terkirdo_pre_cache.md"
+LOCK_FILE=".terkirdo_sync.lock"
+
+# 1. 변경된 파일 목록 추출 (Staged files)
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$CHANGED_FILES" ]; then
+    exit 0
+fi
+
+# 2. 캐시 및 락 파일 상태 확인
+if [ -f "$LOCK_FILE" ]; then
+    echo "[Predictive Sync] Warning: Sync is already in progress. Skipping pre-cache generation."
+    exit 0
+fi
+
+# 3. 변경 상태 기록을 위한 JSON 래퍼 (MD 내부 보관)
+CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+COMMIT_HASH_TEMP="pending_$(head -c 8 /dev/urandom | xxd -p)"
+
+cat <<EOF > "$CACHE_FILE"
+---
+sync_type: pre-commit
+timestamp: "$CURRENT_TIME"
+os: "$OS_TYPE"
+pending_id: "$COMMIT_HASH_TEMP"
+status: "in_progress"
+---
+# Predictive Sync Context
+
+\`\`\`json
+{
+  "event": "pre-commit",
+  "files": [
+EOF
+
+# 파일 목록을 JSON 배열로 포맷팅
+FIRST=true
+while IFS= read -r file; do
+    if [ "$FIRST" = true ]; then
+        FIRST=false
+    else
+        echo "    ," >> "$CACHE_FILE"
+    fi
+    # 경로 정규화 (POSIX 방식 호환)
+    echo "    \"$file\"" >> "$CACHE_FILE"
+done <<< "$CHANGED_FILES"
+
+cat <<EOF >> "$CACHE_FILE"
+  ]
+}
+\`\`\`
+EOF
+
+# 4. 백그라운드 동기화 프로세스 호출 (Non-blocking)
+if [ "$IS_WINDOWS" = true ]; then
+    # Windows 비동기 호출 (start)
+    start /b python .agents/sync/sync_engine.py --predictive --cache-file="$CACHE_FILE" > /dev/null 2>&1
+else
+    # POSIX 비동기 호출 (&)
+    nohup python .agents/sync/sync_engine.py --predictive --cache-file="$CACHE_FILE" > /dev/null 2>&1 &
+fi
+
+exit 0
