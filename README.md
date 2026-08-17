@@ -247,6 +247,18 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 
 ---
 
+## 🛡️ V2 코어 인프라 (Core Subsystems)
+
+테르키르도 V2 템플릿은 단순한 프롬프트를 넘어, 에이전트의 안전과 환경 간 동기화를 책임지는 3대 백엔드 엔진을 내장하고 있습니다.
+
+| 코어 | 경로 | 설명 |
+|------|------|------|
+| **MCP Immune System** | `.agents/mcp/` | Pydantic과 정규식(`rules.yaml`)을 활용하여 악성 명령어와 프롬프트 인젝션을 원천 차단하는 에이전트 방화벽 |
+| **Memory Scape** | `.agents/memory/` | 에빙하우스 망각 곡선 온도 계산과 하이브리드 RAG(Semantic+Lexical RRF)가 결합된 마크다운 기반 자아 기억망 |
+| **Predictive Sync** | `.agents/sync/` | Windows/POSIX 호환, 백그라운드 Lock 제어 및 `pre-commit`/`post-merge` 훅을 통한 깃 충돌 예지형 동기화 엔진 |
+
+---
+
 ## 📁 디렉토리 구조
 
 ```
@@ -320,6 +332,7 @@ Microsoft의 **[SkillOpt](https://github.com/microsoft/SkillOpt)** 프레임워�
 
 | 날짜 | 브랜치 | 내용 |
 |------|--------|------|
+| 2026-08-17 | `20260817a` | V2 코어 인프라 완공 (MCP 면역 체계, 메모리 스케이프, 예지형 동기화 엔진 구축) |
 | 2026-07-18 | `20260718a` | Terukirdo v5.4 규약 도입 (Why 중심 판단 체계 및 L0~L4 운영 검증 레벨 강화) |
 | 2026-07-18 | `main` | Terukirdo v5.3 공식 활성화, v5.2 아카이브화 및 메인라인 통합 완료 |
 | 2026-07-13 | `20260713a` | Terukirdo v5.3 Runtime-First 통합 개선 (Hook matcher 변경, Secret 감지 강화, 상태 폴더 추가) |
