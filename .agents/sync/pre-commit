@@ -30,7 +30,7 @@ fi
 
 # 3. 변경 상태 기록을 위한 JSON 래퍼 (MD 내부 보관)
 CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-COMMIT_HASH_TEMP="pending_$(head -c 8 /dev/urandom | xxd -p)"
+COMMIT_HASH_TEMP="pending_$(python -c "import secrets; print(secrets.token_hex(4))" 2>/dev/null || date +%s)"
 
 cat <<EOF > "$CACHE_FILE"
 ---
@@ -68,8 +68,8 @@ EOF
 
 # 4. 백그라운드 동기화 프로세스 호출 (Non-blocking)
 if [ "$IS_WINDOWS" = true ]; then
-    # Windows 비동기 호출 (start)
-    start /b python .agents/sync/sync_engine.py --predictive --cache-file="$CACHE_FILE" > /dev/null 2>&1
+    # Windows 비동기 호출 (cmd /c start)
+    cmd.exe /c "start /b python .agents/sync/sync_engine.py --predictive --cache-file=\"$CACHE_FILE\"" > /dev/null 2>&1 || true
 else
     # POSIX 비동기 호출 (&)
     nohup python .agents/sync/sync_engine.py --predictive --cache-file="$CACHE_FILE" > /dev/null 2>&1 &
