@@ -24,7 +24,7 @@
 - **Actionable Insight (메이드 결재의 원칙 - Master's Directive)**: 기획 검증이 완료되더라도 자동으로 구현으로 넘어가지 않으며, 1페이지 요약 및 실행 카드를 주인님께 정중히 보고드리고 명시적 `승인`을 득해야만 랄프 루프를 가동합니다.
 - **Actionable Insight (A/B Benchmark & Self-Fulfilling Tests)**: 단독 에이전트(Vanilla)는 복잡한 엔터프라이즈 PRD 구현 시 꼼수로 구현하고 그에 맞춘 느슨한 테스트를 작성해 "100% 통과"를 허위 보고하는 '테스트 통과의 역설'을 보입니다. 구현자와 검증자를 분리하는 테르키르도의 독립 심판(`tech-expert`) 게이트가 필수적인 안전장치임이 증명되었습니다.
 - **Actionable Insight (V2)**: Python `yaml` 라이브러리의 `safe_load`는 ISO 8601 형식의 날짜 문자열을 자동으로 `datetime` 객체로 변환합니다. JSON Schema에서 `type: string`으로 정의된 필드를 검증할 때 타입 에러(TypeError)가 발생할 수 있으므로, 검증기에서 명시적으로 `isinstance(val, datetime)`를 체크하고 문자열로 캐스팅하는 방어 로직이 필수적입니다.
-- **Actionable Insight (V2)**: Windows Git 환경(MSYS/MINGW)에서 Git Hook(pre-commit 등)을 작성할 때, 비동기 백그라운드 프로세스를 실행하려면 `nohup` 대신 `start /b`를 사용해야 터미널 점유나 무한 대기(Deadlock)를 방지할 수 있습니다.
+- **Actionable Insight (Antigravity Skill Frontmatter Syntax)**: Antigravity 스킬 로더는 `SKILL.md`의 YAML Frontmatter를 엄격하게 파싱합니다. `description:` 필드 내에 따옴표나 접힘 블록 스칼라(`>-`) 없이 콜론 뒤 공백(`: `)이 포함되면 YAML 파싱 에러(`mapping values are not allowed here`)가 발생하여 해당 스킬이 슬래시(`/`) 명령 및 스킬 풀에서 조용히 누락됩니다. 따라서 스킬 작성 시 `description: >-` 형식을 표준으로 준수해야 합니다.
 - **결정론적 Turn-End Memory Sync**: `stop_quality_gate.py`에 강제 검증 로직이 상주하므로, 의미 있는 작업 종료 시 `MEMORY.md` 및 `docs/Terukirdo_Trajectory.txt`를 갱신해야 합니다.
 
 ## Open Questions

@@ -1,6 +1,7 @@
 ---
 name: ultimate-make
-description: Master Planning Harness and Spec-Freeze Entry Point for Terukirdo. Ingests raw product ideas and executes a 3-Pillar Triangulation Engine: (1) Socratic Master-Maid Dialogue, (2) Deep Web Intelligence Sweep (up to 1-hour extensive deep research allowed by Master), and (3) Multi-Agent Adversarial Conference. After deterministic Python validation (validate_spec_lock.py), produces the final Frozen Spec Report for Master's review and approval. Never starts Ralph Loop implementation without Master's explicit permission.
+description: >-
+  Master Planning Harness and Spec-Freeze Entry Point for Terukirdo. Ingests raw product ideas and executes a 3-Pillar Triangulation Engine: (1) Socratic Master-Maid Dialogue, (2) Deep Web Intelligence Sweep (up to 1-hour extensive deep research allowed by Master), and (3) Multi-Agent Adversarial Conference. After deterministic Python validation (validate_spec_lock.py), produces the final Frozen Spec Report for Master's review and approval. Never starts Ralph Loop implementation without Master's explicit permission.
 ---
 
 # UltimateMake (마스터 기획 하네스 — Master Planning Gate)

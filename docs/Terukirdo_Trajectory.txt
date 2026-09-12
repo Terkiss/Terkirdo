@@ -23,3 +23,8 @@
 - Ported global 'universal-crawler' skill to local workspace (.agents/skills/universal-crawler/SKILL.md) and registered in AGENTS.md.
 - Enacted planning & spec-lock rules in .agents/rules/planning.md.
 - Updated project memory ledger (MEMORY.md) with key upstream engineering insights.
+
+2026-09-06: Fixed YAML Frontmatter Syntax Errors in Workspace Skills.
+- Resolved YAML parsing errors in .agents/skills/ultimate-make/SKILL.md and .agents/skills/cluedoc/SKILL.md by converting unquoted descriptions containing colons to folded scalars (description: >-).
+- Validated all 18 workspace skills with pure-Python yaml.safe_load scanner.
+- Restored skill indexing and slash command visibility in Antigravity.
