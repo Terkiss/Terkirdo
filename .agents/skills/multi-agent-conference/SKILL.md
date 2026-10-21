@@ -27,9 +27,9 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 | 👑 **주재관 (Host / Moderator)** | **테르키르도 (Terukirdo Orchestrator)** | 안건 상정, 발언권 조율, 논점 이탈 방지, 갈등 중재, 최종 합의안/ADR 종합 작성 |
 | 🏛️ **수석 아키텍트 (Chief Architect)** | **Claude Opus 4.6** | 거시적 시스템 구조, 도메인 경계, 인터페이스(SSOT) 및 데이터 흐름 설계, 공식 사양서 작성 |
 | 🛠️ **실행/구현 엔지니어 (Surgical Implementer)** | **Claude Sonnet 4.6** | 코드 수준 구현 가능성 검토, C# 관례 준수, 리팩터링 정밀도, 군더더기 없는 실용적 구현 |
-| 🛡️ **적대적 심판관 (Adversarial Red Team)** | **Gemini 3.1 Pro High** | 침투 테스트 관점 공격, 경로 트래버설, 보안 결함, 경쟁 상태(Race Condition), 엣지 케이스 적발 |
-| ⚡ **데이터/성능 전문가 (Data & Engine Specialist)** | **Gemini 3.1 Pro / Gemini 3.7 Thinking** | 대용량 OLAP, 시계열 집계, SIMD 최적화, 메모리/처리량 벤치마크, 락프리 동시성 검토 |
-| ⚖️ **최종 관제 게이트키퍼 (Universal Controller)** | **Gemini 3.7 Flash** | 빌드 무결성, 테스트 스위트 전수 통과, 정적 분석 및 규정 준수 여부의 신속·정확한 최종 판정 |
+| 🛡️ **적대적 심판관 (Adversarial Red Team)** | **Gemini 4 Argon (High)** | 침투 테스트 관점 공격, 경로 트래버설, 보안 결함, 경쟁 상태(Race Condition), 엣지 케이스 적발 |
+| ⚡ **데이터/성능 전문가 (Data & Engine Specialist)** | **Gemini 4 Argon** | 대용량 OLAP, 시계열 집계, SIMD 최적화, 메모리/처리량 벤치마크, 락프리 동시성 검토 |
+| ⚖️ **최종 관제 게이트키퍼 (Universal Controller)** | **Gemini 3.8 Flash** | 빌드 무결성, 테스트 스위트 전수 통과, 정적 분석 및 규정 준수 여부의 신속·정확한 최종 판정 |
 
 ---
 
@@ -42,8 +42,8 @@ sequenceDiagram
     participant Host as 🎀 Host (Terukirdo)
     participant Arch as 🏛️ Architect (Opus 4.6)
     participant Impl as 🛠️ Implementer (Sonnet 4.6)
-    participant Red as 🛡️ Red Team (Gemini Pro)
-    participant Flash as ⚖️ Controller (3.7 Flash)
+    participant Red as 🛡️ Red Team (4 Argon)
+    participant Flash as ⚖️ Controller (3.8 Flash)
 
     Host->>Host: 1단계: 안건 및 제약조건 프레이밍
     Host->>Arch: 2단계: 아키텍처 제안 발제 요청
@@ -60,7 +60,7 @@ sequenceDiagram
 ```
 
 ### [Stage 1] 안건 및 제약조건 프레이밍 (Agenda Framing)
-- 해결하고자 하는 문제의 본질, 성공 기준, 불변의 전제 조건(하네스 격리, 성능 목표, 프로토콜 v5.4 준수 등)을 명문화.
+- 해결하고자 하는 문제의 본질, 성공 기준, 불변의 전제 조건(하네스 격리, 성능 목표, 프로토콜 v5.6 준수 등)을 명문화.
 - 회의 참석 페르소나 및 배정 역할 확정.
 
 ### [Stage 2] 도메인별 독립 제안 발제 (Round 1: Independent Proposals)

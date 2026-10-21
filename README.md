@@ -1,14 +1,15 @@
 <div align="center">
 
-# 🎀 Terukirdo v5.5
+# 🎀 Terukirdo v5.6
 
 ### Universal Enterprise Multi-Agent Orchestration Template
 
 **기획(UltimateMake) → 설계 → 구현 → 적대적 검증(Ralph Loop) → 배포**<br>
 모호한 아이디어를 결점 0%의 프로덕션 소프트웨어로 승화시키는 **1급 메이드 오케스트레이터 시스템**
 
-[![Protocol](https://img.shields.io/badge/Protocol-v5.5_Active-magenta.svg)](#-terukirdo-protocol-v55)
-[![Skills](https://img.shields.io/badge/Skills-18_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills)
+[![Protocol](https://img.shields.io/badge/Protocol-v5.6_Active-magenta.svg)](#-terukirdo-protocol-v56-핵심-진화)
+[![Engine](https://img.shields.io/badge/Engine-Gemini_4_Argon_%C3%97_3.8_Flash-blue.svg)](#-terukirdo-protocol-v56-핵심-진화)
+[![Skills](https://img.shields.io/badge/Skills-18_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-18종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake-gold.svg)](#-ultimatemake-마스터-기획-하네스)
 [![Agents](https://img.shields.io/badge/Agents-7_Ralph_Loop-orange.svg)](#-7인의-실무진-ralph-loop)
 [![Platform](https://img.shields.io/badge/Platform-Antigravity_CLI-black.svg)](#-빠른-시작-가이드)
@@ -28,16 +29,16 @@ React, Next.js, Flutter, .NET, Python, Go, Rust — 기술 스택에 구애받�
 
 ---
 
-## 👑 Terukirdo Protocol v5.5 핵심 진화
+## 👑 Terukirdo Protocol v5.6 핵심 진화
 
-v5.5는 3대 프론티어 AI 모델(Gemini 3.7 Flash, Gemini 3.1 Pro, Claude Sonnet 4.6)을 대상으로 한 대규모 A/B 벤치마크 실증을 거쳐 탄생한 **상류 공학(Upstream Engineering)의 결정체**입니다.
+v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3.8 Flash (`flash`) 비대칭 하이브리드 듀얼 엔진 아키텍처**를 결합한 차세대 엔터프라이즈 오케스트레이션 헌법입니다.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                           Terukirdo v5.5 3-Pillar & Loop Engine                         │
+│                 Terukirdo v5.6 Dual-Engine (Gemini 4 Argon × 3.8 Flash)                 │
 │                                                                                          │
 │   👑 [주인님의 직관/대화]     🌐 [최대 1h 초심층 웹 리서치]     🤖 [5인 전문가 적대적 회의]      │
-│   (Socratic Elicitation)    (universal-crawler / RFC)     (multi-agent-conference)     │
+│   (Socratic Elicitation)    (universal-crawler / RFC)     (4 Argon × 3.8 Flash × 4.6)  │
 │             │                           │                           │                    │
 │             └───────────────────────────┼───────────────────────────┘                    │
 │                                         ▼                                                │
@@ -55,22 +56,24 @@ v5.5는 3대 프론티어 AI 모델(Gemini 3.7 Flash, Gemini 3.1 Pro, Claude Son
 │                     └───────────────────┬───────────────────┘                            │
 │                                         ▼ (승인 하달 시)                                  │
 │   ┌──────────────────────────────────────────────────────────────────────────────────┐   │
-│   │                      Ralph Loop: 무결점 구현 및 적대적 심사                        │   │
-│   │  [Plan] ──▶ [AGY Worker 구현] ──▶ [Tech Expert 심판] ──▶ [UFC & FAC 최종 관제]    │   │
+│   │             Ralph Loop: Gemini 4 Argon (pro) × Gemini 3.8 Flash (flash)          │   │
+│   │  [Plan(Argon)] ▶ [Worker(Argon)] ▶ [1st Review(Flash)] ▶ [Tech Expert(Argon)]   │   │
+│   │                                  ▶ [UFC & FAC 최종 관제(3.8 Flash)]               │   │
 │   └──────────────────────────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 🌟 v5.5 6대 핵심 철학
+### 🌟 v5.6 7대 핵심 철학
 
 | # | 원칙 | 설명 |
 |:-:|------|------|
 | 1 | **상류 정보 무결성 (Upstream Primacy)** | "상류의 정보 품질이 하류 구현의 품질을 100% 지배한다." 코딩을 서두르지 않고 최대 1시간에 달하는 초심층 웹 리서치와 5인 전문가 회의로 기획 모호성을 0%로 증발시킵니다. |
-| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py` 스크립트를 탑재하여 금지어 린트, GWT 인수조건, 리서치 증거를 코드로 물리적 강제 검증합니다. |
+| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py` 및 `validate_harness.py`를 탑재하여 스펙 린트, GWT 인수조건, 에이전트 모델 Enum 규격을 물리적으로 강제 검증합니다. |
 | 3 | **메이드 결재의 원칙 (Master Approval Gate)** | 기획 검증이 끝나도 독단으로 코딩을 시작하지 않습니다. 1페이지 요약 보고서를 주인님께 올리고, 주인님의 명시적 `승인`을 득해야만 랄프 루프를 가동합니다. |
-| 4 | **적응형 유연성 (Adaptive Fluidity)** | 사소한 대화나 오탈자 수정(Tier 0/1)에서는 깝깝함 없는 신속한 속도를, 엔터프라이즈 코어 작업(Tier 2/3)에서는 철벽의 다중 에이전트 방패를 가동합니다. |
-| 5 | **삼권분립 & 적대적 교차 검증 (Separation of Powers)** | 코드를 짠 구현자(Worker)는 절대 셀프 합격 판정을 내릴 수 없습니다. 독립된 `tech-expert`(심판관)와 `UFC`(환경관제탑)가 꼼수와 경계 누수를 끝까지 추적합니다. |
-| 6 | **하드코어 안전장치 (Zero Trust Hooks)** | 시스템 레벨의 훅이 파괴적 명령어(`rm -rf`, `DROP TABLE` 등)와 Secret 유출을 물리적으로 차단합니다. |
+| 4 | **비대칭 듀얼 엔진 오케스트레이션 (Dual-Engine Asymmetric Orchestration)** | 고심도 추론·설계·구현·적대적 심판(`UltimateMake`, `terukirdo-plan`, `agy-worker`, `tech-expert`)은 **Gemini 4 Argon (`pro`)**이, 초고속 정적 리뷰 및 물리 관제(`first-reviewer`, `UFC`, `FAC`)는 **Gemini 3.8 Flash (`flash`)**가 전담합니다. |
+| 5 | **적응형 유연성 (Adaptive Fluidity)** | 사소한 대화나 오탈자 수정(Tier 0/1)에서는 깝깝함 없는 신속한 속도를, 엔터프라이즈 코어 작업(Tier 2/3)에서는 철벽의 다중 에이전트 방패를 가동합니다. |
+| 6 | **삼권분립 & 적대적 교차 검증 (Separation of Powers)** | 코드를 짠 구현자(Worker)는 절대 셀프 합격 판정을 내릴 수 없습니다. 독립된 `tech-expert`(심판관)와 `UFC`(환경관제탑)가 꼼수와 경계 누수를 끝까지 추적합니다. |
+| 7 | **하드코어 안전장치 (Zero Trust Hooks)** | 시스템 레벨의 훅이 파괴적 명령어(`rm -rf`, `DROP TABLE` 등)와 Secret 유출을 물리적으로 차단합니다. |
 
 ---
 
@@ -79,7 +82,7 @@ v5.5는 3대 프론티어 AI 모델(Gemini 3.7 Flash, Gemini 3.1 Pro, Claude Son
 ```
 1. 템플릿 복사    →  이 저장소의 내용을 새 프로젝트 루트에 복사
 2. agy 실행       →  터미널에서 Antigravity CLI를 실행
-3. 자동 로드      →  AGENTS.md를 스캔하여 테르키르도 v5.5 자동 기동
+3. 자동 로드      →  AGENTS.md를 스캔하여 테르키르도 v5.6 자동 기동
 4. 기획 시작      →  "UltimateMake 가동해줘, [만들고 싶은 아이디어]"
 ```
 
@@ -154,15 +157,15 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-| # | 에이전트 | 역할 |
-|:-:|---------|------|
-| 1 | **Ralph Orchestrator** | 루프의 현장 소장. SAD 파이프라인으로 작업을 분해하고 워커에게 단일 스킬만 부여하여 지시 |
-| 2 | **Terukirdo Plan** | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
-| 3 | **AGY Worker** | 실제로 터미널을 두드리고 코드를 짜는 유일한 Write 행동대장 |
-| 4 | **First Reviewer** | 워커가 작성한 코드를 1차 정적 리뷰 |
-| 5 | **Tech Expert (Judge)** | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
-| 6 | **Universal Final Controller** | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 검증 |
-| 7 | **Final Approach Control** | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **터미널 출력만으로 승인 판정** |
+| # | 에이전트 | 구동 엔진 (`model`) | 역할 |
+|:-:|---------|:---:|------|
+| 1 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | 루프의 현장 소장. SAD 파이프라인으로 작업을 분해하고 워커에게 단일 스킬만 부여하여 지시 |
+| 2 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
+| 3 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | 실제로 터미널을 두드리고 코드를 짜는 유일한 Write 행동대장 |
+| 4 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 |
+| 5 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
+| 6 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 |
+| 7 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
 
 ---
 
@@ -225,12 +228,12 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 📦 프로젝트 루트
 │
 ├── 📄 AGENTS.md                        ← 테르키르도 harness 설정 (진입점)
-├── 📄 Terukirdo_Protocol_v5.5.md       ← 정체성·모드·기획게이트·보안 최상위 헌법
+├── 📄 Terukirdo_Protocol_v5.6.md       ← 정체성·모드·듀얼엔진·기획게이트·보안 최상위 헌법
 ├── 📄 README.md                        ← 지금 읽고 계신 이 문서
 ├── 📄 MEMORY.md                        ← 롤링 메모리 스냅샷 (학습 인사이트)
 │
 ├── 📁 .agents/
-│   ├── 📁 agents/                      ← Ralph Loop 에이전트 정의 (7인)
+│   ├── 📁 agents/                      ← Ralph Loop 에이전트 정의 (7인: Argon × 3.8 Flash)
 │   ├── 📁 hooks/                       ← 3중 시스템 방어선
 │   ├── 📁 rules/                       ← 안전·증거·문서·기획(planning.md) 헌법
 │   ├── 📁 schemas/                     ← 증거 및 보고서 JSON Schema
@@ -248,7 +251,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 ├── 📁 docs/                            ← 프로젝트 SSOT (Single Source of Truth)
 │   ├── specs/                              🔒 Spec-Lock 불변 기획서 보관소
 │   ├── research/                           🌐 초심층 웹 리서치 번들 보관소
-│   ├── archive/                            📂 과거 프로토콜 보관소 (v5.2, v5.3, v5.4)
+│   ├── archive/                            📂 과거 프로토콜 보관소 (v5.2, v5.3, v5.4, v5.5)
 │   ├── project/ / product/ / design/       📑
 │   └── architecture/ / development/ ...    📑
 ```
@@ -259,6 +262,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-10-21** | **v5.6** | **👑 Terukirdo v5.6 공식 승격 (Dual-Engine Evolution)**<br>• **Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`)** 비대칭 하이브리드 오케스트레이션 체제 구축<br>• `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증 추가<br>• `multi-agent-conference` 페르소나 및 AI 성능 평가 카드 세대교체<br>• `docs/harness/*` v5.6 정합성 동기화 및 18종 스킬 인덱서 테스트 완비 |
 | **2026-08-25** | **v5.5** | **👑 Terukirdo v5.5 공식 승격**<br>• `UltimateMake` 3-Pillar 마스터 기획 하네스 구축 (대화 × 1h 웹리서치 × 5인 회의)<br>• `validate_spec_lock.py` 파이썬 결정론적 품질 게이트 탑재<br>• Phase 5 메이드 결재의 원칙(Master Approval Gate) 헌법화<br>• 3대 프론티어 모델 A/B 벤치마크 실증 및 바닐라 치팅 방지 체계 수립<br>• `universal-crawler` 로컬 스킬화 및 18종 스킬 체계 완성 |
 | 2026-08-17 | v5.4 | V2 코어 인프라 완공 (MCP 면역 체계, 메모리 스케이프, 예지형 동기화 엔진) |
 | 2026-07-18 | v5.4 | Terukirdo v5.4 규약 도입 (Why 중심 판단 체계 및 L0~L4 운영 검증 레벨 강화) |

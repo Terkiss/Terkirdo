@@ -1,10 +1,10 @@
 # Execution Contract
 
-This document defines the formal execution contract for tasks managed by the Terukirdo v5.3 harness.
+This document defines the formal execution contract for tasks managed by the Terukirdo v5.6 harness.
 
 ## Execution Card Schema Reference
 
-All tasks must be defined using an **Execution Card** that conforms to the JSON Schema at [.agents/schemas/execution-card.schema.json](file:///D:/Project/codex-flutter/newAntigravity/.agents/schemas/execution-card.schema.json).
+All tasks must be defined using an **Execution Card** that conforms to the JSON Schema at [.agents/schemas/execution-card.schema.json](../../.agents/schemas/execution-card.schema.json).
 
 ### Key Fields
 

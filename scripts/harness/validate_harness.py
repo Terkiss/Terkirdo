@@ -3,6 +3,8 @@ import os
 import sys
 import re
 
+VALID_MODELS = {"inherit", "pro", "flash", "flash_lite"}
+
 EXPECTED_AGENTS = [
     "ralph-orchestrator",
     "terukirdo-plan",
@@ -99,7 +101,11 @@ def validate_harness(strict=False):
         description = metadata.get("description")
         if not description:
             errors.append(f"Missing description in .agents/agents/{agent}/agent.md frontmatter")
-            
+
+        model = metadata.get("model")
+        if not model or model not in VALID_MODELS:
+            errors.append(f"Invalid or missing model '{model}' in .agents/agents/{agent}/agent.md: must be one of {sorted(VALID_MODELS)}")
+
         found_agents.append(agent)
 
     for folder in os.listdir(agents_dir):

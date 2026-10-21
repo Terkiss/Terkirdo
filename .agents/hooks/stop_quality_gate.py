@@ -88,7 +88,11 @@ def main() -> int:
         path_str = parts[1].strip()
         p_lower = path_str.replace('\\', '/').lower()
 
-        if p_lower == ".agents/state/stop_gate_state.json":
+        if p_lower in [
+            ".agents/state/stop_gate_state.json",
+            ".terkirdo_pre_cache.md",
+            ".agents/skills/self-evolution/scripts/index/skills_meta.json",
+        ]:
             continue
 
         if p_lower in ["memory.md", "docs/terukirdo_trajectory.txt"]:

@@ -28,3 +28,17 @@
 - Resolved YAML parsing errors in .agents/skills/ultimate-make/SKILL.md and .agents/skills/cluedoc/SKILL.md by converting unquoted descriptions containing colons to folded scalars (description: >-).
 - Validated all 18 workspace skills with pure-Python yaml.safe_load scanner.
 - Restored skill indexing and slash command visibility in Antigravity.
+
+
+2026-10-21: Terukirdo Protocol v5.6 Upgrade — Gemini 4 Argon & Gemini 3.8 Flash Dual-Engine Architecture.
+- Elevated Terukirdo Protocol from v5.5 to v5.6 (Terukirdo_Protocol_v5.6.md active, v5.5 archived to docs/archive/Terukirdo_Protocol_v5.5.md).
+- Integrated Dual-Engine Asymmetric Architecture: Gemini 4 Argon ('pro') for reasoning/planning/worker/tech-expert, and Gemini 3.8 Flash ('flash') for fast static review/UFC/FAC.
+- Fixed first-reviewer subagent loader bug (corrected 'model: sonnet' to 'model: flash').
+- Enhanced scripts/harness/validate_harness.py to strictly enforce VALID_MODELS enum (inherit, pro, flash, flash_lite).
+- Added test_agent_models_are_valid to tests/harness/test_agent_discovery.py.
+- Updated tests/harness/test_skill_indexer.py to assert 18 indexed skills.
+- Upgraded .agents/skills/multi-agent-conference/SKILL.md personas and sequence diagrams to v5.6 (4 Argon & 3.8 Flash).
+- Updated reference/ai-performance-cards.md and reference/cross-ai-collaboration-guide.md with v5.6 dual-engine evaluation and team hierarchy.
+- Harmonized docs/harness/* relative schema paths and version tags to Terukirdo v5.6.
+- Updated .agents/hooks/stop_quality_gate.py cache ignore list to ensure Tier 0 pass.
+- Synchronized README.md and project memory ledger (MEMORY.md).

@@ -145,30 +145,33 @@ C# HttpListener ↔ PowerShell TCP 브릿지 ↔ agy CLI 에이전트
 - 주석 최소, 구조로 의도를 표현
 - 에이전트 도구를 적극 활용
 
-### 테르키르도 (Gemini)
+### 테르키르도 (Gemini Dual-Engine: 4 Argon × 3.8 Flash)
 
-| 항목 | 점수 | 근거 |
-|---|---|---|
-| 오케스트레이션 | ⭐⭐⭐⭐⭐ | 의도 파악, 워크플로우 설계, 감정 보좌 |
-| 코드 리뷰 | ⭐⭐⭐☆☆ | grep 기반 → 줄 무결성 놓침 |
-| 구현 | ⭐⭐⭐⭐☆ | 직접 수정 시에는 정확하나, 속도/규모에서 열세 |
-| 지시문 작성 | ⭐⭐⭐⭐⭐ | 범용적이고 맥락이 풍부한 지시문 |
-| 서브 에이전트 관리 | ⭐⭐⭐⭐☆ | 관리는 잘하지만 출력물 검증 미흡 |
+| 항목 | 점수 | 모델 | 근거 |
+|---|---|:---:|---|
+| 오케스트레이션 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 의도 파악, 워크플로우 설계, 감정 보좌, 다중 에이전트 조율 |
+| 적대적 심판 / 보안 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 아키텍처 결함 및 꼼수 방지 (`tech-expert`) |
+| 코드 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 핵심 다중 파일 구현 및 리팩터링 (`agy-worker`) |
+| 1차 코드 리뷰 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 신속한 1차 정적 린트 및 AC 준수 검토 (`first-reviewer`) |
+| 빌드/테스트 검증 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 전수 테스트 실행 및 환경 무결성 검증 (`universal-final-controller`) |
+| 최종 Git 관제 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 원시 스테이징 diff 및 인덱스 불변식 검증 (`final-approach-control`) |
 
 **특징:**
-- 주인님과의 관계 관리에 강점
-- 서브 에이전트 조율 능력
-- 위험 판단과 에스컬레이션 능력
-- 직접 수정 시 안정적
+- Gemini 4 Argon의 심도 있는 추론과 Gemini 3.8 Flash의 초고속 검증이 결합된 하이브리드 체계
+- 주인님과의 관계 관리에 강점 및 엄격한 승인 결재 경계 준수
+- 서브에이전트 역할별 모델 분리로 토큰 효율 및 검증 회전율 극대화
 
-### 서브 에이전트 (code-worker)
+### 서브 에이전트 (Ralph Loop 7인 체제)
 
-| 항목 | 점수 | 근거 |
-|---|---|---|
-| 코드 생성 | ⭐⭐⭐⭐☆ | 기본 기능 구현은 빠름 |
-| 인코딩 처리 | ⭐⭐☆☆☆ | BOM 변환 시 줄바꿈 삭제 |
-| 동시성 코드 | ⭐⭐☆☆☆ | Queue 기반 설계로 경쟁 조건 발생 |
-| 자가 검증 | ⭐⭐⭐☆☆ | 빌드 통과만 확인, 파서/런타임 미검증 |
+| 에이전트 | 모델 | 역할 |
+|---|:---:|---|
+| `ralph-orchestrator` | `pro` (Gemini 4 Argon) | 루프 지휘 및 SAD 분해 |
+| `terukirdo-plan` | `pro` (Gemini 4 Argon) | 마일스톤 및 실행 카드 설계 |
+| `agy-worker` | `pro` (Gemini 4 Argon) | 유일한 Write 전담 구현 에이전트 |
+| `first-reviewer` | `flash` (Gemini 3.8 Flash) | 1차 고속 정적 코드 리뷰 |
+| `tech-expert` | `pro` (Gemini 4 Argon) | 아키텍처·보안 적대적 심판관 |
+| `universal-final-controller` | `flash` (Gemini 3.8 Flash) | 빌드/테스트 스위트 환경 검증 |
+| `final-approach-control` | `flash` (Gemini 3.8 Flash) | 최종 Git 스테이징 접근관제 |
 
 ---
 

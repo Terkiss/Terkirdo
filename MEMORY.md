@@ -1,10 +1,14 @@
 # Terukirdo Memory Ledger
 
 ## Current Status
-- **👑 Terukirdo Protocol v5.5 공식 승격 및 배포 완료**:
-  - `Terukirdo_Protocol_v5.4.md` → `docs/archive/Terukirdo_Protocol_v5.4.md` 아카이빙 완료.
-  - 최신 헌법 `Terukirdo_Protocol_v5.5.md` 및 `AGENTS.md` 전면 활성화.
-  - 주인님 2대 특명(상류 정보 무결성 & 메이드 결재의 원칙) 및 적응형 템포(Adaptive Fluidity) 헌법화.
+- **👑 Terukirdo Protocol v5.6 공식 승격 및 배포 완료 (Gemini 4 Argon & Gemini 3.8 Flash Dual-Engine 체제)**:
+  - `Terukirdo_Protocol_v5.5.md` → `docs/archive/Terukirdo_Protocol_v5.5.md` 아카이빙 완료.
+  - 최신 헌법 `Terukirdo_Protocol_v5.6.md` 및 `AGENTS.md` 전면 활성화.
+  - **Gemini 4 Argon (`pro`)**: 상류 `UltimateMake`, 계획(`terukirdo-plan`), 복합 구현(`agy-worker`), 적대적 심판(`tech-expert`) 전담.
+  - **Gemini 3.8 Flash (`flash`)**: 1차 정적 리뷰(`first-reviewer`), 빌드/테스트 검증(`universal-final-controller`), Git 스테이징 통제(`final-approach-control`) 전담.
+  - `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증(`inherit | pro | flash | flash_lite`) 탑재.
+- **👑 Terukirdo Protocol v5.5 아카이빙 완료**:
+  - 주인님 2대 특명(상류 정보 무결성 & 메이드 결재의 원칙) 및 적응형 템포(Adaptive Fluidity) 계승.
 - **A/B 벤치마크 실증 완료 (3대 프론티어 모델)**:
   - Gemini 3.7 Flash, Gemini 3.1 Pro, Claude Sonnet 4.6을 대상으로 M0 Enterprise PRD 구현 비교.
   - 단독 에이전트(Vanilla)의 '치팅'(경고 억제 `<NoWarn>`, 꼼수 구현에 맞춘 자가 테스트 통과, Clean Architecture 의존성 누수) 실증 적발.
@@ -19,6 +23,7 @@
 - **기획 헌법 제정**: `.agents/rules/planning.md` 모호성 차단 규칙 수립.
 
 ## Key Learnings
+- **Actionable Insight (Antigravity Subagent Model Enum Contract)**: `.agents/agents/*/agent.md`의 YAML Frontmatter `model` 필드에 Antigravity 허용 규격(`inherit`, `pro`, `flash`, `flash_lite`) 외의 값(예: `sonnet`)을 지정하면 서브에이전트 로더에서 조용히 드롭(Silent Drop)됩니다. `scripts/harness/validate_harness.py`를 통해 허용 모델 Enum을 결정론적으로 강제 검증해야 합니다.
 - **Actionable Insight (상류 정보 무결성의 원칙 - Master's Directive)**: 초기 정보의 품질이 하류 구현의 품질을 100% 지배합니다. 구현에 서두르기보다 Phase 2의 초심층 웹 리서치(최대 1시간 허용)와 Phase 3의 5인 전문가 회의를 통해 상류 정보를 맑게 정제할 때 전체 개발 실패율이 0%로 수렴합니다.
 - **Actionable Insight (프롬프트의 물리적 강제 - Python Gate)**: LLM의 확률적 환각과 꼼수를 막기 위해, 마크다운 지침뿐만 아니라 `validate_spec_lock.py`와 같은 결정론적 파이썬 코드로 리서치 증거, 금지어, Given-When-Then 형식을 물리적으로 검증하여 `Exit Code 0`을 강제해야 합니다.
 - **Actionable Insight (메이드 결재의 원칙 - Master's Directive)**: 기획 검증이 완료되더라도 자동으로 구현으로 넘어가지 않으며, 1페이지 요약 및 실행 카드를 주인님께 정중히 보고드리고 명시적 `승인`을 득해야만 랄프 루프를 가동합니다.

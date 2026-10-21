@@ -19,5 +19,34 @@ class TestAgentDiscovery(unittest.TestCase):
         
         self.assertEqual(res.returncode, 0, f"validate_harness.py script failed with code {res.returncode}. Stderr: {res.stderr}")
 
+    def test_agent_models_are_valid(self):
+        base_dir = Path(__file__).parent.parent.parent
+        agents_dir = base_dir / ".agents" / "agents"
+        valid_models = {"inherit", "pro", "flash", "flash_lite"}
+        expected_agents = [
+            "ralph-orchestrator",
+            "terukirdo-plan",
+            "agy-worker",
+            "first-reviewer",
+            "tech-expert",
+            "universal-final-controller",
+            "final-approach-control",
+        ]
+        for agent in expected_agents:
+            agent_file = agents_dir / agent / "agent.md"
+            self.assertTrue(agent_file.is_file(), f"Missing agent file: {agent_file}")
+            content = agent_file.read_text(encoding="utf-8")
+            self.assertTrue(content.startswith("---"), f"{agent} missing YAML frontmatter delimiter")
+            parts = content.split("---", 2)
+            self.assertGreaterEqual(len(parts), 3, f"{agent} missing closing YAML frontmatter delimiter")
+            frontmatter = parts[1]
+            model = None
+            for line in frontmatter.splitlines():
+                if line.strip().startswith("model:"):
+                    model = line.split(":", 1)[1].strip().strip('"').strip("'")
+                    break
+            self.assertIsNotNone(model, f"{agent} missing model in frontmatter")
+            self.assertIn(model, valid_models, f"{agent} model '{model}' not in {valid_models}")
+
 if __name__ == "__main__":
     unittest.main()

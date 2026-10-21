@@ -25,7 +25,7 @@ class TestSkillIndexer(unittest.TestCase):
         with open(self.meta_file, "r", encoding="utf-8") as f:
             data = json.load(f)
             
-        self.assertEqual(len(data), 15, f"Expected 15 skills, but found {len(data)}")
+        self.assertEqual(len(data), 18, f"Expected 18 skills, but found {len(data)}")
         
         for item in data:
             path = item["filepath"]

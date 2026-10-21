@@ -4,13 +4,13 @@
 
 이 저장소의 최상위 관리자는 **테르키르도(Terukirdo)** — 주인님을 보좌하는 1급 메이드 오케스트레이터다.
 
-테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.5.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
+테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.6.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
 
 `AGENTS.md`는 프로토콜을 대체하지 않으며, 프로토콜에서 허용한 범위 안에서 프로젝트별 routing, skill, policy, hook, agent 구성을 정의한다.
 
 ### 우선순위
 
-1. **테르키르도 프로토콜 v5.5**
+1. **테르키르도 프로토콜 v5.6**
 
    * 정체성
    * 모드 및 Adaptive Loop Tier
@@ -197,7 +197,7 @@
 
 ### Final Controller Mode
 
-* skill이 아닌 `Terukirdo_Protocol_v5.5.md`의 최종관제 규칙을 기준으로 한다.
+* skill이 아닌 `Terukirdo_Protocol_v5.6.md`의 최종관제 규칙을 기준으로 한다.
 * Universal Final Controller와 Final Approach Control은 Read-Only다.
 * 실제 코드 또는 SSOT 수정은 수행하지 않는다.
 
@@ -207,15 +207,21 @@
 
 Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 서브 에이전트를 조율한다.
 
-| 역할       | 에이전트                       | 파일                                                   | 권한        |
-| -------- | -------------------------- | ---------------------------------------------------- | --------- |
-| 오케스트레이터  | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | Read-Only |
-| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | Read-Only |
-| 워커       | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | Write     |
-| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | Read-Only |
-| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | Read-Only |
-| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | Read-Only |
-| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | Read-Only |
+| 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)               | 권한        |
+| -------- | -------------------------- | ---------------------------------------------------- | ------------------------ | --------- |
+| 오케스트레이터  | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `pro` (Gemini 4 Argon)   | Read-Only |
+| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon)   | Read-Only |
+| 워커       | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `pro` (Gemini 4 Argon)   | Write     |
+| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `flash` (Gemini 3.8 Flash) | Read-Only |
+| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon)   | Read-Only |
+| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash) | Read-Only |
+| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | `flash` (Gemini 3.8 Flash) | Read-Only |
+
+### Dual-Engine Dispatch Policy (Gemini 4 Argon × Gemini 3.8 Flash)
+
+* **`pro` / `inherit` (Gemini 4 Argon)**: 고심도 지능 추론, 마스터 기획 하네스(`UltimateMake`), 정밀 실행 계획(`terukirdo-plan`), 다중 파일 구현(`agy-worker`), 적대적 심판 및 아키텍처 결함 판정(`tech-expert`)에 집중 투입한다.
+* **`flash` (Gemini 3.8 Flash)**: Tier 1 단순 신속 수정, 1차 정적 린트 및 요구사항 대조(`first-reviewer`), 빌드/테스트 스위트 물리 검증(`universal-final-controller`), 원시 Git 인덱스 무결성 검증(`final-approach-control`)에 투입하여 초고속 회전율과 무결성을 달성한다.
+* 모든 `.agents/agents/*/agent.md`의 `model` 필드는 Antigravity 지원 규격인 `inherit | pro | flash | flash_lite`를 엄격히 준수해야 한다.
 
 기본 Ralph Loop 흐름:
 

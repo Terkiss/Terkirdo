@@ -1,10 +1,10 @@
 # Evidence Policy
 
-This document defines the rules for verification evidence gathering and validation in Terukirdo v5.3.
+This document defines the rules for verification evidence gathering and validation in Terukirdo v5.6.
 
 ## Evidence Bundle
 
-All verification results must be aggregated into an **Evidence Bundle** matching [.agents/schemas/evidence-bundle.schema.json](file:///D:/Project/codex-flutter/newAntigravity/.agents/schemas/evidence-bundle.schema.json).
+All verification results must be aggregated into an **Evidence Bundle** matching [.agents/schemas/evidence-bundle.schema.json](../../.agents/schemas/evidence-bundle.schema.json).
 
 ### Status Values for Verification Commands
 

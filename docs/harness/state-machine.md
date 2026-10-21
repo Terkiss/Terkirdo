@@ -1,6 +1,6 @@
 # Harness State Machine
 
-This document describes the lifecycle states and transition rules of the Terukirdo v5.3 task execution engine.
+This document describes the lifecycle states and transition rules of the Terukirdo v5.6 task execution engine.
 
 ## Lifecycle States
 
