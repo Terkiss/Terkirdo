@@ -51,4 +51,5 @@
   - Mode C (Stdin Sanitizer): standalone regex gate via --sanitize-only.
   - Strictly enforces [FORCE_ASK: HERMES_UNAVAILABLE] (exit code 2) when Hermes or local model is offline; prohibits raw fallback.
 - Enacted guardrail in .agents/rules/safety.md and recorded under FORCE_ASK and MEMORY.md.
+- Synchronized README.md with binary disassembly sanitizer guardrail, scripts/ directory hierarchy, and safety badges.
 - Verified template integrity via scripts/harness/validate_harness.py and hermes_disasm.py --help.

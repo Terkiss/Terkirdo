@@ -12,6 +12,7 @@
 [![Skills](https://img.shields.io/badge/Skills-18_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-18종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake-gold.svg)](#-ultimatemake-마스터-기획-하네스)
 [![Agents](https://img.shields.io/badge/Agents-7_Ralph_Loop-orange.svg)](#-7인의-실무진-ralph-loop)
+[![Safety](https://img.shields.io/badge/Safety-Hermes_Sanitizer-green.svg)](#-3중-안전장치--물리-검증기)
 [![Platform](https://img.shields.io/badge/Platform-Antigravity_CLI-black.svg)](#-빠른-시작-가이드)
 
 </div>
@@ -220,6 +221,13 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
   • 타겟 스킬 1개만 동적 주입                                        • 메모리 동기화 강제
 ```
 
+### 🔬 바이너리 역공학 결정론적 살균 게이트 (`scripts/hermes_disasm.py`)
+네이티브 바이너리(PE32/PE32+) 분석 시 원시 x86/x64 어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐을 물리적으로 방지합니다.
+- **Mode A (In-Memory Capstone + Hermes)**: 메모리 상에서만 디스어셈블을 수행하고 터미널 노출 없이 로컬 `Offrail-27B-12G`에 직접 전달.
+- **Mode B (Hermes + REA MCP)**: `--use-rea` 모드로 리버스 엔지니어링 MCP 도구(`rea`)와 자율 연동.
+- **Mode C (정규식 살균 게이트)**: stdout 출력 직전 니모닉/명령어 라인을 `[REDACTED_ASM_LINE]`으로 결정론적 마스킹.
+- **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: Hermes 또는 로컬 모델 미구동 시 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
+
 ---
 
 ## 📁 디렉토리 구조
@@ -248,6 +256,12 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 │       ├── clean-code/ / code-reviewer/    🧠 품질 검증 스킬군
 │       └── self-evolution/ / cluedoc/      ⚡ 확장·진화 스킬군
 │
+├── 📁 scripts/
+│   ├── 📄 hermes_disasm.py             ← 바이너리 역공학 결정론적 살균 래퍼 (Offrail-27B-12G & REA)
+│   └── 📁 harness/
+│       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (에이전트 모델 Enum, 스킬, 스키마)
+│       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
+│
 ├── 📁 docs/                            ← 프로젝트 SSOT (Single Source of Truth)
 │   ├── specs/                              🔒 Spec-Lock 불변 기획서 보관소
 │   ├── research/                           🌐 초심층 웹 리서치 번들 보관소
@@ -262,6 +276,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-10-24** | **v5.6** | **🛡️ 바이너리 역공학 안전 가드레일 (Hermes CLI & Sanitizer)**<br>• 원시 x86/x64 기계어·어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐 차단을 위한 결정론적 정규식 살균 게이트 `scripts/hermes_disasm.py` 구축<br>• PE 32/64비트 자동 감지, Mode A(인메모리 Capstone)/B(REA MCP 연동)/C(파이프 살균) 완비<br>• Hermes CLI 또는 로컬 모델 미구동 시 원시 폴백 금지 및 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 `.agents/rules/safety.md` 헌법화 |
 | **2026-10-21** | **v5.6** | **👑 Terukirdo v5.6 공식 승격 (Dual-Engine Evolution)**<br>• **Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`)** 비대칭 하이브리드 오케스트레이션 체제 구축<br>• `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증 추가<br>• `multi-agent-conference` 페르소나 및 AI 성능 평가 카드 세대교체<br>• `docs/harness/*` v5.6 정합성 동기화 및 18종 스킬 인덱서 테스트 완비 |
 | **2026-08-25** | **v5.5** | **👑 Terukirdo v5.5 공식 승격**<br>• `UltimateMake` 3-Pillar 마스터 기획 하네스 구축 (대화 × 1h 웹리서치 × 5인 회의)<br>• `validate_spec_lock.py` 파이썬 결정론적 품질 게이트 탑재<br>• Phase 5 메이드 결재의 원칙(Master Approval Gate) 헌법화<br>• 3대 프론티어 모델 A/B 벤치마크 실증 및 바닐라 치팅 방지 체계 수립<br>• `universal-crawler` 로컬 스킬화 및 18종 스킬 체계 완성 |
 | 2026-08-17 | v5.4 | V2 코어 인프라 완공 (MCP 면역 체계, 메모리 스케이프, 예지형 동기화 엔진) |
