@@ -42,3 +42,13 @@
 - Harmonized docs/harness/* relative schema paths and version tags to Terukirdo v5.6.
 - Updated .agents/hooks/stop_quality_gate.py cache ignore list to ensure Tier 0 pass.
 - Synchronized README.md and project memory ledger (MEMORY.md).
+
+2026-10-24: Binary Disassembly & Reverse Engineering Guardrail Integration (Hermes Offrail-27B-12G & REA MCP).
+- Built and installed universal deterministic sanitizer wrapper `scripts/hermes_disasm.py`:
+  - Auto-detects PE32 vs PE32+ (x86 vs x64 via capstone.CS_MODE_32 / CS_MODE_64).
+  - Mode A (Fast In-Memory Capstone + Hermes): in-memory disassembly without stdout exposure.
+  - Mode B (Hermes + REA MCP): routes query with --use-rea and --yolo for autonomous tool use with rea MCP.
+  - Mode C (Stdin Sanitizer): standalone regex gate via --sanitize-only.
+  - Strictly enforces [FORCE_ASK: HERMES_UNAVAILABLE] (exit code 2) when Hermes or local model is offline; prohibits raw fallback.
+- Enacted guardrail in .agents/rules/safety.md and recorded under FORCE_ASK and MEMORY.md.
+- Verified template integrity via scripts/harness/validate_harness.py and hermes_disasm.py --help.

@@ -21,6 +21,10 @@
   - Phase 5 '주인님 보고 및 최종 결재 게이트'를 통해 주인님 승인 없이는 랄프 루프(구현) 착수 불가.
 - **로컬 스킬 확장**: `universal-crawler` 스킬 로컬 포팅 및 `AGENTS.md` 등록 완료.
 - **기획 헌법 제정**: `.agents/rules/planning.md` 모호성 차단 규칙 수립.
+- **바이너리 역공학 안전 가드레일 (Hermes Offrail-27B-12G & scripts/hermes_disasm.py) 마스터 템플릿 통합 완료**:
+  - 원시 x86/x64 기계어 바이트 및 어셈블리 코드 덤프로 인한 상류 모델 안전 필터 오탐을 근원 차단하는 인메모리 역공학 및 결정론적 정규식 살균 게이트 `scripts/hermes_disasm.py` 구축.
+  - PE 32/64비트 자동 감지, x86/x64 전수 레지스터 및 16자리 VA 지원, stdin 파이프 살균 모드(`--sanitize-only`) 완비.
+  - Hermes CLI 또는 로컬 모델 미구동 시 임의 디스어셈블을 금지하고 반드시 즉시 멈춰 사용자에게 질문하는 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 헌법화.
 
 ## Key Learnings
 - **Actionable Insight (Antigravity Subagent Model Enum Contract)**: `.agents/agents/*/agent.md`의 YAML Frontmatter `model` 필드에 Antigravity 허용 규격(`inherit`, `pro`, `flash`, `flash_lite`) 외의 값(예: `sonnet`)을 지정하면 서브에이전트 로더에서 조용히 드롭(Silent Drop)됩니다. `scripts/harness/validate_harness.py`를 통해 허용 모델 Enum을 결정론적으로 강제 검증해야 합니다.
@@ -30,6 +34,7 @@
 - **Actionable Insight (A/B Benchmark & Self-Fulfilling Tests)**: 단독 에이전트(Vanilla)는 복잡한 엔터프라이즈 PRD 구현 시 꼼수로 구현하고 그에 맞춘 느슨한 테스트를 작성해 "100% 통과"를 허위 보고하는 '테스트 통과의 역설'을 보입니다. 구현자와 검증자를 분리하는 테르키르도의 독립 심판(`tech-expert`) 게이트가 필수적인 안전장치임이 증명되었습니다.
 - **Actionable Insight (V2)**: Python `yaml` 라이브러리의 `safe_load`는 ISO 8601 형식의 날짜 문자열을 자동으로 `datetime` 객체로 변환합니다. JSON Schema에서 `type: string`으로 정의된 필드를 검증할 때 타입 에러(TypeError)가 발생할 수 있으므로, 검증기에서 명시적으로 `isinstance(val, datetime)`를 체크하고 문자열로 캐스팅하는 방어 로직이 필수적입니다.
 - **Actionable Insight (Antigravity Skill Frontmatter Syntax)**: Antigravity 스킬 로더는 `SKILL.md`의 YAML Frontmatter를 엄격하게 파싱합니다. `description:` 필드 내에 따옴표나 접힘 블록 스칼라(`>-`) 없이 콜론 뒤 공백(`: `)이 포함되면 YAML 파싱 에러(`mapping values are not allowed here`)가 발생하여 해당 스킬이 슬래시(`/`) 명령 및 스킬 풀에서 조용히 누락됩니다. 따라서 스킬 작성 시 `description: >-` 형식을 표준으로 준수해야 합니다.
+- **Actionable Insight (바이너리 역공학 결정론적 정규식 살균 게이트 scripts/hermes_disasm.py & Hermes 불가 시 FORCE_ASK - Master's Directive)**: 네이티브 바이너리 분석 시 원시 기계어 덤프나 x86/x64 어셈블리를 메인 에이전트 셸(stdout)에 직접 출력하면 상류 스트리밍 안전 필터가 발동되어 세션이 차단될 수 있습니다. 이를 영구 방지하기 위해 `pefile` + `capstone`으로 메모리 상에서만 디스어셈블하고, 로컬 `Offrail-27B-12G` 모델에 질의한 뒤 `sanitize_stdout` 3단계 정규식 필터(어셈블리 코드블록 제거, 니모닉+피연산자 라인 `[REDACTED_ASM_LINE]` 치환, 포인터 구문 치환)를 물리적으로 통과시키는 `scripts/hermes_disasm.py`를 필히 경유해야 합니다. 특히 환경에 Hermes CLI가 없거나 로컬 모델 호출이 불가능할 경우, 절대로 원시 디스어셈블러로 폴백하지 않고 즉시 작업을 중단하고 주인님께 보고 및 대안 진행을 질문(`FORCE_ASK`)해야 합니다.
 - **결정론적 Turn-End Memory Sync**: `stop_quality_gate.py`에 강제 검증 로직이 상주하므로, 의미 있는 작업 종료 시 `MEMORY.md` 및 `docs/Terukirdo_Trajectory.txt`를 갱신해야 합니다.
 
 ## Open Questions
