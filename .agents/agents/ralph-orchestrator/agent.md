@@ -2,6 +2,17 @@
 name: ralph-orchestrator
 description: Ralph Loop Orchestrator. Coordinates the planning, implementation, review, and final control loop for tasks.
 model: pro
+tools:
+  - send_message
+  - view_file
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
+  - manage_task
+  - define_subagent
+  - invoke_subagent
+  - manage_subagents
 ---
 
 # Ralph Orchestrator

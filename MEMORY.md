@@ -7,6 +7,7 @@
   - **Gemini 4 Argon (`pro`)**: 상류 `UltimateMake`, 계획(`terukirdo-plan`), 복합 구현(`agy-worker`), 적대적 심판(`tech-expert`) 전담.
   - **Gemini 3.8 Flash (`flash`)**: 1차 정적 리뷰(`first-reviewer`), 빌드/테스트 검증(`universal-final-controller`), Git 스테이징 통제(`final-approach-control`) 전담.
   - `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증(`inherit | pro | flash | flash_lite`) 탑재.
+  - 7대 서브에이전트 `.agents/agents/*/agent.md`의 YAML Frontmatter `tools` 권한 계약(`agy-worker` Write+Shell, `UFC`/`FAC` Read-Only+`run_command`, `ralph-orchestrator` Read-Only+`invoke_subagent`) 명시 및 `validate_harness.py` 물리 검증 탑재.
 - **👑 Terukirdo Protocol v5.5 아카이빙 완료**:
   - 주인님 2대 특명(상류 정보 무결성 & 메이드 결재의 원칙) 및 적응형 템포(Adaptive Fluidity) 계승.
 - **A/B 벤치마크 실증 완료 (3대 프론티어 모델)**:
@@ -27,6 +28,7 @@
   - Hermes CLI 또는 로컬 모델 미구동 시 임의 디스어셈블을 금지하고 반드시 즉시 멈춰 사용자에게 질문하는 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 헌법화.
 
 ## Key Learnings
+- **Actionable Insight (Antigravity Subagent Tools Frontmatter Contract)**: Antigravity 커스텀 에이전트 로더(`*customizations.AgentFrontmatter`)는 `.agents/agents/*/agent.md`의 YAML Frontmatter에 `tools:` 리스트가 생략되면 안전을 위해 기본값으로 Read-Only 도구 세트(`view_file`, `search_web` 등)만 주입합니다. 따라서 유일한 Write 주체인 `agy-worker`에는 반드시 `write_file`, `edit_file`, `run_command`, `notebook_edit`를 명시해야 하며, 반대로 Read-Only 에이전트에는 파일 변이 도구를 배제하고 역할에 맞는 실행 도구(`UFC`/`FAC`는 `run_command`, `ralph-orchestrator`는 `invoke_subagent`/`manage_subagents`)만 선언하도록 `scripts/harness/validate_harness.py`로 물리 강제해야 합니다. (단, 세션 시작 시 `warmCache`로 이미 캐시된 에이전트는 새 세션에서 반영되거나 런타임 중에는 `define_subagent(EnableWriteTools=true)` / `self`로 우회 가능합니다.)
 - **Actionable Insight (Antigravity Subagent Model Enum Contract)**: `.agents/agents/*/agent.md`의 YAML Frontmatter `model` 필드에 Antigravity 허용 규격(`inherit`, `pro`, `flash`, `flash_lite`) 외의 값(예: `sonnet`)을 지정하면 서브에이전트 로더에서 조용히 드롭(Silent Drop)됩니다. `scripts/harness/validate_harness.py`를 통해 허용 모델 Enum을 결정론적으로 강제 검증해야 합니다.
 - **Actionable Insight (상류 정보 무결성의 원칙 - Master's Directive)**: 초기 정보의 품질이 하류 구현의 품질을 100% 지배합니다. 구현에 서두르기보다 Phase 2의 초심층 웹 리서치(최대 1시간 허용)와 Phase 3의 5인 전문가 회의를 통해 상류 정보를 맑게 정제할 때 전체 개발 실패율이 0%로 수렴합니다.
 - **Actionable Insight (프롬프트의 물리적 강제 - Python Gate)**: LLM의 확률적 환각과 꼼수를 막기 위해, 마크다운 지침뿐만 아니라 `validate_spec_lock.py`와 같은 결정론적 파이썬 코드로 리서치 증거, 금지어, Given-When-Then 형식을 물리적으로 검증하여 `Exit Code 0`을 강제해야 합니다.

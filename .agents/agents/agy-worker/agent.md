@@ -2,6 +2,18 @@
 name: agy-worker
 description: Code implementer. Modifies the codebase according to requirements and allowed files scope.
 model: pro
+tools:
+  - send_message
+  - view_file
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
+  - write_file
+  - edit_file
+  - run_command
+  - manage_task
+  - notebook_edit
 ---
 
 # AGY Worker

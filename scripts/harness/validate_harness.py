@@ -5,6 +5,11 @@ import re
 
 VALID_MODELS = {"inherit", "pro", "flash", "flash_lite"}
 
+WRITE_TOOLS = {"write_file", "edit_file", "notebook_edit"}
+REQUIRED_WORKER_TOOLS = {"write_file", "edit_file", "run_command", "view_file"}
+REQUIRED_SHELL_VERIFIER_TOOLS = {"run_command", "view_file"}
+REQUIRED_ORCHESTRATOR_TOOLS = {"invoke_subagent", "manage_subagents", "view_file"}
+
 EXPECTED_AGENTS = [
     "ralph-orchestrator",
     "terukirdo-plan",
@@ -31,12 +36,26 @@ def parse_frontmatter(content):
     current_key = None
     folded_mode = False
     folded_lines = []
+    list_mode = False
+    list_items = []
     
     for line in lines:
         line_stripped = line.strip()
         if not line_stripped or line_stripped.startswith("#"):
             continue
         
+        if list_mode:
+            if line_stripped.startswith("- "):
+                item = line_stripped[2:].strip().strip('"').strip("'")
+                list_items.append(item)
+                continue
+            elif not line.startswith(" ") and not line.startswith("\t"):
+                metadata[current_key] = list_items
+                list_mode = False
+                list_items = []
+            else:
+                continue
+
         if folded_mode:
             if ":" in line and not line.startswith(" ") and not line.startswith("\t"):
                 metadata[current_key] = "\n".join(folded_lines).strip()
@@ -51,10 +70,14 @@ def parse_frontmatter(content):
             key = key.strip()
             val = val.strip()
             
-            if val == ">" or val == "|":
+            if val in (">", "|", ">-", "|-"):
                 folded_mode = True
                 current_key = key
                 folded_lines = []
+            elif val == "":
+                list_mode = True
+                current_key = key
+                list_items = []
             else:
                 if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
                     val = val[1:-1]
@@ -62,6 +85,8 @@ def parse_frontmatter(content):
                 
     if folded_mode and current_key:
         metadata[current_key] = "\n".join(folded_lines).strip()
+    if list_mode and current_key:
+        metadata[current_key] = list_items
         
     return metadata, body_text
 
@@ -105,6 +130,36 @@ def validate_harness(strict=False):
         model = metadata.get("model")
         if not model or model not in VALID_MODELS:
             errors.append(f"Invalid or missing model '{model}' in .agents/agents/{agent}/agent.md: must be one of {sorted(VALID_MODELS)}")
+
+        tools = metadata.get("tools")
+        if not isinstance(tools, list) or not tools:
+            errors.append(f"Missing or empty 'tools' list in .agents/agents/{agent}/agent.md frontmatter")
+        else:
+            tool_set = set(tools)
+            if agent == "agy-worker":
+                missing_worker_tools = REQUIRED_WORKER_TOOLS - tool_set
+                if missing_worker_tools:
+                    errors.append(
+                        f"agy-worker missing required write/execution tools in frontmatter: {sorted(missing_worker_tools)}"
+                    )
+            else:
+                forbidden_write = tool_set & WRITE_TOOLS
+                if forbidden_write:
+                    errors.append(
+                        f"Read-only agent '{agent}' must not declare write tools in frontmatter: {sorted(forbidden_write)}"
+                    )
+                if agent in ("universal-final-controller", "final-approach-control"):
+                    missing_verifier = REQUIRED_SHELL_VERIFIER_TOOLS - tool_set
+                    if missing_verifier:
+                        errors.append(
+                            f"Verifier agent '{agent}' missing required execution tools: {sorted(missing_verifier)}"
+                        )
+                if agent == "ralph-orchestrator":
+                    missing_orch = REQUIRED_ORCHESTRATOR_TOOLS - tool_set
+                    if missing_orch:
+                        errors.append(
+                            f"Orchestrator agent '{agent}' missing required dispatch tools: {sorted(missing_orch)}"
+                        )
 
         found_agents.append(agent)
 

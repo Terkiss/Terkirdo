@@ -69,7 +69,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 | # | 원칙 | 설명 |
 |:-:|------|------|
 | 1 | **상류 정보 무결성 (Upstream Primacy)** | "상류의 정보 품질이 하류 구현의 품질을 100% 지배한다." 코딩을 서두르지 않고 최대 1시간에 달하는 초심층 웹 리서치와 5인 전문가 회의로 기획 모호성을 0%로 증발시킵니다. |
-| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py` 및 `validate_harness.py`를 탑재하여 스펙 린트, GWT 인수조건, 에이전트 모델 Enum 규격을 물리적으로 강제 검증합니다. |
+| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py` 및 `validate_harness.py`를 탑재하여 스펙 린트, GWT 인수조건, 에이전트 모델 Enum 및 `tools` 권한 계약을 물리적으로 강제 검증합니다. |
 | 3 | **메이드 결재의 원칙 (Master Approval Gate)** | 기획 검증이 끝나도 독단으로 코딩을 시작하지 않습니다. 1페이지 요약 보고서를 주인님께 올리고, 주인님의 명시적 `승인`을 득해야만 랄프 루프를 가동합니다. |
 | 4 | **비대칭 듀얼 엔진 오케스트레이션 (Dual-Engine Asymmetric Orchestration)** | 고심도 추론·설계·구현·적대적 심판(`UltimateMake`, `terukirdo-plan`, `agy-worker`, `tech-expert`)은 **Gemini 4 Argon (`pro`)**이, 초고속 정적 리뷰 및 물리 관제(`first-reviewer`, `UFC`, `FAC`)는 **Gemini 3.8 Flash (`flash`)**가 전담합니다. |
 | 5 | **적응형 유연성 (Adaptive Fluidity)** | 사소한 대화나 오탈자 수정(Tier 0/1)에서는 깝깝함 없는 신속한 속도를, 엔터프라이즈 코어 작업(Tier 2/3)에서는 철벽의 다중 에이전트 방패를 가동합니다. |
@@ -158,15 +158,15 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-| # | 에이전트 | 구동 엔진 (`model`) | 역할 |
-|:-:|---------|:---:|------|
-| 1 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | 루프의 현장 소장. SAD 파이프라인으로 작업을 분해하고 워커에게 단일 스킬만 부여하여 지시 |
-| 2 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
-| 3 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | 실제로 터미널을 두드리고 코드를 짜는 유일한 Write 행동대장 |
-| 4 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 |
-| 5 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
-| 6 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 |
-| 7 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
+| # | 에이전트 | 구동 엔진 (`model`) | 도구 권한 (`tools` Frontmatter) | 역할 |
+|:-:|---------|:---:|:---:|------|
+| 1 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` | 루프의 현장 소장. SAD 파이프라인으로 작업을 분해하고 워커에게 단일 스킬만 부여하여 지시 |
+| 2 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
+| 3 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 실제로 터미널을 두드리고 코드를 짜는 유일한 Write 행동대장 |
+| 4 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | Read-Only (`view_file`) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 |
+| 5 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
+| 6 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 (파일 수정 도구 배제) |
+| 7 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
 
 ---
 
@@ -259,7 +259,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 ├── 📁 scripts/
 │   ├── 📄 hermes_disasm.py             ← 바이너리 역공학 결정론적 살균 래퍼 (Offrail-27B-12G & REA)
 │   └── 📁 harness/
-│       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (에이전트 모델 Enum, 스킬, 스키마)
+│       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (에이전트 모델 Enum, tools 권한 계약, 스킬, 스키마)
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
 ├── 📁 docs/                            ← 프로젝트 SSOT (Single Source of Truth)
@@ -276,6 +276,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-10-29** | **v5.6** | **🔧 서브에이전트 도구 권한(`tools` Frontmatter) 계약 복구 및 물리 검증 강화**<br>• Antigravity 커스텀 에이전트(`agent.md`)에서 `tools:` 미지정 시 Read-Only 도구 세트로 기본 폴백되는 런타임 메커니즘 규명 및 전면 패치<br>• `agy-worker`에 `write_file`, `edit_file`, `run_command`, `notebook_edit` 명시적 부여, `UFC`/`FAC`에 검증용 `run_command` 부여(파일 변이 도구 제외), `ralph-orchestrator`에 서브에이전트 디스패치 도구(`invoke_subagent`, `manage_subagents`) 부여<br>• `scripts/harness/validate_harness.py` 및 `tests/harness/test_agent_discovery.py`에 에이전트별 `tools` 권한 계약(Write vs Read-Only) 결정론적 검증 게이트 탑재 |
 | **2026-10-24** | **v5.6** | **🛡️ 바이너리 역공학 안전 가드레일 (Hermes CLI & Sanitizer)**<br>• 원시 x86/x64 기계어·어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐 차단을 위한 결정론적 정규식 살균 게이트 `scripts/hermes_disasm.py` 구축<br>• PE 32/64비트 자동 감지, Mode A(인메모리 Capstone)/B(REA MCP 연동)/C(파이프 살균) 완비<br>• Hermes CLI 또는 로컬 모델 미구동 시 원시 폴백 금지 및 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 `.agents/rules/safety.md` 헌법화 |
 | **2026-10-21** | **v5.6** | **👑 Terukirdo v5.6 공식 승격 (Dual-Engine Evolution)**<br>• **Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`)** 비대칭 하이브리드 오케스트레이션 체제 구축<br>• `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증 추가<br>• `multi-agent-conference` 페르소나 및 AI 성능 평가 카드 세대교체<br>• `docs/harness/*` v5.6 정합성 동기화 및 18종 스킬 인덱서 테스트 완비 |
 | **2026-08-25** | **v5.5** | **👑 Terukirdo v5.5 공식 승격**<br>• `UltimateMake` 3-Pillar 마스터 기획 하네스 구축 (대화 × 1h 웹리서치 × 5인 회의)<br>• `validate_spec_lock.py` 파이썬 결정론적 품질 게이트 탑재<br>• Phase 5 메이드 결재의 원칙(Master Approval Gate) 헌법화<br>• 3대 프론티어 모델 A/B 벤치마크 실증 및 바닐라 치팅 방지 체계 수립<br>• `universal-crawler` 로컬 스킬화 및 18종 스킬 체계 완성 |

@@ -53,3 +53,11 @@
 - Enacted guardrail in .agents/rules/safety.md and recorded under FORCE_ASK and MEMORY.md.
 - Synchronized README.md with binary disassembly sanitizer guardrail, scripts/ directory hierarchy, and safety badges.
 - Verified template integrity via scripts/harness/validate_harness.py and hermes_disasm.py --help.
+
+2026-10-29: Subagent Tools Frontmatter Contract Restoration & Harness Validation Enhancement.
+- Investigated root cause of agy-worker lacking write/shell tools at runtime: Antigravity's AgentFrontmatter loader defaults to read-only tools when the `tools:` YAML frontmatter list is omitted.
+- Updated `.agents/agents/agy-worker/agent.md` with explicit write and command execution tools (`write_file`, `edit_file`, `run_command`, `notebook_edit`, `view_file`, `manage_task`, etc.).
+- Updated `.agents/agents/universal-final-controller/agent.md` and `.agents/agents/final-approach-control/agent.md` with `run_command` while strictly excluding file mutation tools (`write_file`, `edit_file`, `notebook_edit`).
+- Updated `.agents/agents/ralph-orchestrator/agent.md` with subagent dispatch tools (`define_subagent`, `invoke_subagent`, `manage_subagents`) and explicit read-only tools for `terukirdo-plan`, `first-reviewer`, and `tech-expert`.
+- Upgraded `scripts/harness/validate_harness.py` and `tests/harness/test_agent_discovery.py` to parse YAML list frontmatter and enforce the write vs read-only tool contract across all 7 Ralph Loop agents.
+- Updated `README.md` and `MEMORY.md` to reflect the v5.6 subagent tool permission contract.
