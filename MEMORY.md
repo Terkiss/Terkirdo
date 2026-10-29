@@ -8,6 +8,7 @@
   - **Gemini 3.8 Flash (`flash`)**: 1차 정적 리뷰(`first-reviewer`), 빌드/테스트 검증(`universal-final-controller`), Git 스테이징 통제(`final-approach-control`) 전담.
   - `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증(`inherit | pro | flash | flash_lite`) 탑재.
   - 7대 서브에이전트 `.agents/agents/*/agent.md`의 YAML Frontmatter `tools` 권한 계약(`agy-worker` Write+Shell, `UFC`/`FAC` Read-Only+`run_command`, `ralph-orchestrator` Read-Only+`invoke_subagent`) 명시 및 `validate_harness.py` 물리 검증 탑재.
+  - 타 프로젝트 원클릭 하네스 동기화 스크립트 `update_harness.bat` 구축 (`.git`, `README.md`, 기존 `MEMORY.md`, `docs/specs`, `.agents/state` 보존).
 - **👑 Terukirdo Protocol v5.5 아카이빙 완료**:
   - 주인님 2대 특명(상류 정보 무결성 & 메이드 결재의 원칙) 및 적응형 템포(Adaptive Fluidity) 계승.
 - **A/B 벤치마크 실증 완료 (3대 프론티어 모델)**:

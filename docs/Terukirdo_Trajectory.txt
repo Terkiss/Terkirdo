@@ -61,3 +61,4 @@
 - Updated `.agents/agents/ralph-orchestrator/agent.md` with subagent dispatch tools (`define_subagent`, `invoke_subagent`, `manage_subagents`) and explicit read-only tools for `terukirdo-plan`, `first-reviewer`, and `tech-expert`.
 - Upgraded `scripts/harness/validate_harness.py` and `tests/harness/test_agent_discovery.py` to parse YAML list frontmatter and enforce the write vs read-only tool contract across all 7 Ralph Loop agents.
 - Updated `README.md` and `MEMORY.md` to reflect the v5.6 subagent tool permission contract.
+- Created `update_harness.bat` for one-click safe harness synchronization to external project directories while preserving `.git`, `README.md`, `MEMORY.md`, `docs/specs`, and `.agents/state`.
