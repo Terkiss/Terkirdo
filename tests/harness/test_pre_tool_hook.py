@@ -126,5 +126,47 @@ class TestPreToolHook(unittest.TestCase):
         decision, _ = self.run_pre_hook(payload)
         self.assertEqual(decision["decision"], "allow")
 
+    def test_pre_hook_legion_commander_conversational_denied(self):
+        payload = {
+            "toolCall": {
+                "name": "invoke_subagent",
+                "args": {
+                    "TypeName": "legion-commander",
+                    "Role": "Legion Commander",
+                    "Prompt": "에이전트 군단을 가동해서 이 대규모 작업을 병렬로 구현해줘"
+                }
+            }
+        }
+        decision, _ = self.run_pre_hook(payload)
+        self.assertEqual(decision["decision"], "deny")
+        self.assertIn("Slash-Command-Only", decision["reason"])
+
+    def test_pre_hook_legion_commander_slash_command_allowed(self):
+        payload = {
+            "toolCall": {
+                "name": "invoke_subagent",
+                "args": {
+                    "TypeName": "legion-commander",
+                    "Role": "Legion Commander",
+                    "Prompt": "[SLASH_TRIGGER: /agent-legion] 대규모 멀티 모듈 병렬 구현 수행"
+                }
+            }
+        }
+        decision, _ = self.run_pre_hook(payload)
+        self.assertEqual(decision["decision"], "allow")
+
+        payload_short = {
+            "toolCall": {
+                "name": "invoke_subagent",
+                "args": {
+                    "TypeName": "legion-commander",
+                    "Role": "Legion Commander",
+                    "Prompt": "/legion 대규모 리팩터링 병렬 수행"
+                }
+            }
+        }
+        decision_short, _ = self.run_pre_hook(payload_short)
+        self.assertEqual(decision_short["decision"], "allow")
+
 if __name__ == "__main__":
     unittest.main()

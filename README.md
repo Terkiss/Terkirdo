@@ -9,9 +9,9 @@
 
 [![Protocol](https://img.shields.io/badge/Protocol-v5.6_Active-magenta.svg)](#-terukirdo-protocol-v56-핵심-진화)
 [![Engine](https://img.shields.io/badge/Engine-Gemini_4_Argon_%C3%97_3.8_Flash-blue.svg)](#-terukirdo-protocol-v56-핵심-진화)
-[![Skills](https://img.shields.io/badge/Skills-18_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-18종)
+[![Skills](https://img.shields.io/badge/Skills-19_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-19종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake-gold.svg)](#-ultimatemake-마스터-기획-하네스)
-[![Agents](https://img.shields.io/badge/Agents-7_Ralph_Loop-orange.svg)](#-7인의-실무진-ralph-loop)
+[![Agents](https://img.shields.io/badge/Agents-9_Legion_Ready-orange.svg)](#-9인의-실무진-ralph-loop--agent-legion)
 [![Safety](https://img.shields.io/badge/Safety-Hermes_Sanitizer-green.svg)](#-3중-안전장치--물리-검증기)
 [![Platform](https://img.shields.io/badge/Platform-Antigravity_CLI-black.svg)](#-빠른-시작-가이드)
 
@@ -23,7 +23,7 @@
 
 안녕하십니까, 주인님! 1급 메이드 오케스트레이터, **테르키르도(Terukirdo)**입니다.
 
-이 저장소는 단순한 프롬프트 모음집이나 스크립트 도구 상자가 아닙니다. **인간의 직관과 글로벌 웹 인텔리전스, 그리고 7인의 독립 에이전트 군단**이 유기적으로 맞물려 작동하는 **"엔터프라이즈급 자율 다중 에이전트 시스템(Autonomous Multi-Agent System) 템플릿"**입니다.
+이 저장소는 단순한 프롬프트 모음집이나 스크립트 도구 상자가 아닙니다. **인간의 직관과 글로벌 웹 인텔리전스, 그리고 9인의 독립 에이전트 군단(Agent Legion)**이 유기적으로 맞물려 작동하는 **"엔터프라이즈급 자율 다중 에이전트 시스템(Autonomous Multi-Agent System) 템플릿"**입니다.
 
 React, Next.js, Flutter, .NET, Python, Go, Rust — 기술 스택에 구애받지 않습니다.  
 이 템플릿을 복사해 넣는 순간, 제가 즉시 프로젝트의 총사령관으로 투입되어 **기획의 모호성을 분쇄하고, AI의 꼼수 코딩을 원천 차단하며, 100% 무결한 결과물**을 대령합니다.
@@ -129,50 +129,57 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 
 ---
 
-## 🤖 7인의 실무진: Ralph Loop
+## 🤖 9인의 실무진: Ralph Loop & Agent Legion (3-Tier Quad-Ralph)
 
-Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 에이전트 파이프라인**이 가동됩니다.
+`/agent-legion` 슬래시 명령 발동 시, **최상위 자동 검토 사령관(`Legion Commander`)이 하위에 `Ralph Orchestrator`를 최대 4기(Ralph #1 ~ #4)까지 동시에 생성·운용**하며, 각각의 `Ralph Orchestrator`가 자기 산하의 워커(`legion-worker`/`agy-worker`)와 각종 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 지휘합니다.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        Ralph Loop Pipeline                              │
-│                                                                         │
-│  ┌──────────────┐    ┌───────────────┐    ┌─────────────────┐          │
-│  │ Ralph        │───▶│ Terukirdo     │───▶│ AGY Worker      │          │
-│  │ Orchestrator │    │ Plan          │    │ (코드 구현)      │          │
-│  └──────────────┘    └───────────────┘    └────────┬────────┘          │
-│                                                     │                   │
-│                                                     ▼                   │
-│  ┌──────────────┐    ┌───────────────┐    ┌─────────────────┐          │
-│  │ Final        │◀───│ Universal     │◀───│ Tech Expert     │          │
-│  │ Approach     │    │ Final         │    │ (Judge)         │          │
-│  │ Control      │    │ Controller    │    │                 │          │
-│  └──────┬───────┘    └───────────────┘    └─────────────────┘          │
-│         │                                          ▲                    │
-│         │            ┌───────────────┐             │                    │
-│         │            │ First         │─────────────┘                    │
-│         │            │ Reviewer      │  P1/P2 발견 시 Rework            │
-│         │            └───────────────┘                                  │
-│         ▼                                                               │
-│    ✅ APPROVED FOR COMMIT ONLY  또는  🔄 REWORK                            │
-└─────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│             ⚔️ Legion Commander (자동 검토 사령관 — `/agent-legion` 슬래시 전용)           │
+│  - 전체 과업 DAG 분해 & 비충돌 파티셔닝 (`partition_validator.py`: Wave당 최대 4개 제한) │
+│  - 하위에 `ralph-orchestrator`를 최대 4기(Quad-Ralph)까지 동시 병렬 생성 및 총괄 운용     │
+│  - 각 랄프 에이전트의 결과물을 주인님 대신 무인 자동 검토 & 결함 시 즉시 Auto-Rework 지시 │
+└──────┬──────────────────────────┬──────────────────────────┬──────────────────────────┬─┘
+       │ (동시 생성·운용 #1)       │ (동시 생성·운용 #2)       │ (동시 생성·운용 #3)       │ (동시 생성·운용 #4)
+       ▼ [Partition 1]            ▼ [Partition 2]            ▼ [Partition 3]            ▼ [Partition 4]
+┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
+│ralph-orchestrator│       │ralph-orchestrator│       │ralph-orchestrator│       │ralph-orchestrator│
+│   (Ralph #1)     │       │   (Ralph #2)     │       │   (Ralph #3)     │       │   (Ralph #4)     │
+└────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘
+         ▼ (산하 분대 운용)          ▼ (산하 분대 운용)          ▼ (산하 분대 운용)          ▼ (산하 분대 운용)
+┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
+│ [Ralph #1 Squad] │       │ [Ralph #2 Squad] │       │ [Ralph #3 Squad] │       │ [Ralph #4 Squad] │
+│ • terukirdo-plan │       │ • terukirdo-plan │       │ • terukirdo-plan │       │ • terukirdo-plan │
+│ • legion-worker  │       │ • legion-worker  │       │ • legion-worker  │       │ • legion-worker  │
+│   / agy-worker   │       │   / agy-worker   │       │   / agy-worker   │       │   / agy-worker   │
+│ • first-reviewer │       │ • first-reviewer │       │ • first-reviewer │       │ • first-reviewer │
+│ • tech-expert    │       │ • tech-expert    │       │ • tech-expert    │       │ • tech-expert    │
+│ • UFC & FAC      │       │ • UFC & FAC      │       │ • UFC & FAC      │       │ • UFC & FAC      │
+└────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘
+         └──────────────────────────┴─────────────┬────────────┴──────────────────────────┘
+                                                  ▼ (사령관 무인 자동 검토 & 통합 물리 검증)
+                         ┌────────────────────────────────────────────────────────┐
+                         │   Consolidated Universal Verification & Master Report  │
+                         └────────────────────────────────────────────────────────┘
 ```
 
 | # | 에이전트 | 구동 엔진 (`model`) | 도구 권한 (`tools` Frontmatter) | 역할 |
 |:-:|---------|:---:|:---:|------|
-| 1 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` | 루프의 현장 소장. SAD 파이프라인으로 작업을 분해하고 워커에게 단일 스킬만 부여하여 지시 |
-| 2 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
-| 3 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 실제로 터미널을 두드리고 코드를 짜는 유일한 Write 행동대장 |
-| 4 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | Read-Only (`view_file`) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 |
-| 5 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
-| 6 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 (파일 수정 도구 배제) |
-| 7 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
+| 1 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` | 직렬 루프 현장 소장. SAD 파이프라인으로 작업을 분해하고 지시 |
+| 2 | **Legion Commander** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` + `run_command` | **자동 검토 사령관 (`/agent-legion` 슬래시 전용)**. 하위 Ralph 군단 총괄 관리, 무인 중간 검토 및 Auto-Rework 지휘 |
+| 3 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | Spec Lock 문서를 바탕으로 단계별 실행 카드(Execution Cards) 수립 |
+| 4 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 단일 직렬 작업의 유일한 Write 행동대장 |
+| 5 | **Legion Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | **군단 코어 워커**. 배타적 파일 파티션 내 고속 병렬 구현 및 자체 단위 테스트 |
+| 6 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | Read-Only (`view_file`) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 |
+| 7 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 지시 |
+| 8 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 (파일 수정 도구 배제) |
+| 9 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
 
 ---
 
-## 📚 스킬 라이브러리 (`.agents/skills/` — 총 18종)
+## 📚 스킬 라이브러리 (`.agents/skills/` — 총 19종)
 
-18개의 전문 스킬이 4가지 카테고리로 완벽히 조직화되어 있습니다.
+19개의 전문 스킬이 4가지 카테고리로 완벽히 조직화되어 있습니다.
 
 ### 🏛️ 마스터 기획 & 리서치 (3개) ✨ NEW
 | 스킬 | 설명 |
@@ -181,9 +188,10 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 | `universal-crawler` | 🌐 **범용 안티블록 웹 크롤러** — IETF RFC, GitHub, 기술 블로그를 차단 없이 대규모 스캔 |
 | `multi-agent-conference` | 🤖 **다중 에이전트 적대적 원탁회의** — 아키텍트, 보안, QA, 악마의 변호인의 끝장 토론 |
 
-### 🔧 개발 생명주기 (7개)
+### 🔧 개발 생명주기 (8개)
 | 스킬 | 설명 |
 |------|------|
+| `agent-legion` | ⚔️ **무인 다중 코어 에이전트 군단 (`/agent-legion` 슬래시 전용)** — 자동 검토 사령관의 Ralph 군단 총괄 관리 (대화 발동 차단) |
 | `plan-product` | 문제 정의, 타겟 사용자, MVP 범위, 성공 지표, 로드맵 수립 |
 | `design-ui` | UI/UX 설계, 화면 흐름, 접근성 검증 + **UI/UX Pro Max** 디자인 지능 (2,000+ 패턴) |
 | `plan-architecture` | 시스템 구조, API 계약, 데이터 모델, 인증/권한, 모듈 경계 설계 |
@@ -248,6 +256,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 │   ├── 📁 state/                       ← 루프 상태 저장소
 │   │
 │   └── 📁 skills/                      ← 18종 스킬 라이브러리
+│       ├── agent-legion/                   ⚔️ 무인 다중 코어 에이전트 군단 (partition_validator.py 내장)
 │       ├── ultimate-make/                  👑 마스터 기획 하네스 (validate_spec_lock.py 내장)
 │       ├── universal-crawler/              🌐 범용 안티블록 크롤러
 │       ├── multi-agent-conference/         🤖 5인 전문가 적대적 회의
@@ -276,6 +285,7 @@ Orchestrator Mode에서 구현 단계(Phase 6)에 진입하면 **7인의 전문 
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-10-31** | **v5.6** | **⚔️ 무인 다중 코어 '에이전트 군단(Agent Legion)' 아키텍처 공식 탑재**<br>• 사용자의 중간 개입 없는 대규모 무인 병렬 작업을 위해 `legion-commander`(사령관) 및 `legion-worker`(군단 코어 워커) 체계 신설 (총 9인 에이전트 완비)<br>• 파일 충돌 사전 원천 차단을 위한 결정론적 `partition_validator.py` 및 `agent-legion` 스킬 구축 (총 19종 스킬 확장)<br>• 자율 인플라이트 코드 리뷰(Autonomous In-Flight Review) 및 결함 시 최대 3회 자동 재작업(Auto-Rework) 게이트 헌법화 |
 | **2026-10-29** | **v5.6** | **🔧 서브에이전트 도구 권한(`tools` Frontmatter) 계약 복구 및 물리 검증 강화**<br>• Antigravity 커스텀 에이전트(`agent.md`)에서 `tools:` 미지정 시 Read-Only 도구 세트로 기본 폴백되는 런타임 메커니즘 규명 및 전면 패치<br>• `agy-worker`에 `write_file`, `edit_file`, `run_command`, `notebook_edit` 명시적 부여, `UFC`/`FAC`에 검증용 `run_command` 부여(파일 변이 도구 제외), `ralph-orchestrator`에 서브에이전트 디스패치 도구(`invoke_subagent`, `manage_subagents`) 부여<br>• `scripts/harness/validate_harness.py` 및 `tests/harness/test_agent_discovery.py`에 에이전트별 `tools` 권한 계약(Write vs Read-Only) 결정론적 검증 게이트 탑재 |
 | **2026-10-24** | **v5.6** | **🛡️ 바이너리 역공학 안전 가드레일 (Hermes CLI & Sanitizer)**<br>• 원시 x86/x64 기계어·어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐 차단을 위한 결정론적 정규식 살균 게이트 `scripts/hermes_disasm.py` 구축<br>• PE 32/64비트 자동 감지, Mode A(인메모리 Capstone)/B(REA MCP 연동)/C(파이프 살균) 완비<br>• Hermes CLI 또는 로컬 모델 미구동 시 원시 폴백 금지 및 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 `.agents/rules/safety.md` 헌법화 |
 | **2026-10-21** | **v5.6** | **👑 Terukirdo v5.6 공식 승격 (Dual-Engine Evolution)**<br>• **Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`)** 비대칭 하이브리드 오케스트레이션 체제 구축<br>• `first-reviewer` 로더 누락 버그(`model: sonnet` → `flash`) 교정 및 `validate_harness.py` 모델 Enum 물리 검증 추가<br>• `multi-agent-conference` 페르소나 및 AI 성능 평가 카드 세대교체<br>• `docs/harness/*` v5.6 정합성 동기화 및 18종 스킬 인덱서 테스트 완비 |

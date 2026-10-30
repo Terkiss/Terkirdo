@@ -179,6 +179,7 @@
 
 작업의 단일 `target_skill`을 기준으로 다음 skill 중 하나를 우선 선택한다.
 
+* autonomous parallel legion (Slash-Command `/agent-legion` or `/legion` ONLY — 대화 발동 절대 금지): `.agents/skills/agent-legion/SKILL.md`
 * master planning / spec-freeze: `.agents/skills/ultimate-make/SKILL.md`
 * deep research & crawler: `.agents/skills/universal-crawler/SKILL.md`
 * product: `.agents/skills/plan-product/SKILL.md`
@@ -209,9 +210,11 @@ Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 �
 
 | 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)               | 권한        |
 | -------- | -------------------------- | ---------------------------------------------------- | ------------------------ | --------- |
-| 오케스트레이터  | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `pro` (Gemini 4 Argon)   | Read-Only |
+| 자동검토 사령관 | Legion Commander (Ralph 총괄) | `.agents/agents/legion-commander/agent.md`           | `pro` (Gemini 4 Argon)   | Read-Only |
+| 하위 루프 조율 | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `pro` (Gemini 4 Argon)   | Read-Only |
 | 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon)   | Read-Only |
-| 워커       | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `pro` (Gemini 4 Argon)   | Write     |
+| 단일 워커     | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `pro` (Gemini 4 Argon)   | Write     |
+| 군단 코어 워커 | Legion Worker              | `.agents/agents/legion-worker/agent.md`              | `pro` (Gemini 4 Argon)   | Write     |
 | 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `flash` (Gemini 3.8 Flash) | Read-Only |
 | 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon)   | Read-Only |
 | 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash) | Read-Only |
@@ -219,7 +222,7 @@ Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 �
 
 ### Dual-Engine Dispatch Policy (Gemini 4 Argon × Gemini 3.8 Flash)
 
-* **`pro` / `inherit` (Gemini 4 Argon)**: 고심도 지능 추론, 마스터 기획 하네스(`UltimateMake`), 정밀 실행 계획(`terukirdo-plan`), 다중 파일 구현(`agy-worker`), 적대적 심판 및 아키텍처 결함 판정(`tech-expert`)에 집중 투입한다.
+* **`pro` / `inherit` (Gemini 4 Argon)**: 고심도 지능 추론, 마스터 기획 하네스(`UltimateMake`), 군단 사령관(`legion-commander`), 군단 병렬 코어 구현(`legion-worker`), 정밀 실행 계획(`terukirdo-plan`), 다중 파일 구현(`agy-worker`), 적대적 심판 및 아키텍처 결함 판정(`tech-expert`)에 집중 투입한다.
 * **`flash` (Gemini 3.8 Flash)**: Tier 1 단순 신속 수정, 1차 정적 린트 및 요구사항 대조(`first-reviewer`), 빌드/테스트 스위트 물리 검증(`universal-final-controller`), 원시 Git 인덱스 무결성 검증(`final-approach-control`)에 투입하여 초고속 회전율과 무결성을 달성한다.
 * 모든 `.agents/agents/*/agent.md`의 `model` 필드는 Antigravity 지원 규격인 `inherit | pro | flash | flash_lite`를 엄격히 준수해야 한다.
 
@@ -245,9 +248,28 @@ Finding 발행
 
 동일 Finding에 대한 자동 Rework는 최대 3회다. 3회를 초과하면 `BLOCKED`로 전환하고 사용자에게 에스컬레이션한다.
 
+### Agent Legion 병렬 무인 루프 흐름 (슬래시 명령 `/agent-legion` 또는 `/legion` 전용 — 대화 발동 절대 금지):
+
+> **발동 불변식 (Slash-Command Only)**: 자동 검토 사령관(`legion-commander`)은 일반 자연어 대화로는 절대 발동할 수 없으며, 오직 주인님이 `/agent-legion` 또는 `/legion` 슬래시 명령을 명시적으로 입력했을 때만 가동한다 (`pre_tool_use_policy.py`가 물리적으로 강제 차단).
+
+```text
+Terukirdo
+→ Legion Commander (자동 검토 사령관: 대규모 작업 DAG 분해, Wave당 최대 4개 비충돌 파티셔닝 검증)
+  ├── [하위에 ralph-orchestrator 최대 4기(Ralph #1 ~ #4) 동시 생성 및 병렬 운용]
+  │   ├── Ralph Orchestrator #1 (Partition 1) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
+  │   ├── Ralph Orchestrator #2 (Partition 2) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
+  │   ├── Ralph Orchestrator #3 (Partition 3) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
+  │   └── Ralph Orchestrator #4 (Partition 4) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
+  └── [사령관 무인 자동 검토 & Auto-Rework Gate]
+      → 결함/실패 시: 사령관이 해당 ralph-orchestrator(#k)에게 즉시 자동 재작업(Auto-Rework, 최대 3회) 명령
+      → 통과 시: 사령관이 중간 검토를 무인 대행하여 다음 Wave 파티션 자동 승인 및 전진
+→ Consolidated Universal Verification (사령관 최종 통합 빌드 및 전역 테스트 전수 물리 검증)
+→ Unified Evidence Bundle 상신
+```
+
 ### Write 권한 예외
 
-AGY Worker는 코드, 설정, 테스트, 승인된 문서를 수정하는 유일한 Write 주체다.
+AGY Worker 및 Legion Worker는 코드, 설정, 테스트, 승인된 문서를 수정하는 인가된 Write 주체다.
 
 Read-Only 에이전트는 코드나 SSOT를 수정할 수 없다.
 

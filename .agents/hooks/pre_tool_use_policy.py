@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import re
+import json
 import shlex
 import os
 from pathlib import Path
@@ -26,6 +27,46 @@ FORCE_ASK_CMD_REGEX = [
     (r"\bpip\s+install\b", "python package installation"),
     (r"\bflutter\s+pub\s+(add|get)\b", "Flutter package dependency action"),
 ]
+
+SLASH_TRIGGER_PATTERN = re.compile(r"(?:^|\s|\[|\"|\'|>)(/agent-legion|/legion)(?=$|\s|\]|\"|\'|:|<)")
+
+def check_subagent_invocation(args: dict, payload: dict) -> tuple[str, str]:
+    type_name = (args.get("TypeName") or "").strip().lower()
+    if type_name != "legion-commander":
+        return "allow", ""
+
+    prompt = args.get("Prompt") or ""
+    if not SLASH_TRIGGER_PATTERN.search(prompt):
+        return (
+            "deny",
+            "Slash-Command-Only Policy Violation: 'legion-commander' CANNOT be triggered via natural language conversation. "
+            "It may ONLY be invoked when the user explicitly enters the '/agent-legion' or '/legion' slash command."
+        )
+
+    conversation_id = payload.get("conversationId")
+    if conversation_id:
+        transcript_path = Path(f"C:/Users/dl200/.gemini/antigravity-cli/brain/{conversation_id}/.system_generated/logs/transcript.jsonl")
+        if transcript_path.is_file():
+            try:
+                last_user_text = None
+                with open(transcript_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        obj = json.loads(line)
+                        if obj.get("type") == "USER_INPUT":
+                            last_user_text = obj.get("content", "")
+                if last_user_text is not None and not SLASH_TRIGGER_PATTERN.search(last_user_text):
+                    return (
+                        "deny",
+                        "Slash-Command-Only Policy Violation: Latest user input in conversation transcript does not contain "
+                        "explicit '/agent-legion' or '/legion' slash command. Conversational auto-trigger is strictly blocked."
+                    )
+            except Exception:
+                pass
+
+    return "allow", ""
 
 def check_command_line(cmd: str, repo_root_str: str) -> tuple[str, str]:
     for pattern, description in DENY_CMD_REGEX:
@@ -155,11 +196,14 @@ def main() -> int:
         elif tool_name in ["write_to_file", "replace_file_content", "multi_replace_file_content"]:
             decision, reason = check_file_write(tool_name, args, repo_root_str, allowed_prefixes)
             respond_json({"decision": decision, "reason": reason})
+        elif tool_name == "invoke_subagent":
+            decision, reason = check_subagent_invocation(args, payload)
+            respond_json({"decision": decision, "reason": reason})
         else:
             respond_json({"decision": "allow", "reason": ""})
     except Exception as exc:
         log_stderr(f"Error evaluating hook: {exc}")
-        if tool_name in ["run_command", "write_to_file", "replace_file_content", "multi_replace_file_content"]:
+        if tool_name in ["run_command", "write_to_file", "replace_file_content", "multi_replace_file_content", "invoke_subagent"]:
             respond_json({"decision": "deny", "reason": f"Harness check exception: {exc}."})
         else:
             respond_json({"decision": "force_ask", "reason": f"Harness check exception: {exc}."})

@@ -111,6 +111,8 @@ def run_gate(skill_name):
         cmds_to_run = resolved.get("targetedTest", []) + resolved.get("fullTest", [])
     elif skill_name == "prepare-release":
         cmds_to_run = resolved.get("releaseGate", [])
+    elif skill_name == "agent-legion":
+        cmds_to_run = resolved.get("build", []) + resolved.get("lint", []) + resolved.get("fullTest", [])
         
     if not cmds_to_run:
         print("[quality-gate] PROJECT_VERIFICATION_SKIPPED_NO_COMMAND")

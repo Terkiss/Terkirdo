@@ -31,6 +31,8 @@ class TestAgentDiscovery(unittest.TestCase):
             "tech-expert",
             "universal-final-controller",
             "final-approach-control",
+            "legion-commander",
+            "legion-worker",
         ]
         for agent in expected_agents:
             agent_file = agents_dir / agent / "agent.md"
@@ -60,6 +62,8 @@ class TestAgentDiscovery(unittest.TestCase):
             "tech-expert",
             "universal-final-controller",
             "final-approach-control",
+            "legion-commander",
+            "legion-worker",
         ]
         for agent in expected_agents:
             agent_file = agents_dir / agent / "agent.md"
@@ -79,10 +83,10 @@ class TestAgentDiscovery(unittest.TestCase):
                         in_tools = False
             self.assertTrue(len(tools) > 0, f"{agent} must declare explicit tools list in frontmatter")
             tool_set = set(tools)
-            if agent == "agy-worker":
+            if agent in ("agy-worker", "legion-worker"):
                 self.assertTrue(
                     {"write_file", "edit_file", "run_command"}.issubset(tool_set),
-                    f"agy-worker missing write/shell tools: {tool_set}",
+                    f"{agent} missing write/shell tools: {tool_set}",
                 )
             else:
                 self.assertTrue(

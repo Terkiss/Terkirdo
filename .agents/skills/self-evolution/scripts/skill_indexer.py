@@ -158,6 +158,14 @@ def lexical_search_fallback(query, metadata, k=15):
     results.sort(key=lambda x: x['score'], reverse=True)
     return results[:k]
 
+SLASH_ONLY_SKILLS = {"agent-legion"}
+SLASH_TRIGGER_RE = re.compile(r"(?:^|\s|/|\[)(/agent-legion|/legion)(?=$|\s|\])")
+
+def is_slash_authorized(query, skill_name):
+    if skill_name not in SLASH_ONLY_SKILLS:
+        return True
+    return bool(SLASH_TRIGGER_RE.search(query))
+
 def search_skills(query, k=15):
     if not os.path.exists(META_FILE):
         build_index()
@@ -167,6 +175,8 @@ def search_skills(query, k=15):
         
     if not metadata:
         return []
+
+    filtered_metadata = [m for m in metadata if is_slash_authorized(query, m.get('name', ''))]
         
     model = get_model()
     if HAS_DEPS and model is not None and os.path.exists(INDEX_FILE):
@@ -179,6 +189,8 @@ def search_skills(query, k=15):
             for i, idx in enumerate(indices[0]):
                 if idx < len(metadata):
                     meta = metadata[idx]
+                    if not is_slash_authorized(query, meta.get('name', '')):
+                        continue
                     results.append({
                         'score': float(distances[0][i]),
                         'name': meta['name'],
@@ -189,7 +201,7 @@ def search_skills(query, k=15):
         except Exception as e:
             print(f"[indexer] FAISS search failed: {e}. Falling back to lexical search.", file=sys.stderr)
             
-    return lexical_search_fallback(query, metadata, k)
+    return lexical_search_fallback(query, filtered_metadata, k)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SKILLWEAVER Vector Indexer & Retriever")

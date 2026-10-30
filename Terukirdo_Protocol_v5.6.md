@@ -1009,6 +1009,18 @@ Finding ID 예시:
 
 P1 또는 P2가 열려 있으면 커밋 승인을 내리지 않습니다.
 
+## 10.4 Agent Legion 무인 병렬 루프 프로토콜 (슬래시 명령 전용 — 자동 검토 사령관의 Ralph 군단 총괄 관리)
+
+대규모 기능 구현이나 다중 마일스톤·다중 모듈 마이그레이션 시, 주인님이 일일이 중간 검토를 하지 않아도 끝까지 무인으로 병렬 완수할 수 있도록 **자동 검토 사령관(`legion-commander`)이 하위의 `ralph-orchestrator` 및 Ralph Loop 에이전트 전체와 다중 코어 워커 군단을 직접 예속·관리**하는 계층형 프로토콜을 적용합니다.
+
+0. **Slash-Command-Only 발동 불변식 (대화 발동 절대 금지)**: 자동 검토 사령관(`legion-commander`) 및 `agent-legion` 스킬은 일반 자연어 대화로는 절대로 자동 발동할 수 없으며, 오직 주인님께서 **`/agent-legion` 또는 `/legion` 슬래시 명령**을 명시적으로 입력하셨을 때만 기동합니다 (`pre_tool_use_policy.py` 및 `skill_indexer.py`로 물리적 강제 차단).
+
+1. **Disjoint Partitioning & 최대 4기 동시 제한 불변식**: 사령관은 전체 작업을 Wave당 최대 4개(`MAX_CONCURRENT_RALPH = 4`)의 비충돌 파티션(`allowed_files` 교집합 = $\emptyset$)으로 분할하며, `scripts/partition_validator.py` 통과를 의무화합니다.
+2. **Quad-Ralph Concurrent Management (최대 4기 동시 랄프 에이전트 및 산하 분대 운용)**: 사령관(`legion-commander`)은 하위에 **`ralph-orchestrator`를 최대 4기(Ralph #1 ~ #4)까지 동시에 생성·운용**할 수 있으며, 각각의 `ralph-orchestrator`는 자기 하위에 독립적인 계획관(`terukirdo-plan`), 코어 워커(`legion-worker` / `agy-worker`), 각종 검증관(`first-reviewer`, `tech-expert`, `universal-final-controller`, `final-approach-control`) 분대를 생성·운용합니다.
+3. **Autonomous Mid-Task Review (무인 중간 검토 대행)**: 하위 Ralph 루프의 각 단계 산출물(계획, diff, 리뷰 판정, 테스트 증거)을 사령관이 주인님 대신 자동 검토하고, 이상이 없으면 다음 파티션/마일스톤 진입을 자율 승인합니다.
+4. **Auto-Rework Loop**: 하위 Ralph 검증단에서 결함(`REWORK REQUIRED` 등)이 보고되거나 사령관 자체 검토에서 실패가 발견되면, 사령관이 즉시 구체적 Finding과 함께 하위 워커/Ralph 에이전트에게 자동 재작업(최대 3회)을 명령합니다.
+5. **Consolidated Universal Verification**: 산하의 모든 병렬 파티션과 Ralph 루프가 완수되면 사령관이 전체 시스템 통합 빌드 및 테스트를 직접 구동하여 무결성을 확인하고 단일 Evidence Bundle을 생성합니다.
+
 ---
 
 # 11. 에이전트 역할 및 권한
@@ -1020,8 +1032,10 @@ P1 또는 P2가 열려 있으면 커밋 승인을 내리지 않습니다.
 | 역할 | 에이전트 | 모델 지정 (`model`) | 구동 엔진 |
 | :--- | :--- | :---: | :--- |
 | 오케스트레이터 | `ralph-orchestrator` | `pro` | Gemini 4 Argon |
+| 군단 사령관 | `legion-commander` | `pro` | Gemini 4 Argon |
 | 구현계획 수립 | `terukirdo-plan` | `pro` | Gemini 4 Argon |
-| 워커 (Write) | `agy-worker` | `pro` | Gemini 4 Argon |
+| 단일 워커 (Write) | `agy-worker` | `pro` | Gemini 4 Argon |
+| 군단 코어 워커 (Write) | `legion-worker` | `pro` | Gemini 4 Argon |
 | 1차 리뷰어 | `first-reviewer` | `flash` | Gemini 3.8 Flash |
 | 적대적 심판 | `tech-expert` | `pro` | Gemini 4 Argon |
 | 최종 컨트롤러 | `universal-final-controller` | `flash` | Gemini 3.8 Flash |
@@ -1208,7 +1222,38 @@ P1 또는 P2가 있으면 `REWORK REQUIRED`를 사용합니다.
 * Git 상태가 불명확하면 승인 금지
 * 커밋 후 local HEAD hash 확인 필요
 
-## 11.8 Read-Only 주체의 상태 기록 예외
+## 11.8 Legion Commander (자동 검토 사령관 — Ralph 군단 상위 감독관)
+
+권한:
+* Read-Only
+
+역할:
+* 하위에 `ralph-orchestrator`를 최대 4기(Ralph #1 ~ #4)까지 동시에 병렬 생성·운용하고, 각 `ralph-orchestrator`가 산하 워커(`legion-worker`, `agy-worker`)와 각종 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 돌려 수행한 결과를 총괄 관리·감독
+* 대규모 과업의 DAG 분해 및 배타적 파티셔닝 (`scripts/partition_validator.py` 무결성 보증)
+* 무인 중간 검토 대행(Autonomous Meta-Review): 주인님 대신 하위 Ralph 루프의 산출물·Verdict·증거를 자동 심사하고 다음 마일스톤/파티션을 연속 진행
+* 자동 재작업(Auto-Rework) 지휘: 결함 또는 검증 실패 시 하위 워커/Ralph 에이전트에게 최대 3회 자동 재작업 명령
+* 통합 물리 검증: 전체 빌드/테스트 스위트 직접 구동 및 통합 Evidence Bundle 상신
+
+제한:
+* **일반 대화(자연어) 발동 절대 금지**: 오직 `/agent-legion` 또는 `/legion` 슬래시 명령 입력 시에만 소환 가능 (`pre_tool_use_policy.py` 물리 검증)
+* 코드 직접 수정 금지 (구현은 오직 산하 Write 워커인 `legion-worker` / `agy-worker`에게 위임)
+* 파일 중복 배정 금지 (병렬 파티션 간 교집합 허용 안 됨)
+
+## 11.9 Legion Worker (군단 코어 워커)
+
+권한:
+* Write (인가된 배타적 파티션 범위 내)
+
+역할:
+* 사령관(`legion-commander`) 및 `ralph-orchestrator`로부터 배정받은 `allowed_files` 파티션 내 고속 병렬 구현
+* 동반 단위 테스트 작성 및 자체 검증 명령 물리 실행
+* 산출물 및 테스트 로그 보고, Auto-Rework 지시 시 즉시 수정 이행
+
+제한:
+* 배정되지 않은 타 파티션 파일 수정 금지
+* 단위 테스트 생략 금지
+
+## 11.10 Read-Only 주체의 상태 기록 예외
 
 Read-Only 에이전트는 코드와 SSOT를 수정할 수 없습니다.
 

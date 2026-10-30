@@ -17,7 +17,9 @@ EXPECTED_AGENTS = [
     "first-reviewer",
     "tech-expert",
     "universal-final-controller",
-    "final-approach-control"
+    "final-approach-control",
+    "legion-commander",
+    "legion-worker"
 ]
 
 def parse_frontmatter(content):
@@ -136,7 +138,7 @@ def validate_harness(strict=False):
             errors.append(f"Missing or empty 'tools' list in .agents/agents/{agent}/agent.md frontmatter")
         else:
             tool_set = set(tools)
-            if agent == "agy-worker":
+            if agent in ("agy-worker", "legion-worker"):
                 missing_worker_tools = REQUIRED_WORKER_TOOLS - tool_set
                 if missing_worker_tools:
                     errors.append(
@@ -148,13 +150,13 @@ def validate_harness(strict=False):
                     errors.append(
                         f"Read-only agent '{agent}' must not declare write tools in frontmatter: {sorted(forbidden_write)}"
                     )
-                if agent in ("universal-final-controller", "final-approach-control"):
+                if agent in ("universal-final-controller", "final-approach-control", "legion-commander"):
                     missing_verifier = REQUIRED_SHELL_VERIFIER_TOOLS - tool_set
                     if missing_verifier:
                         errors.append(
                             f"Verifier agent '{agent}' missing required execution tools: {sorted(missing_verifier)}"
                         )
-                if agent == "ralph-orchestrator":
+                if agent in ("ralph-orchestrator", "legion-commander"):
                     missing_orch = REQUIRED_ORCHESTRATOR_TOOLS - tool_set
                     if missing_orch:
                         errors.append(

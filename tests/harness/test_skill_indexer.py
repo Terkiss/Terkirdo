@@ -25,7 +25,7 @@ class TestSkillIndexer(unittest.TestCase):
         with open(self.meta_file, "r", encoding="utf-8") as f:
             data = json.load(f)
             
-        self.assertEqual(len(data), 18, f"Expected 18 skills, but found {len(data)}")
+        self.assertEqual(len(data), 19, f"Expected 19 skills, but found {len(data)}")
         
         for item in data:
             path = item["filepath"]
@@ -49,6 +49,29 @@ class TestSkillIndexer(unittest.TestCase):
         
         names = [r["name"] for r in results]
         self.assertTrue(any("design-ui" in name for name in names), f"Expected design-ui in results: {names}")
+
+    def test_agent_legion_slash_only_search_filter(self):
+        # 1. Conversational search WITHOUT slash command must NOT return agent-legion
+        res_conv = subprocess.run(
+            [sys.executable, str(self.indexer_script), "--search", "autonomous multi-core parallel legion worker", "--k", "19"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        self.assertEqual(res_conv.returncode, 0)
+        names_conv = [r["name"] for r in json.loads(res_conv.stdout.strip())]
+        self.assertNotIn("agent-legion", names_conv, "agent-legion must NOT be returned on conversational search without slash command")
+
+        # 2. Search WITH explicit '/agent-legion' slash command MUST return agent-legion
+        res_slash = subprocess.run(
+            [sys.executable, str(self.indexer_script), "--search", "/agent-legion parallel implementation", "--k", "5"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        self.assertEqual(res_slash.returncode, 0)
+        names_slash = [r["name"] for r in json.loads(res_slash.stdout.strip())]
+        self.assertIn("agent-legion", names_slash, "agent-legion MUST be returned when '/agent-legion' slash command is present")
 
 if __name__ == "__main__":
     unittest.main()

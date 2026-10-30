@@ -62,3 +62,32 @@
 - Upgraded `scripts/harness/validate_harness.py` and `tests/harness/test_agent_discovery.py` to parse YAML list frontmatter and enforce the write vs read-only tool contract across all 7 Ralph Loop agents.
 - Updated `README.md` and `MEMORY.md` to reflect the v5.6 subagent tool permission contract.
 - Created `update_harness.bat` for one-click safe harness synchronization to external project directories while preserving `.git`, `README.md`, `MEMORY.md`, `docs/specs`, and `.agents/state`.
+
+
+2026-10-31: Autonomous Multi-Core 'Agent Legion' Architecture Integration.
+- Designed and built the Agent Legion orchestration framework to eliminate human micro-management during large-scale tasks.
+- Created `legion-commander` agent (`.agents/agents/legion-commander/agent.md`, Gemini 4 Argon `pro`):
+  - Decomposes massive tasks into disjoint sub-task partitions.
+  - Dispatches parallel worker subagents via `invoke_subagent`.
+  - Conducts autonomous in-flight code reviews (verifying diffs, lints, and test outputs without human prompting).
+  - Drives auto-rework loops (up to 3 iterations) upon finding P1/P2 issues or test failures.
+  - Runs consolidated project-wide build/test verification directly via `run_command` and issues a unified Evidence Bundle.
+- Created `legion-worker` agent (`.agents/agents/legion-worker/agent.md`, Gemini 4 Argon `pro`):
+  - Authorized with full Write + Shell permissions (`write_file`, `edit_file`, `run_command`, `view_file`, `notebook_edit`).
+  - Implements assigned disjoint file partitions with mandatory accompanying unit tests.
+- Built `agent-legion` skill (`.agents/skills/agent-legion/SKILL.md`) and deterministic Python conflict validator (`scripts/partition_validator.py`):
+  - Guarantees zero file overlap (disjointness) across parallel partitions prior to dispatch.
+  - Added unit test suite `tests/harness/test_partition_validator.py`.
+- Upgraded `scripts/harness/validate_harness.py` and `tests/harness/test_agent_discovery.py` to recognize `legion-commander` and `legion-worker`.
+- Reindexed skills via `skill_indexer.py --build` (expanded from 18 to 19 skills) and updated `tests/harness/test_skill_indexer.py`.
+- Synchronized `AGENTS.md`, `Terukirdo_Protocol_v5.6.md`, `README.md`, and `MEMORY.md`.
+- All 25 harness unit tests passing with 100% success.
+- Enforced strict Slash-Command-Only Trigger Invariant (`/agent-legion` or `/legion` only; conversational trigger strictly prohibited):
+  - Updated `.agents/hooks.json` and `.agents/hooks/pre_tool_use_policy.py` to intercept `invoke_subagent` calls for `legion-commander` and deterministically `deny` any invocation lacking explicit `/agent-legion` or `/legion` slash command in both the prompt and the latest `USER_INPUT` of `transcript.jsonl`.
+  - Updated `.agents/skills/self-evolution/scripts/skill_indexer.py` so `agent-legion` is filtered out of conversational SAD skill searches unless the query explicitly contains `/agent-legion` or `/legion`.
+  - Enacted slash-only invariant across `.agents/rules/safety.md`, `.agents/agents/legion-commander/agent.md`, `.agents/skills/agent-legion/SKILL.md`, `AGENTS.md`, `Terukirdo_Protocol_v5.6.md`, and `README.md`.
+  - Added regression tests `test_pre_hook_legion_commander_conversational_denied`, `test_pre_hook_legion_commander_slash_command_allowed`, and `test_agent_legion_slash_only_search_filter`.
+- Upgraded Agent Legion to 3-Tier Quad-Ralph Command Hierarchy:
+  - `legion-commander` spawns and operates up to 4 concurrent `ralph-orchestrator` instances (`MAX_CONCURRENT_RALPH = 4`) per wave.
+  - Each `ralph-orchestrator` (#1 ~ #4) independently commands its own subordinate squad (`terukirdo-plan`, `legion-worker`/`agy-worker`, `first-reviewer`, `tech-expert`, `universal-final-controller`, `final-approach-control`).
+  - Upgraded `.agents/skills/agent-legion/scripts/partition_validator.py` and `tests/harness/test_partition_validator.py` to deterministically enforce `MAX_CONCURRENT_RALPH = 4` per wave alongside file disjointness.
