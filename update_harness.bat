@@ -2,23 +2,48 @@
 setlocal EnableDelayedExpansion
 
 :: ============================================================================
-:: Terukirdo v5.6 Harness Updater
-:: - Updates core harness files (.agents, scripts, docs/harness, reference,
-::   AGENTS.md, Terukirdo_Protocol_v5.6.md) from the master template.
-:: - Preserves target project's .git, README.md, MEMORY.md, docs/specs, state.
+:: Terukirdo v5.6 Harness Updater (Deterministic Mirror & Legacy Purger)
+:: - Synchronizes core harness directories (.agents, agents, scripts/harness,
+::   scripts/self-evolution, tests/harness, docs/harness, docs/archive,
+::   docs/v2_specs, reference) from the master template.
+:: - Purges deleted/moved template files and stale root protocols (v5.2~v5.5)
+::   that still linger in older target projects.
+:: - Preserves target project's .git, source code, README.md, MEMORY.md,
+::   docs/specs, docs/Terukirdo_Trajectory.txt, and .agents/state.
 :: ============================================================================
 
 set "SOURCE=D:\Project\codex-flutter\newAntigravity"
 set "TARGET=%~dp0"
 if "%TARGET:~-1%"=="\" set "TARGET=%TARGET:~0,-1%"
 
+set "NO_PAUSE=0"
+set "CLI_TARGET="
+
+:parse_args
+if "%~1"=="" goto :args_done
+if /I "%~1"=="--no-pause" (
+    set "NO_PAUSE=1"
+) else (
+    set "CLI_TARGET=%~1"
+)
+shift
+goto :parse_args
+:args_done
+
+if not "!CLI_TARGET!"=="" (
+    set "CLI_TARGET=!CLI_TARGET:"=!"
+    if "!CLI_TARGET:~-1!"=="\" set "CLI_TARGET=!CLI_TARGET:~0,-1!"
+    set "TARGET=!CLI_TARGET!"
+)
+
 echo ============================================================================
-echo  [Terukirdo v5.6] Harness Updater
+echo  [Terukirdo v5.6] Harness Updater (Mirror ^& Purge Engine)
 echo ============================================================================
 
-if not exist "%SOURCE%\.agents\agents\agy-worker\agent.md" (
-    echo [ERROR] Master template not found at: "%SOURCE%"
-    pause
+if not exist "%SOURCE%\scripts\harness\sync_harness.py" (
+    echo [ERROR] Master template synchronizer not found at:
+    echo         "%SOURCE%\scripts\harness\sync_harness.py"
+    if "!NO_PAUSE!"=="0" pause
     exit /b 1
 )
 
@@ -30,7 +55,7 @@ if /I "%TARGET%"=="%SOURCE%" (
     set /p "USER_TARGET=Target Project Path: "
     if "!USER_TARGET!"=="" (
         echo [CANCELED] No target path provided.
-        pause
+        if "!NO_PAUSE!"=="0" pause
         exit /b 1
     )
     set "USER_TARGET=!USER_TARGET:"=!"
@@ -40,76 +65,35 @@ if /I "%TARGET%"=="%SOURCE%" (
 
 if /I "%TARGET%"=="%SOURCE%" (
     echo [SKIP] Source and target are identical. Aborting.
-    pause
+    if "!NO_PAUSE!"=="0" pause
     exit /b 1
 )
 
 if not exist "%TARGET%" (
     echo [ERROR] Target directory does not exist: "%TARGET%"
-    pause
+    if "!NO_PAUSE!"=="0" pause
     exit /b 1
 )
 
 echo.
 echo  * Source Template : "%SOURCE%"
 echo  * Target Project  : "%TARGET%"
+echo  * Sync Mode       : Mirror ^& Purge (deletes obsolete template files)
 echo  * Preserved       : .git, README.md, MEMORY.md, docs/specs, .agents/state
 echo.
 
-echo [1/5] Updating .agents (agents, hooks, rules, schemas, skills)...
-robocopy "%SOURCE%\.agents" "%TARGET%\.agents" /E /XD state __pycache__ .pytest_cache /NFL /NDL /NJH /NJS /NC /NS /NP >nul
-if !ERRORLEVEL! GEQ 8 (
-    echo [ERROR] Failed to copy .agents directory.
-    pause
-    exit /b 1
-)
-if not exist "%TARGET%\.agents\state" mkdir "%TARGET%\.agents\state"
-
-echo [2/5] Updating scripts (validate_harness.py, hermes_disasm.py, etc.)...
-robocopy "%SOURCE%\scripts" "%TARGET%\scripts" /E /XD __pycache__ .pytest_cache /NFL /NDL /NJH /NJS /NC /NS /NP >nul
-if !ERRORLEVEL! GEQ 8 (
-    echo [ERROR] Failed to copy scripts directory.
-    pause
-    exit /b 1
-)
-
-echo [3/5] Updating docs\harness and reference...
-robocopy "%SOURCE%\docs\harness" "%TARGET%\docs\harness" /E /NFL /NDL /NJH /NJS /NC /NS /NP >nul
-robocopy "%SOURCE%\reference" "%TARGET%\reference" /E /NFL /NDL /NJH /NJS /NC /NS /NP >nul
-
-echo [4/5] Updating AGENTS.md and Terukirdo_Protocol_v5.6.md...
-copy /Y "%SOURCE%\Terukirdo_Protocol_v5.6.md" "%TARGET%\Terukirdo_Protocol_v5.6.md" >nul
-copy /Y "%SOURCE%\AGENTS.md" "%TARGET%\AGENTS.md" >nul
-
-if not exist "%TARGET%\MEMORY.md" (
-    echo       - Creating initial MEMORY.md...
-    copy /Y "%SOURCE%\MEMORY.md" "%TARGET%\MEMORY.md" >nul
-) else (
-    echo       - Existing MEMORY.md preserved.
-)
-
-if not exist "%TARGET%\docs" mkdir "%TARGET%\docs"
-if not exist "%TARGET%\docs\Terukirdo_Trajectory.txt" (
-    echo       - Creating initial docs\Terukirdo_Trajectory.txt...
-    type nul > "%TARGET%\docs\Terukirdo_Trajectory.txt"
-) else (
-    echo       - Existing docs\Terukirdo_Trajectory.txt preserved.
-)
-
-echo [5/5] Running validate_harness.py --strict...
-python "%TARGET%\scripts\harness\validate_harness.py" --strict
+python -X utf8 "%SOURCE%\scripts\harness\sync_harness.py" --source "%SOURCE%" --target "%TARGET%"
 if !ERRORLEVEL! NEQ 0 (
     echo.
-    echo [WARNING] Harness validation reported errors. Please check output above.
-    pause
+    echo [WARNING] Harness update/validation reported errors. Please check output above.
+    if "!NO_PAUSE!"=="0" pause
     exit /b 1
 )
 
 echo.
 echo ============================================================================
-echo  [SUCCESS] Terukirdo v5.6 harness updated and verified!
+echo  [SUCCESS] Terukirdo v5.6 harness synchronized, purged, and verified!
 echo  Note: Restart any running 'agy' CLI session in the target project.
 echo ============================================================================
-if "%~1"=="--no-pause" exit /b 0
-pause
-exit /b 0
+if "!NO_PAUSE!"=="0" pause
+(copy /Y "%SOURCE%\update_harness.bat" "%TARGET%\update_harness.bat" >nul 2>&1) & exit /b 0

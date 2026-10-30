@@ -23,7 +23,9 @@
   - 최신 헌법 `Terukirdo_Protocol_v5.6.md` 및 `AGENTS.md` 전면 활성화.
   - **Gemini 4 Argon (`pro`)**: 상류 `UltimateMake`, 자동 검토 사령관(`legion-commander`), 하위 루프 조율(`ralph-orchestrator`), 군단 코어 구현(`legion-worker`), 계획(`terukirdo-plan`), 복합 구현(`agy-worker`), 적대적 심판(`tech-expert`) 전담.
   - **Gemini 3.8 Flash (`flash`)**: 1차 정적 리뷰(`first-reviewer`), 빌드/테스트 검증(`universal-final-controller`), Git 스테이징 통제(`final-approach-control`) 전담.
-  - 타 프로젝트 원클릭 하네스 동기화 스크립트 `update_harness.bat` 구축 (`.git`, `README.md`, 기존 `MEMORY.md`, `docs/specs`, `.agents/state` 보존).
+  - 타 프로젝트 원클릭 하네스 동기화 스크립트 `update_harness.bat` 및 결정론적 동기화·소거 엔진 `scripts/harness/sync_harness.py` 구축:
+    - 기존 단순 복사(`robocopy /E`) 방식의 한계를 해결하여, 마스터 템플릿에서 삭제·이동된 구버전 파일/폴더(루트 `Terukirdo_Protocol_v5.2~v5.5.md`, 루트 `agents/*.md` 중복 에이전트, 삭제된 스킬 `.agents/skills/flutter-expert/` 등)를 대상 프로젝트에서 결정론적으로 100% 추적 소거(Mirror & Purge).
+    - 대상 프로젝트 고유 자산(`.git`, 소스코드, `README.md`, `MEMORY.md`, `docs/Terukirdo_Trajectory.txt`, `docs/specs/*`, 기존 `docs/development/*`, `.agents/state/*`)은 철저히 보존하며, 동기화 직후 `skill_indexer.py --build`와 `validate_harness.py --strict`까지 자동 수행.
 - **`UltimateMake` 3-Pillar 마스터 기획 하네스 정식 구축 완료**:
   - 3대 축: 👑 주인님과의 소크라테스 대화 × 🌐 최대 1시간 초심층 웹 리서치 × 🤖 5인 전문가 적대적 원탁회의.
   - `validate_spec_lock.py` 스크립트를 통한 리서치 용량, 금지어 린트, GWT 인수조건 물리적 강제.

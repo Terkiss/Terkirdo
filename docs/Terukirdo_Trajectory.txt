@@ -92,3 +92,9 @@
   - Each `ralph-orchestrator` (#1 ~ #4) independently commands its own subordinate squad (`terukirdo-plan`, `legion-worker`/`agy-worker`, `first-reviewer`, `tech-expert`, `universal-final-controller`, `final-approach-control`).
   - Upgraded `.agents/skills/agent-legion/scripts/partition_validator.py` and `tests/harness/test_partition_validator.py` to deterministically enforce `MAX_CONCURRENT_RALPH = 4` per wave alongside file disjointness.
 - Synchronized and modernized `README.md` with 3-tier Quad-Ralph Agent Legion diagrams, 8 core philosophies (including Slash-Command-Only physical lock), updated 9-agent/19-skill directory hierarchy, and detailed v5.6 changelog.
+
+[2026-10-31] Upgraded `update_harness.bat` and created `scripts/harness/sync_harness.py` (Deterministic Mirror & Legacy Purger):
+- Replaced naive `robocopy /E` copy-only logic with `scripts/harness/sync_harness.py`, which deterministically mirrors harness-owned directories (`.agents`, `agents`, `scripts/harness`, `scripts/self-evolution`, `tests/harness`, `docs/harness`, `docs/archive`, `docs/v2_specs`, `reference`) and purges deleted/obsolete template files and stale root protocols (`Terukirdo_Protocol_v5.2~v5.5.md`, `IMPLEMENTATION_PROGRESS.md`, `Documents/Implementation_Plan.md`, `scripts/auto_evolve.py`, legacy `agents/*.md`, removed skills) from older target projects.
+- Strictly preserved target-project-owned files (`.git`, `README.md`, `MEMORY.md`, `docs/Terukirdo_Trajectory.txt`, `docs/specs/*`, existing `docs/*` project docs, `.agents/state/*`, `venv`).
+- Automatically rebuilds target `.terkirdo_pre_cache.md` via `skill_indexer.py --build` and verifies target integrity via `validate_harness.py --strict`.
+- Added unit tests in `tests/harness/test_update_harness.py` verifying zombie file purge, project file preservation, and CLI execution of `update_harness.bat`.
