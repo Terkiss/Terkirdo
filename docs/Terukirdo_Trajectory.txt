@@ -91,3 +91,4 @@
   - `legion-commander` spawns and operates up to 4 concurrent `ralph-orchestrator` instances (`MAX_CONCURRENT_RALPH = 4`) per wave.
   - Each `ralph-orchestrator` (#1 ~ #4) independently commands its own subordinate squad (`terukirdo-plan`, `legion-worker`/`agy-worker`, `first-reviewer`, `tech-expert`, `universal-final-controller`, `final-approach-control`).
   - Upgraded `.agents/skills/agent-legion/scripts/partition_validator.py` and `tests/harness/test_partition_validator.py` to deterministically enforce `MAX_CONCURRENT_RALPH = 4` per wave alongside file disjointness.
+- Synchronized and modernized `README.md` with 3-tier Quad-Ralph Agent Legion diagrams, 8 core philosophies (including Slash-Command-Only physical lock), updated 9-agent/19-skill directory hierarchy, and detailed v5.6 changelog.
