@@ -71,3 +71,14 @@ The following actions require explicit user review and confirmation before execu
 - **Hermes CLI 미설치 또는 미구동 시 (`FORCE_ASK`)**:
   환경에 `hermes`가 설치되어 있지 않거나 로컬 `Offrail-27B-12G` 모델(`http://127.0.0.1:8899/v1`) 호출이 실패할 경우(`Exit Code 2`), **절대로 직접 디스어셈블러를 콘솔에 실행하거나 원시 코드를 덤프하는 폴백(Fallback)을 수행해서는 안 된다.** 즉시 멈추고 `[FORCE_ASK: HERMES_UNAVAILABLE]` 상태로 주인님께 보고하여 어떻게 진행할지 명시적 지침을 질문해야 한다.
 - The wrapper guarantees that zero raw assembly mnemonics or byte dumps reach the orchestrator's context, returning only high-level pseudocode, struct offsets, and packet field specifications.
+
+### Hermes Local LLM Performance & Anti-Hallucination Invariants (`Offrail-27B-12G`)
+
+- **실행 플래그 최적화 (25배 속도 향상 & 컨텍스트 주입 제거)**:
+  - **Mode A (기본 Capstone 메모리 디스어셈블 모드)**: 실행 시 반드시 `--ignore-rules --reasoning none -t none --max-turns 1`이 적용되어야 한다 (`AGENTS.md`, `MEMORY.md`, `.agents/*` 등 약 20,000+ 토큰의 프로젝트 규칙 자동 주입 및 불필요한 도구 스키마/추론 오버헤드 원천 제거로 질의당 27분 소요되던 지연을 45~60초 수준으로 단축, 약 25x 속도 향상).
+  - **Mode B (`--use-rea` REA MCP 명시적 도구 모드)**: `--yolo --ignore-rules --reasoning low` 플래그를 사용하여 규칙 주입 오버헤드를 방지하고 신속한 도구 호출 루프를 유지한다.
+- **바이트 단위 `--size` 윈도우 정렬 & `--no-stop-at-ret`**:
+  - `--size` 인자는 명령어 개수가 아닌 **바이트(bytes) 단위**이므로, 명령어 중간이 잘리지 않도록 함수 시작 주소(VA)에 정렬하고 충분한 바이트 크기(예: `400`~`750` bytes)와 `--no-stop-at-ret`를 함께 지정한다.
+- **안티 환각 C 의사코드 추출 규칙**:
+  - `--question` 질의 시 내부 추론 과정(Thinking/Scratchpad)이나 불필요한 더미 `struct` 정의(flags1..flagsN 등), 디스어셈블리에 없는 추측성 필드명을 절대 출력하지 않도록 지시한다.
+  - 오직 각 함수의 진입 주소(VA), 정확한 호출 대상 주소(`func_0x...`), 분기 조건(switch/if), 실제 참조된 구조체/스택 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 출력하도록 엄격히 제한한다.

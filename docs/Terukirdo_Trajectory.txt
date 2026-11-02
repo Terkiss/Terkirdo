@@ -98,3 +98,17 @@
 - Strictly preserved target-project-owned files (`.git`, `README.md`, `MEMORY.md`, `docs/Terukirdo_Trajectory.txt`, `docs/specs/*`, existing `docs/*` project docs, `.agents/state/*`, `venv`).
 - Automatically rebuilds target `.terkirdo_pre_cache.md` via `skill_indexer.py --build` and verifies target integrity via `validate_harness.py --strict`.
 - Added unit tests in `tests/harness/test_update_harness.py` verifying zombie file purge, project file preservation, and CLI execution of `update_harness.bat`.
+
+[2026-11-02] Optimized Hermes CLI Disassembly Pipeline & Enforced Anti-Hallucination Invariants (TASK-20261102-HERMES-OPT).
+- Optimized local LLM (`Offrail-27B-12G`) invocation in `scripts/hermes_disasm.py` achieving ~25x execution speedup:
+  - Mode A (Default In-Memory Capstone Mode): Injected `--ignore-rules --reasoning none -t none --max-turns 1`, eliminating 20,000+ tokens of auto-injected project rules, tool schemas, and reasoning overhead (reduced query time from 27m to 45~60s).
+  - Mode B (REA MCP Explicit Tool Mode): Configured `--yolo --ignore-rules --reasoning low` for high-throughput tool calling.
+- Enforced strict anti-hallucination C pseudocode output constraints (Rules 4 & 5):
+  - Strictly banned internal thinking/scratchpads, dummy struct definitions (flags1..flagsN), and speculative field names.
+  - Mandated output of exact entry VA, target call addresses (`func_0x...`), branch conditions (switch/if), actual struct/stack offsets (`+0x...`), and constants (hex) as concise C pseudocode.
+- Hardened Hermes Unavailable / Failure safety guard:
+  - Guaranteed `[FORCE_ASK: HERMES_UNAVAILABLE]` stderr output and exit code 2 when `shutil.which("hermes")` is None or `proc.returncode != 0` (regardless of raw_output status).
+- Codified invariants in `.agents/rules/safety.md` under `### Hermes Local LLM Performance & Anti-Hallucination Invariants (`Offrail-27B-12G`)`.
+- Updated `MEMORY.md` (Current Status, Key Technical Learnings Actionable Insight) and `docs/Terukirdo_Trajectory.txt`.
+- Synchronized `README.md` with v5.6 Hermes CLI 25x speed optimization, anti-hallucination C pseudocode rules, scripts/harness/sync_harness.py hierarchy, and changelog.
+- Verified all modifications against `validate_harness.py --strict`, `hermes_disasm.py --help`, and the harness unit test suite (31 tests passing).

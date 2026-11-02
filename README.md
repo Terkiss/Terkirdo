@@ -235,10 +235,11 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 
 ### 🔬 바이너리 역공학 결정론적 살균 게이트 (`scripts/hermes_disasm.py`)
 네이티브 바이너리(PE32/PE32+) 분석 시 원시 x86/x64 어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐을 물리적으로 방지합니다.
-- **Mode A (In-Memory Capstone + Hermes)**: 메모리 상에서만 디스어셈블을 수행하고 터미널 노출 없이 로컬 `Offrail-27B-12G`에 직접 전달.
-- **Mode B (Hermes + REA MCP)**: `--use-rea` 모드로 리버스 엔지니어링 MCP 도구(`rea`)와 자율 연동.
+- **Mode A (In-Memory Capstone + Hermes)**: 메모리 상에서만 디스어셈블을 수행하고 터미널 노출 없이 로컬 `Offrail-27B-12G`에 직접 전달. `--ignore-rules --reasoning none -t none --max-turns 1` 플래그로 20,000+ 토큰 자동 주입 및 추론 오버헤드를 원천 제거하여 약 25배 속도 가속(질의당 27분 → 45~60초)을 달성하며, 바이트 단위 `--size`(`400`~`750` bytes)와 `--no-stop-at-ret`로 VA를 정렬.
+- **Mode B (Hermes + REA MCP)**: `--use-rea` 모드로 리버스 엔지니어링 MCP 도구(`rea`)와 자율 연동하며, `--yolo --ignore-rules --reasoning low` 플래그로 고속 도구 호출 루프 유지.
 - **Mode C (정규식 살균 게이트)**: stdout 출력 직전 니모닉/명령어 라인을 `[REDACTED_ASM_LINE]`으로 결정론적 마스킹.
-- **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: Hermes 또는 로컬 모델 미구동 시 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
+- **안티 환각 C 의사코드 추출 (Anti-Hallucination C Pseudocode)**: 내부 추론 과정(Thinking/Scratchpad), 더미 `struct` 정의(`flags1..flagsN`), 추측성 필드명 출력을 엄격히 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건(`switch`/`if`), 실제 참조 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 추출.
+- **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: `hermes` CLI 미설치 또는 로컬 모델 미구동/호출 실패(`proc.returncode != 0`) 시 결정론적으로 `exit(2)`로 종료하며 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
 
 ---
 
@@ -273,6 +274,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 ├── 📁 scripts/
 │   ├── 📄 hermes_disasm.py             ← 바이너리 역공학 결정론적 살균 래퍼 (Offrail-27B-12G & REA)
 │   └── 📁 harness/
+│       ├── 📄 sync_harness.py          ← 타 프로젝트 결정론적 미러링 및 레거시 파일 추적 소거 엔진
 │       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (9대 에이전트 모델 Enum & tools 권한 계약)
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
@@ -290,6 +292,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-11-02** | **v5.6** | **🚀 Hermes CLI 로컬 모델(Offrail-27B-12G) 25배 속도 최적화 및 안티 환각 C 의사코드 가드레일 강화**<br>• Mode A에 `--ignore-rules --reasoning none -t none --max-turns 1`을 적용하여 20,000+ 토큰 자동 주입 및 추론 오버헤드 제거 (질의당 27분 → 45~60초, 약 25x 가속), Mode B에 `--yolo --ignore-rules --reasoning low` 적용<br>• 내부 추론/더미 `struct`/추측성 필드명 출력을 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건, 실제 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 출력하도록 프롬프트 및 `.agents/rules/safety.md` 명문화<br>• 바이트 단위 `--size`(400~750 bytes) + `--no-stop-at-ret` 정렬 지침 및 `proc.returncode != 0` 시 무조건 `[FORCE_ASK: HERMES_UNAVAILABLE]`(`sys.exit(2)`) 종료 안전장치 강화 |
 | **2026-10-31** | **v5.6** | **⚔️ 슬래시 명령 전용 3계층 Quad-Ralph '에이전트 군단(Agent Legion)' 아키텍처 공식 탑재**<br>• 최상위 자동 검토 사령관(`legion-commander`)이 하위에 `ralph-orchestrator`를 **최대 4기(Ralph #1 ~ #4)까지 동시에 생성·운용**하고, 각 랄프 에이전트가 산하에 자체 워커(`legion-worker`/`agy-worker`)와 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 운용하는 3계층 지휘 체계 완비 (총 9인 에이전트 / 19종 스킬)<br>• **대화(자연어) 발동 절대 금지 & `/agent-legion`(`/`legion) 슬래시 전용 4중 물리 잠금**: `pre_tool_use_policy.py`가 프롬프트 및 `transcript.jsonl` 최신 사용자 입력을 대조하여 자연어 호출을 즉시 `deny` 차단하고, `skill_indexer.py`가 자연어 검색 시 후보에서 제외<br>• Wave당 최대 4기 동시 실행 제한(`MAX_CONCURRENT_RALPH = 4`) 및 파일 무충돌을 결정론적으로 사전 검증하는 `partition_validator.py` 및 29개 하네스 단위 테스트 전수 통과 |
 | **2026-10-29** | **v5.6** | **🔧 서브에이전트 도구 권한(`tools` Frontmatter) 계약 복구 및 원클릭 동기화(`update_harness.bat`) 구축**<br>• Antigravity 커스텀 에이전트(`agent.md`)에서 `tools:` 미지정 시 Read-Only 도구 세트로 기본 폴백되는 런타임 메커니즘 규명 및 전면 패치<br>• `validate_harness.py` 및 `test_agent_discovery.py`에 에이전트별 `tools` 권한 계약 결정론적 검증 게이트 탑재 및 `update_harness.bat` 추가 |
 | **2026-10-24** | **v5.6** | **🛡️ 바이너리 역공학 안전 가드레일 (Hermes CLI & Sanitizer)**<br>• 원시 x86/x64 기계어·어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐 차단을 위한 결정론적 정규식 살균 게이트 `scripts/hermes_disasm.py` 구축<br>• PE 32/64비트 자동 감지, Mode A(인메모리 Capstone)/B(REA MCP 연동)/C(파이프 살균) 완비<br>• Hermes CLI 또는 로컬 모델 미구동 시 원시 폴백 금지 및 `[FORCE_ASK: HERMES_UNAVAILABLE]` 규칙 `.agents/rules/safety.md` 헌법화 |

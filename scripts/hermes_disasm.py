@@ -277,8 +277,10 @@ def main():
 1. 답변에 어셈블리 명령어(mov, movzx, movsx, push, pop, lea, call, jmp, je, jne, jz, jnz, ja, jae, jb, jbe, jg, jge, jl, jle, cmp, test, xor, sub, add, imul, idiv, shl, shr, sar, rep, stos, ret, dword ptr, word ptr, byte ptr, esp, ebp, eax, ebx, ecx, edx, esi, edi, rax, rbx, rcx, rdx, rsi, rdi, rbp, rsp 등)나 어셈블리 코드 블록(```asm, ```x86, ```x64 등)을 절대 포함하지 마십시오.
 2. 오직 C# 또는 C 스타일의 고수준 의사코드(Pseudocode), 함수 호출 관계(Call Graph/Xrefs), 구조체 오프셋 표(예: +0x08 = Level), 패킷 필드 순서와 의미만 한국어로 명확히 요약하여 답변하십시오.
 3. 규칙을 위반하여 어셈블리 명령어가 노출되면 상류 보안 필터에 의해 출력이 차단됩니다.
+4. 내부 추론 과정(Thinking/Scratchpad/Step-by-step trace), 불필요한 더미 struct 정의(flags1..flagsN 등), 또는 디스어셈블리에 없는 추측성 필드명을 절대 출력하지 마십시오.
+5. 오직 각 함수의 진입 주소(VA), 정확한 호출 대상 주소(func_0x...), 분기 조건(switch/if), 실제 참조된 구조체/스택 오프셋(+0x...)과 상수(hex)만 간결한 C 의사코드로 즉시 출력하십시오.
 """
-        hermes_extra_flags = ["--yolo"]
+        hermes_extra_flags = ["--yolo", "--ignore-rules", "--reasoning", "low"]
     else:
         # Mode A: Fast In-Memory Capstone + Hermes
         try:
@@ -313,8 +315,10 @@ def main():
 1. 답변에 어셈블리 명령어(mov, movzx, movsx, push, pop, lea, call, jmp, je, jne, jz, jnz, ja, jae, jb, jbe, jg, jge, jl, jle, cmp, test, xor, sub, add, imul, idiv, shl, shr, sar, rep, stos, ret, dword ptr, word ptr, byte ptr, esp, ebp, eax, ebx, ecx, edx, esi, edi, rax, rbx, rcx, rdx, rsi, rdi, rbp, rsp 등)나 어셈블리 코드 블록(```asm, ```x86 등)을 절대 포함하지 마십시오.
 2. 오직 C# 또는 C 스타일의 고수준 의사코드(Pseudocode), 구조체 오프셋 표(예: +0x08 = Level), 패킷 필드 순서와 의미만 한국어로 요약하여 답변하십시오.
 3. 규칙을 위반하여 어셈블리 명령어가 노출되면 상류 보안 필터에 의해 출력이 차단됩니다.
+4. 내부 추론 과정(Thinking/Scratchpad/Step-by-step trace), 불필요한 더미 struct 정의(flags1..flagsN 등), 또는 디스어셈블리에 없는 추측성 필드명을 절대 출력하지 마십시오.
+5. 오직 각 함수의 진입 주소(VA), 정확한 호출 대상 주소(func_0x...), 분기 조건(switch/if), 실제 참조된 구조체/스택 오프셋(+0x...)과 상수(hex)만 간결한 C 의사코드로 즉시 출력하십시오.
 """
-        hermes_extra_flags = []
+        hermes_extra_flags = ["--ignore-rules", "--reasoning", "none", "-t", "none", "--max-turns", "1"]
 
     temp_file = None
     try:
@@ -345,7 +349,7 @@ def main():
         raw_output = proc.stdout
 
         # Check for model / provider execution failures
-        if proc.returncode != 0 and not raw_output:
+        if proc.returncode != 0:
             sys.stderr.write(
                 f"[FORCE_ASK: HERMES_UNAVAILABLE] Hermes CLI 실행 실패 (exit {proc.returncode}): {proc.stderr}\n"
                 "로컬 Offrail-27B-12G 모델 또는 Hermes CLI를 사용할 수 없습니다.\n"
