@@ -9,6 +9,7 @@
 
 [![Protocol](https://img.shields.io/badge/Protocol-v5.6_Active-magenta.svg)](#-terukirdo-protocol-v56-핵심-진화)
 [![Engine](https://img.shields.io/badge/Engine-Gemini_4_Argon_%C3%97_3.8_Flash-blue.svg)](#-terukirdo-protocol-v56-핵심-진화)
+[![Tests](https://img.shields.io/badge/Harness_Tests-33_Passed-brightgreen.svg)](#-3중-안전장치--물리-검증기)
 [![Skills](https://img.shields.io/badge/Skills-19_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-19종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake-gold.svg)](#-ultimatemake-마스터-기획-하네스)
 [![Agents](https://img.shields.io/badge/Agents-9_Quad--Ralph_Legion-orange.svg)](#-9인의-실무진-ralph-loop--agent-legion-3-tier-quad-ralph)
@@ -65,7 +66,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 🌟 v5.6 8대 핵심 철학
+### 🌟 v5.6 10대 핵심 철학
 
 | # | 원칙 | 설명 |
 |:-:|------|------|
@@ -75,8 +76,10 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 | 4 | **3계층 Quad-Ralph 무인 에이전트 군단 (`/agent-legion`)** | 대규모 작업 시 최상위 자동 검토 사령관(`legion-commander`)이 하위에 최대 4기의 `ralph-orchestrator`를 동시 생성·운용하고, 각 랄프가 자체 워커·검증관 분대를 돌려 중간 수동 검토 없이 비충돌 병렬 구현 + 자동 검증 + 무인 Auto-Rework를 완수합니다. |
 | 5 | **슬래시 명령 전용 물리 잠금 (Slash-Command-Only Lock)** | 자동 검토 사령관(`legion-commander`)은 일반 자연어 대화로는 절대 발동되지 않습니다. 오직 주인님이 `/agent-legion` 또는 `/legion` 슬래시 명령을 직접 입력하셨을 때만 가동되며, `pre_tool_use_policy.py`가 트랜스크립트를 대조하여 대화형 호출을 물리적으로 `deny` 차단합니다. |
 | 6 | **비대칭 듀얼 엔진 오케스트레이션 (Dual-Engine Asymmetric Orchestration)** | 고심도 추론·설계·군단 지휘·구현·적대적 심판(`UltimateMake`, `legion-commander`, `ralph-orchestrator`, `terukirdo-plan`, `agy-worker`, `legion-worker`, `tech-expert`)은 **Gemini 4 Argon (`pro`)**이, 초고속 정적 리뷰 및 물리 관제(`first-reviewer`, `UFC`, `FAC`)는 **Gemini 3.8 Flash (`flash`)**가 전담합니다. |
-| 7 | **삼권분립 & 적대적 교차 검증 (Separation of Powers)** | 코드를 짠 구현자(Worker)는 절대 셀프 합격 판정을 내릴 수 없습니다. 독립된 `tech-expert`(심판관)와 `UFC`(환경관제탑)가 꼼수와 경계 누수를 끝까지 추적합니다. |
-| 8 | **하드코어 안전장치 (Zero Trust Hooks)** | 시스템 레벨의 훅이 파괴적 명령어(`rm -rf`, `DROP TABLE` 등), Secret 유출, 미승인 군단 소환을 물리적으로 차단합니다. |
+| 7 | **삼권분립 & 4요소 결함 입증 계약 (Separation of Powers & 4-Element Defect Contract)** | 코드를 짠 구현자(Worker)는 절대 셀프 합격 판정을 내릴 수 없습니다. 리뷰어(`first-reviewer`, `tech-expert`)는 의무적 결함 할당량(Finding Quota) 없이 요구사항 충족 시 즉시 `PASS` / `ARCHITECTURALLY ACCEPTABLE`을 부여하되, P1/P2 결함 판정 시 반드시 `[1. 위반된 계약 + 2. 구체적 트리거 + 3. 현재 코드 근거 + 4. 실질적 피해]` 4요소를 입증합니다. |
+| 8 | **서브에이전트 핸들 재사용 & 베이스라인 테스트 무결성 (Handle Reuse & Baseline Test Guard)** | Rework 루프 시 중복 서브에이전트를 새로 스폰하지 않고 `send_message(conversationId)`로 기존 핸들과 컨텍스트를 재사용하여 고속 재작업을 완수하며, 억지 통과를 위한 기존 테스트(`tests/**`) 임의 수정·삭제·단언문 약화를 원천 차단합니다. |
+| 9 | **4계층 가중치 메모리 장부 (4-Tier Weighted Memory Ledger)** | `MEMORY.md`를 `Hot`(활성 불변식), `Warm`(도메인 기술 교훈), `Cold`(과거 맥락), `Archived Decisions`(회귀 방지용 대체 결정 장부) 4계층으로 정밀 운용하며, 단순 읽기 시 카운터/타임스탬프 갱신만을 위한 불필요한 덮어쓰기(Bookkeeping-Only Writes)를 엄격히 금지합니다. |
+| 10 | **하드코어 안전장치 & 결정론적 하네스 동기화 (Zero Trust Hooks & Deterministic Mirror/Purge)** | 3중 시스템 훅이 파괴적 명령어·Secret 유출·미승인 군단 소환을 물리 차단하며, `sync_harness.py`(`update_harness.bat`)가 타 프로젝트의 구버전 좀비 파일과 읽기 전용 잔재를 100% 추적 소거하고 중첩 `.git` 유출을 원천 방지합니다. |
 
 ---
 
@@ -168,15 +171,15 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 
 | # | 에이전트 | 구동 엔진 (`model`) | 도구 권한 (`tools` Frontmatter) | 역할 |
 |:-:|---------|:---:|:---:|------|
-| 1 | **Legion Commander** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` + `run_command` | **최상위 자동 검토 사령관 (`/agent-legion` 슬래시 전용)**. 하위에 `ralph-orchestrator` 최대 4기 동시 생성·운용, 무인 중간 검토 및 Auto-Rework 지휘 |
-| 2 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` | **단위 루프 및 분대 지휘관**. 사령관 산하 최대 4기 동시 기동(또는 단독 기동)되어 산하의 Plan·Worker·Reviewer·Judge·Controller 분대를 직접 운용 |
+| 1 | **Legion Commander** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` + `run_command` | **최상위 자동 검토 사령관 (`/agent-legion` 슬래시 전용)**. 하위에 `ralph-orchestrator` 최대 4기 동시 생성·운용, 무인 중간 검토 및 `send_message` 핸들 재사용 기반 컴팩트 브리프 Auto-Rework 지휘 |
+| 2 | **Ralph Orchestrator** | `pro` (**Gemini 4 Argon**) | Read-Only + `invoke_subagent` | **단위 루프 및 분대 지휘관**. 사령관 산하 최대 4기 동시 기동(또는 단독 기동)되어 산하 분대 운용, Rework 루프 시 중복 서브에이전트 스폰 없이 `send_message(conversationId)` 핸들 재사용 및 컴팩트 브리프로 고속 재작업 완수 |
 | 3 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | Spec Lock 및 파티션 범위를 바탕으로 세부 실행 카드(Execution Cards) 수립 |
-| 4 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 단일 과업 또는 할당된 파티션의 코드 구현 및 테스트를 수행하는 Write 워커 |
-| 5 | **Legion Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | **군단 코어 워커**. 각 `ralph-orchestrator` 분대 산하에서 배타적 파일 파티션 내 고속 병렬 구현 및 자체 단위 테스트 수행 |
-| 6 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | Read-Only (`view_file`) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 및 AC 대조 |
-| 7 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 판정 |
-| 8 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 1차 독립 물리 검증 (파일 수정 도구 배제) |
-| 9 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 **원시 Git 출력만으로 승인 판정** |
+| 4 | **AGY Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 단일 과업 또는 할당된 파티션의 코드 구현 및 테스트를 수행하는 Write 워커. 베이스라인 테스트 무결성 준수 (`tests/**` 임의 변조·약화 절대 금지) |
+| 5 | **Legion Worker** | `pro` (**Gemini 4 Argon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | **군단 코어 워커**. 각 `ralph-orchestrator` 분대 산하에서 배타적 파일 파티션 내 고속 병렬 구현, 베이스라인 테스트 무결성(`tests/**` 임의 변조 금지) 준수 및 단위 테스트 수행 |
+| 6 | **First Reviewer** | `flash` (**Gemini 3.8 Flash**) | Read-Only (`view_file`) | 워커가 작성한 코드를 초고속 1차 정적 리뷰 및 AC 대조. 의무적 결함 할당량 폐지(No Finding Quota, 클린 리뷰 합격) 및 P1/P2 판정 시 4요소 결함 입증 계약 필수 준수 |
+| 7 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 심판관. 꼼수 및 경계 누수 적발 시 강제 Rework 판정. 결함 할당량 없이 요구사항 충족 시 즉시 승인하되 결함 판정 시 4요소 입증 계약 엄격 적용 |
+| 8 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 독립 물리 검증. 베이스라인 테스트 변조 감시(Baseline Test Guard) 및 실제 `exit_code == 0` 원시 출력 기반 증거 범위 격리 검증 (파일 수정 도구 배제) |
+| 9 | **Final Approach Control** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 커밋 직전 최종 관제탑. 에이전트의 말을 믿지 않고 원시 Git 출력(`status`, `diff --name-status`, `diff --check`) 확인, 베이스라인 테스트 무결성 감시 및 `exit_code == 0` 증거만으로 승인 판정 |
 
 ---
 
@@ -241,6 +244,12 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 - **안티 환각 C 의사코드 추출 (Anti-Hallucination C Pseudocode)**: 내부 추론 과정(Thinking/Scratchpad), 더미 `struct` 정의(`flags1..flagsN`), 추측성 필드명 출력을 엄격히 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건(`switch`/`if`), 실제 참조 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 추출.
 - **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: `hermes` CLI 미설치 또는 로컬 모델 미구동/호출 실패(`proc.returncode != 0`) 시 결정론적으로 `exit(2)`로 종료하며 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
 
+### ⚙️ 결정론적 하네스 검증기 & 원클릭 동기화 엔진 (scripts/harness/ & tests/harness/ — 33 Tests)
+하네스의 구조적 결함과 프로젝트 전파 시 발생할 수 있는 레거시 오염을 물리적으로 검증하고 원클릭으로 안전하게 동기화합니다.
+- **`validate_harness.py --strict`**: 9대 에이전트 모델 Enum(`inherit|pro|flash|flash_lite`), 역할별 `tools` 권한 계약(Read-Only vs Write 주체), 19종 스킬 규격 및 3중 시스템 훅 무결성을 결정론적으로 전수 검증합니다.
+- **`sync_harness.py` (`update_harness.bat`)**: 타 프로젝트 대상 결정론적 미러링 & 레거시 좀비 파일 추적 소거 엔진. 마스터 템플릿에서 삭제·이동된 구버전 파일을 100% 추적 소거하며, Windows 읽기 전용(`stat.S_IWRITE`) 파일 권한을 안전하게 해제하여 완전 소거하고 대상 저장소의 중첩 `.git` 복사를 원천 차단합니다.
+- **`tests/harness/` (33개 단위 테스트)**: 에이전트 디스커버리, Dual-Brain 4대 운영 계약(No Finding Quota, Subagent Handle Reuse, Baseline Test Integrity Guard, 4-Tier Memory), 스킬 인덱서, 파티션 검증기(`MAX_CONCURRENT_RALPH = 4`), PreToolUse 슬래시 잠금 훅, 하네스 동기화 무결성을 빈틈없이 검증합니다.
+
 ---
 
 ## 📁 디렉토리 구조
@@ -251,7 +260,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 ├── 📄 AGENTS.md                        ← 테르키르도 harness 설정 (진입점)
 ├── 📄 Terukirdo_Protocol_v5.6.md       ← 정체성·모드·듀얼엔진·기획게이트·군단·보안 최상위 헌법
 ├── 📄 README.md                        ← 지금 읽고 계신 이 문서
-├── 📄 MEMORY.md                        ← 롤링 메모리 스냅샷 (학습 인사이트)
+├── 📄 MEMORY.md                        ← 4계층 가중치 메모리 장부 (Hot / Warm / Cold / Archived Decisions)
 ├── 📄 update_harness.bat               ← 타 프로젝트 원클릭 하네스 안전 동기화 스크립트
 │
 ├── 📁 .agents/
@@ -278,6 +287,11 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 │       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (9대 에이전트 모델 Enum & tools 권한 계약)
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
+├── 📁 tests/
+│   └── 📁 harness/                     ← 33개 하네스 무결성 및 운영 계약 단위 테스트 스위트
+│
+├── 📁 reference/                       ← AI 성능 평가 카드, 교차 협업 가이드, 실패 카탈로그, 리뷰 템플릿
+│
 ├── 📁 docs/                            ← 프로젝트 SSOT (Single Source of Truth)
 │   ├── specs/                              🔒 Spec-Lock 불변 기획서 보관소
 │   ├── research/                           🌐 초심층 웹 리서치 번들 보관소
@@ -292,6 +306,7 @@ v5.6은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Argon (`pro`) & Gemini 3
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-11-10** | **v5.6** | **🧠 Dual-Brain 4대 핵심 운영 통찰 하네스 전면 이식 및 하네스 테스트 스위트(33개)·동기화 엔진 완성**<br>• **리뷰어 할당량 폐지 & 4요소 결함 입증 계약 (No Finding Quota)**: 인위적 결함 발굴 할당량을 배제하고 클린 리뷰(`PASS` / `ARCHITECTURALLY ACCEPTABLE`)를 정당한 성공으로 규정하며, P1/P2 결함 발생 시 `[1. 위반된 계약 + 2. 구체적 트리거 + 3. 현재 코드 근거 + 4. 실질적 피해]`의 4대 요소 입증을 필수 헌법화 (`.agents/rules/evidence.md`, `first-reviewer`, `tech-expert`)<br>• **서브에이전트 핸들 재사용 (`send_message`) & 컴팩트 브리프**: Rework 루프 시 중복 서브에이전트 인스턴스 생성을 금지하고 활성 `conversationId`로 `send_message`를 호출하여 이전 컨텍스트를 보존한 채 고속 재작업 수행 및 최종 diff 기반 재검증 의무화 (`ralph-orchestrator`, `legion-commander`)<br>• **베이스라인 테스트 무결성 보호 (Baseline Test Integrity Guard)**: 억지 빌드 통과를 위한 기존 테스트(`tests/**`)의 임의 수정·삭제·단언문 약화를 원천 차단하고 실제 diff와 exit code 중심의 증거 범위 격리 확립 (`universal-final-controller`, `final-approach-control`, `agy-worker`, `legion-worker`)<br>• **4계층 가중치 메모리 장부 (`Hot / Warm / Cold / Archived Decisions`)**: `MEMORY.md`를 활성 불변식(Hot), 도메인 교훈(Warm), 과거 참조(Cold), 회귀 방지용 대체 결정 장부(Archived Decisions)로 정밀 분할하고 단순 읽기 시 장부 갱신만을 위한 덮어쓰기 금지 명문화<br>• **결정론적 하네스 동기화 & 레거시 추적 소거 (`sync_harness.py`, `update_harness.bat`)**: 타 프로젝트 배포 시 구버전 좀비 파일 추적 소거, Windows 읽기 전용 파일 권한 해제(`stat.S_IWRITE`) 완전 소거 및 중첩 `.git` 복사 원천 차단<br>• **33개 하네스 단위 테스트 스위트 전수 통과**: 에이전트 디스커버리, 4대 운영 계약, 스킬 인덱서, 파티션 검증기, 동기화 엔진 무결성 검증 완료 및 임시 참조 폴더(`reference/dual-brain`) 100% 흡수 후 소거 완료 |
 | **2026-11-02** | **v5.6** | **🚀 Hermes CLI 로컬 모델(Offrail-27B-12G) 25배 속도 최적화 및 안티 환각 C 의사코드 가드레일 강화**<br>• Mode A에 `--ignore-rules --reasoning none -t none --max-turns 1`을 적용하여 20,000+ 토큰 자동 주입 및 추론 오버헤드 제거 (질의당 27분 → 45~60초, 약 25x 가속), Mode B에 `--yolo --ignore-rules --reasoning low` 적용<br>• 내부 추론/더미 `struct`/추측성 필드명 출력을 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건, 실제 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 출력하도록 프롬프트 및 `.agents/rules/safety.md` 명문화<br>• 바이트 단위 `--size`(400~750 bytes) + `--no-stop-at-ret` 정렬 지침 및 `proc.returncode != 0` 시 무조건 `[FORCE_ASK: HERMES_UNAVAILABLE]`(`sys.exit(2)`) 종료 안전장치 강화 |
 | **2026-10-31** | **v5.6** | **⚔️ 슬래시 명령 전용 3계층 Quad-Ralph '에이전트 군단(Agent Legion)' 아키텍처 공식 탑재**<br>• 최상위 자동 검토 사령관(`legion-commander`)이 하위에 `ralph-orchestrator`를 **최대 4기(Ralph #1 ~ #4)까지 동시에 생성·운용**하고, 각 랄프 에이전트가 산하에 자체 워커(`legion-worker`/`agy-worker`)와 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 운용하는 3계층 지휘 체계 완비 (총 9인 에이전트 / 19종 스킬)<br>• **대화(자연어) 발동 절대 금지 & `/agent-legion`(`/`legion) 슬래시 전용 4중 물리 잠금**: `pre_tool_use_policy.py`가 프롬프트 및 `transcript.jsonl` 최신 사용자 입력을 대조하여 자연어 호출을 즉시 `deny` 차단하고, `skill_indexer.py`가 자연어 검색 시 후보에서 제외<br>• Wave당 최대 4기 동시 실행 제한(`MAX_CONCURRENT_RALPH = 4`) 및 파일 무충돌을 결정론적으로 사전 검증하는 `partition_validator.py` 및 29개 하네스 단위 테스트 전수 통과 |
 | **2026-10-29** | **v5.6** | **🔧 서브에이전트 도구 권한(`tools` Frontmatter) 계약 복구 및 원클릭 동기화(`update_harness.bat`) 구축**<br>• Antigravity 커스텀 에이전트(`agent.md`)에서 `tools:` 미지정 시 Read-Only 도구 세트로 기본 폴백되는 런타임 메커니즘 규명 및 전면 패치<br>• `validate_harness.py` 및 `test_agent_discovery.py`에 에이전트별 `tools` 권한 계약 결정론적 검증 게이트 탑재 및 `update_harness.bat` 추가 |

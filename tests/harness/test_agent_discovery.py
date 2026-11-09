@@ -94,5 +94,56 @@ class TestAgentDiscovery(unittest.TestCase):
                     f"Read-only agent {agent} must not have write tools: {tool_set & write_tools}",
                 )
 
+    def test_dual_brain_operational_contracts_present(self):
+        base_dir = Path(__file__).parent.parent.parent
+        agents_dir = base_dir / ".agents" / "agents"
+
+        # 1. first-reviewer and tech-expert contain 4-Element Defect Contract and No Finding Quota
+        for agent in ("first-reviewer", "tech-expert"):
+            content = (agents_dir / agent / "agent.md").read_text(encoding="utf-8")
+            self.assertIn(
+                "4-Element Defect Contract",
+                content,
+                f"{agent} missing 4-Element Defect Contract rule",
+            )
+            self.assertIn(
+                "No Finding Quota",
+                content,
+                f"{agent} missing No Finding Quota rule",
+            )
+
+        # 2. ralph-orchestrator and legion-commander contain send_message subagent reuse rules
+        for agent in ("ralph-orchestrator", "legion-commander"):
+            content = (agents_dir / agent / "agent.md").read_text(encoding="utf-8")
+            self.assertIn(
+                "send_message",
+                content,
+                f"{agent} missing send_message in subagent reuse rules",
+            )
+            self.assertIn(
+                "Subagent Handle Reuse",
+                content,
+                f"{agent} missing Subagent Handle Reuse section",
+            )
+
+        # 3. universal-final-controller and final-approach-control contain Baseline Test Integrity rule
+        for agent in ("universal-final-controller", "final-approach-control"):
+            content = (agents_dir / agent / "agent.md").read_text(encoding="utf-8")
+            self.assertIn(
+                "Baseline Test Integrity",
+                content,
+                f"{agent} missing Baseline Test Integrity rule",
+            )
+
+        # 4. MEMORY.md contains ## Archived Decisions
+        memory_file = base_dir / "MEMORY.md"
+        self.assertTrue(memory_file.is_file(), "MEMORY.md not found")
+        memory_content = memory_file.read_text(encoding="utf-8")
+        self.assertIn(
+            "## Archived Decisions",
+            memory_content,
+            "MEMORY.md missing ## Archived Decisions section",
+        )
+
 if __name__ == "__main__":
     unittest.main()

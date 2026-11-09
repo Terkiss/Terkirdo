@@ -248,6 +248,13 @@ Finding 발행
 
 동일 Finding에 대한 자동 Rework는 최대 3회다. 3회를 초과하면 `BLOCKED`로 전환하고 사용자에게 에스컬레이션한다.
 
+### Rework 시 서브에이전트 핸들 재사용 (`send_message`) 및 4요소 결함 계약 (No Finding Quota)
+
+* **서브에이전트 핸들 재사용 (`send_message`)**: 동일 작업/파티션 내에서 재작업(Rework)이나 추가 검증을 수행할 때, 이미 해당 역할을 수행 중인 활성 서브에이전트(`conversationId`)가 존재하면 `invoke_subagent`로 중복 신규 인스턴스를 스폰하지 않고 `send_message(Recipient=conversationId, Message=...)`를 호출하여 기존 핸들을 재사용한다. 이를 통해 이전 파일 컨텍스트와 수정 히스토리를 유지하며 컴팩트 브리프(목표, 범위, diff 요약, 검증 명령)로 고속 재작업을 완수한다.
+* **리뷰어 할당량 없음 (No Finding Quota & Clean Review is Success)**: 리뷰어(`first-reviewer`, `tech-expert` 등)는 의무적인 결함 발굴 할당량이 없으며, 코드가 요구사항과 아키텍처 경계를 충족하면 `PASS` 또는 `ARCHITECTURALLY ACCEPTABLE`을 발급하는 것이 완전한 성공이다. 불필요한 추측성 추상화 요구나 스타일 쿼터를 강제하지 않는다.
+* **4요소 결함 입증 계약 (4-Element Defect Contract)**: `REWORK REQUIRED`를 유발하는 모든 `P1`/`P2` Finding은 반드시 `[1. 위반된 계약/요구사항 + 2. 구체적 트리거 + 3. 현재 코드 근거(파일/라인) + 4. 실질적 피해/영향]`의 4요소를 엄격히 입증해야 한다. 미입증 가설이나 단순 취향은 `P3` 이하로만 권고한다.
+* **최종 상태 재검증 (Final-State Verification)**: 수정 전의 검증 통과는 수정 후의 유효성을 보증하지 않는다. 재작업 후에는 반드시 변경된 최종 diff를 기반으로 검증관을 재가동하여 영향받은 검사를 전수 재실행하고 Finding을 `FIXED` 등으로 명확히 종결한다.
+
 ### Agent Legion 병렬 무인 루프 흐름 (슬래시 명령 `/agent-legion` 또는 `/legion` 전용 — 대화 발동 절대 금지):
 
 > **발동 불변식 (Slash-Command Only)**: 자동 검토 사령관(`legion-commander`)은 일반 자연어 대화로는 절대 발동할 수 없으며, 오직 주인님이 `/agent-legion` 또는 `/legion` 슬래시 명령을 명시적으로 입력했을 때만 가동한다 (`pre_tool_use_policy.py`가 물리적으로 강제 차단).

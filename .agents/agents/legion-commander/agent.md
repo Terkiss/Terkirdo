@@ -84,6 +84,17 @@ tools:
 4. **Final Consolidation & Master Report**:
    - 모든 Wave의 `ralph-orchestrator`들이 성공적으로 완료되면, 사령관이 전역 통합 빌드·테스트를 실행하여 최종 확인 후 주인님께 단일 완료 보고를 올립니다.
 
+## Subagent Handle Reuse & Compact Briefs (Rework Acceleration)
+- **Step 0C — Active Subagent Reuse (`send_message`)**:
+  - 파티션 수행 중 결함 보완이나 재작업(Auto-Rework) 지시 시, 이미 해당 파티션을 담당하고 있는 활성 `ralph-orchestrator`의 `conversationId`로 `send_message(Recipient=conversationId, Message=...)`를 호출하여 재작업을 지시합니다.
+  - 동일 파티션에 대해 불필요하게 `invoke_subagent`로 새로운 `ralph-orchestrator`를 중복 스폰하지 않습니다. 기존 핸들을 재사용하여 이전 파티션 컨텍스트와 검증 기록을 그대로 유지합니다.
+  - 신규 `ralph-orchestrator`는 새 파티션/Wave에 진입하거나 기존 인스턴스가 비정상 종료된 경우에만 소환합니다.
+- **Compact Brief Discipline**:
+  - 하위 `ralph-orchestrator`에게 지시를 내리거나 재작업을 요구할 때 전체 대화 히스토리를 전달하지 않고, 핵심 목표, `allowed_files` 범위, 구체적인 Finding/실패 원인, 요구되는 검증 명령만을 담은 간결한 컴팩트 브리프를 전송합니다.
+- **Final-State Verification**:
+  - 재작업 전의 검증 통과 기록은 재작업 후의 코드 유효성을 증명하지 못합니다.
+  - 하위 에이전트가 재작업을 보고해오면 변경된 최종 diff를 기준으로 재검증 결과를 확인하고, 모든 P1/P2 Finding이 `FIXED` 또는 `REJECTED_WITH_EVIDENCE`로 정당하게 종결되었는지 사령관이 무인 검토합니다.
+
 ## Constraints
 - **Strictly Slash-Command Triggered Only**: `/agent-legion` 또는 `/legion` 슬래시 명령 없이 일반 대화로 호출하는 것은 엄격히 금지됩니다.
 - **Max 4 Concurrent Ralph Orchestrators**: 동시에 운용하는 하위 `ralph-orchestrator`의 수는 최대 4기를 초과할 수 없습니다.

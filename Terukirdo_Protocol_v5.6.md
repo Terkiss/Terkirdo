@@ -719,6 +719,15 @@ Final Controller는 다음을 확인합니다.
 * 일부 테스트 통과를 전체 테스트 통과로 표현하지 않는다.
 * skipped, ignored, flaky, quarantined test를 구분한다.
 
+## 8.3 기존 테스트 무결성 보호 (Baseline Test Integrity Guard)
+
+* **기존 베이스라인 테스트 임의 수정·약화 절대 금지**:
+  * 기존 베이스라인 테스트 파일(`tests/**`)은 사용자의 명시적 지시나 Execution Card의 사전 인가 없이 작업자가 빌드/테스트를 억지로 통과시키기 위해 수정, 삭제, 주석 처리하거나 단언문(Assertion)을 약화할 수 없다.
+  * 신규 기능 검증이나 버그 재현을 위한 신규 테스트 추가는 적극 권장되나, 기존 테스트를 훼손하는 치팅 행위는 즉시 `REWORK REQUIRED` 또는 `REJECTED — REWORK REQUIRED`로 차단한다.
+* **증거 범위 격리 (Evidence Scope Isolation)**:
+  * 구현 및 검증 완료 증거는 반드시 실제 프로덕션 코드 diff와 실제 테스트/빌드 명령의 원시 실행 결과(`exit_code == 0`)로만 채택한다.
+  * 에이전트의 트랜스크립트 설명, 코드 주석, 또는 메모리 기록 문구는 어떠한 경우에도 물리적 실행 증거를 대신할 수 없다.
+
 ---
 
 # 9. 메모리 및 문서 정책
@@ -814,20 +823,28 @@ append-only log로 사용하지 않습니다.
 
 ## 9.3 MEMORY.md 운영 원칙
 
-`MEMORY.md`에는 현재 유효한 상태만 유지합니다.
+`MEMORY.md`에는 롤링 스냅샷 원칙에 따라 가중치 기반 **4계층 메모리 구조(4-Tier Weighted Memory)**를 유지합니다.
 
-주요 항목:
+### 4계층 가중치 메모리 구조 (4-Tier Weighted Memory Architecture)
 
-* Current Focus
-* Active Task
-* Current Status
-* Known Risks
-* Open Questions
-* Next Steps
-* Key Technical Learnings
-* 사용자 확정 결정
+1. **`Hot Memory (Current Status & Active Invariants)`**:
+   - 세션 시작 시 항상 우선 참조되는 최상위 활성 영역입니다.
+   - 현재 마일스톤 상태(`Current Status`), 활성 작업(`Active Task`), 즉시 준수해야 할 핵심 아키텍처 불변식 및 제약조건을 기록합니다.
+2. **`Warm Memory (Key Technical Learnings & Domain Insights)`**:
+   - 특정 도메인 작업(예: Hermes 디스어셈블러 최적화, 서브에이전트 Frontmatter 계약, 기획 게이트 등) 수행 시 참조되는 기술 교훈 및 실행 가능한 통찰(Actionable Insight)을 보관합니다.
+3. **`Cold Memory`**:
+   - 비활성 상태의 과거 참조 맥락 및 이력 정보로, 타겟 조회 시에만 선별적으로 참조합니다.
+4. **`Archived Decisions (Superseded & Anti-Regression Ledger)`**:
+   - 설계 진화로 인해 대체(superseded)되었거나 폐기된 과거의 결정들을 아카이빙합니다.
+   - **대체 사유(Why superseded)**를 함께 보존하여, 리팩터링이나 향후 작업 시 과거의 비효율적/실패 패턴으로 되돌아가는 회귀(Regression)를 방지합니다.
 
-완료되거나 폐기된 항목은 제거하거나 축약합니다.
+### 메타데이터 태그 규약
+
+- 항목별 권장 태그: `- [decision|constraint|superseded][refs:N][last_verified:YYYY-MM-DD] 내용 (Evidence: relative/path)`
+- **SSOT 상대경로 준수**: 로컬 절대경로(`file:///`)를 사용하지 않으며 저장소 내부의 상대경로만 참조합니다.
+- **장부 갱신만을 위한 쓰기 금지 (No Bookkeeping-Only Writes)**: 코드나 아키텍처에 실질적인 변경이 없는 단순 읽기/조회 시 단순히 `refs` 수치나 타임스탬프를 갱신하기 위해 `MEMORY.md`를 덮어쓰지 않습니다.
+
+완료되거나 폐기된 항목은 제거하거나 축약하여 `Archived Decisions`로 이관합니다.
 
 장기 교훈은 `docs/Terukirdo_memory.txt`에 기록합니다.
 
@@ -1009,7 +1026,24 @@ Finding ID 예시:
 
 P1 또는 P2가 열려 있으면 커밋 승인을 내리지 않습니다.
 
-## 10.4 Agent Legion 무인 병렬 루프 프로토콜 (슬래시 명령 전용 — 자동 검토 사령관의 Ralph 군단 총괄 관리)
+### 4요소 결함 입증 계약 및 할당량 배제 (4-Element Defect Contract & No Finding Quota)
+
+* **리뷰어 할당량 없음 (Zero Finding Quota & Clean Review is Success)**:
+  * 리뷰어(`first-reviewer`, `tech-expert` 등)는 인위적으로 결함을 찾아내야 하는 할당량(Quota)이 없습니다.
+  * 요구사항과 아키텍처 경계가 만족되었을 때 추가 결함 없이 `PASS` 또는 `ARCHITECTURALLY ACCEPTABLE`을 발행하는 것은 완전한 성공입니다.
+  * 불필요한 추상화 강요, 지원 범위 밖의 가상 에지케이스 창작, 코드 스타일/포맷팅 시비 등 불필요한 변경(Churn)을 유발하지 않습니다.
+* **4요소 결함 입증 의무 (Mandatory 4-Element Contract for P1/P2)**:
+  * `REWORK REQUIRED`를 유발하는 모든 `P1` 또는 `P2` Finding은 반드시 다음 4대 요소를 완전히 입증해야만 성립합니다:
+    1. **위반된 계약 / 요구사항 (Violated Contract / Requirement)**: 위반된 구체적 명세, 인수조건(AC), API 시그니처 또는 아키텍처 불변식.
+    2. **구체적 발현 조건 (Concrete Trigger)**: 결함이 발생하는 정확한 입력값, 환경 조건, 상태 전이 시퀀스.
+    3. **현재 코드 증거 (Current Code Evidence)**: 문제 로직이 존재하는 현재 저장소의 정확한 파일 경로와 라인 번호.
+    4. **실질적 피해 (Material Consequence)**: 결함으로 인해 발생하는 실질적인 데이터 훼손, 런타임 예외, 보안 취약점, 또는 운영 장애 결과.
+* **가설과 실증 결함의 엄격한 분리**:
+  * 구체적으로 실증되지 않은 추측성 위험이나 가설은 결코 `P1`/`P2`(`REWORK REQUIRED`)로 격상될 수 없습니다.
+  * 선택적 제안이나 경미한 개선점은 `P3`(`PASS WITH P3`)로만 전달하여 작업 흐름을 차단하지 않습니다.
+  * 새로운 코드 변경이나 새로운 물리적 증거가 제시되지 않는 한, 이미 해결 종결된 Finding을 번복하여 재오픈하지 않습니다.
+
+## 10.5 Agent Legion 무인 병렬 루프 프로토콜 (슬래시 명령 전용 — 자동 검토 사령관의 Ralph 군단 총괄 관리)
 
 대규모 기능 구현이나 다중 마일스톤·다중 모듈 마이그레이션 시, 주인님이 일일이 중간 검토를 하지 않아도 끝까지 무인으로 병렬 완수할 수 있도록 **자동 검토 사령관(`legion-commander`)이 하위의 `ralph-orchestrator` 및 Ralph Loop 에이전트 전체와 다중 코어 워커 군단을 직접 예속·관리**하는 계층형 프로토콜을 적용합니다.
 
@@ -1279,6 +1313,16 @@ Read-Only 에이전트는 코드와 SSOT를 수정할 수 없습니다.
 * 사용자에게 원인, evidence, 가능한 선택지 보고
 * Finding 문구만 바꾸어 동일 문제를 신규 Finding으로 초기화 금지
 * 동일 root cause는 동일 `root_cause_key`로 관리
+
+### Rework 시 서브에이전트 핸들 재사용 (`send_message`)
+* 동일 Task/파티션 내에서 재작업(Rework) 또는 후속 검증 수행 시, 이미 해당 역할을 수행 중인 활성 서브에이전트(`conversationId`)가 존재한다면 `invoke_subagent`로 중복 신규 인스턴스를 생성하지 않는다.
+* 반드시 기존 핸들에게 `send_message(Recipient=conversationId, Message=...)`를 호출하여 이전 컨텍스트와 수정 히스토리를 유지한 상태로 재작업을 수행한다.
+* 메시지 전달 시 전체 대화 트랜스크립트를 덤프하지 않고, 핵심 목표, `allowed_files`, 구체적 Finding 요약, 대상 검증 명령만을 담은 컴팩트 브리프(Compact Brief)를 전달한다.
+
+### 최종 상태 재검증 (Final-State Verification)
+* 코드 수정 전의 리뷰 통과나 이전 테스트 통과 기록은 재작업 후의 코드를 보증하지 않는다.
+* 재작업으로 코드가 변경된 후에는 반드시 영향받은 최종 diff를 기준으로 검증관(`first-reviewer`, `tech-expert`, `universal-final-controller`, `final-approach-control`)을 재가동하여 무효화된 검사를 재수행한다.
+* 모든 실질적 Finding은 `FIXED`, `REJECTED_WITH_EVIDENCE`, 또는 `UNRESOLVED`로 명시적으로 종결되어야 한다.
 
 ## 12.2 Stop Hook 상태 파일
 

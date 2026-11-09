@@ -112,3 +112,40 @@
 - Updated `MEMORY.md` (Current Status, Key Technical Learnings Actionable Insight) and `docs/Terukirdo_Trajectory.txt`.
 - Synchronized `README.md` with v5.6 Hermes CLI 25x speed optimization, anti-hallucination C pseudocode rules, scripts/harness/sync_harness.py hierarchy, and changelog.
 - Verified all modifications against `validate_harness.py --strict`, `hermes_disasm.py --help`, and the harness unit test suite (31 tests passing).
+
+[2026-11-09] Transplanted 4 Core Operational Insights from Dual-Brain into Terukirdo v5.6 Harness (TASK-20261109-DUAL-BRAIN-HARNESS-UPGRADE).
+- Insight #1: Reviewer Precision — No Finding Quota & 4-Element Defect Contract:
+  - Codified Zero Finding Quota in `.agents/agents/first-reviewer/agent.md`, `.agents/agents/tech-expert/agent.md`, and `.agents/rules/evidence.md`: Clean review (`PASS` / `ARCHITECTURALLY ACCEPTABLE`) is a complete success when code cleanly meets requirements; reviewers have no quota of manufactured defects.
+  - Enforced mandatory 4-Element Defect Contract for all P1/P2 findings: [1. Violated Contract/Requirement + 2. Concrete Trigger + 3. Current Code Evidence + 4. Material Consequence].
+  - Banned speculative risk escalation; restricted non-blocking stylistic suggestions to P3 (`PASS WITH P3`).
+- Insight #2: Subagent Handle Reuse (`send_message`) & Compact Briefs for Rework:
+  - Enacted Step 0C Subagent Reuse in `.agents/agents/ralph-orchestrator/agent.md` and `.agents/agents/legion-commander/agent.md`: Reuses active subagents via `send_message(Recipient=conversationId, Message=...)` during rework/follow-up to preserve file context and findings instead of spawning redundant subagent instances.
+  - Mandated Compact Briefs (objective, allowed files, finding diff summary, target verification commands) instead of dumping conversational transcripts.
+  - Enforced Final-State Verification: Re-verifying final diffs and re-running invalidated checks after rework, explicitly closing findings as `FIXED`, `REJECTED_WITH_EVIDENCE`, or `UNRESOLVED`.
+- Insight #3: Baseline Test Integrity Guard & Evidence Scope Isolation:
+  - Added Baseline Test Integrity checks in `.agents/agents/universal-final-controller/agent.md`, `.agents/agents/final-approach-control/agent.md`, `.agents/agents/agy-worker/agent.md`, `.agents/agents/legion-worker/agent.md`, and `.agents/rules/evidence.md`.
+  - Strictly banned unauthorized modification, deletion, or assertion weakening of baseline tests (`tests/**`) to force a pass; tampering triggers immediate `REWORK REQUIRED`.
+  - Enforced evidence scope isolation: Completion evidence must originate from production diffs and raw command/test outputs (`exit_code == 0`), never transcript narrative claims.
+- Insight #4: 4-Tier Weighted Memory Architecture (`Hot / Warm / Cold / Archived Decisions`):
+  - Codified 4-tier memory structure in `.agents/rules/documentation.md` and `Terukirdo_Protocol_v5.6.md` (Section 9.3).
+  - Restructured `MEMORY.md` into Hot Memory (Current Status & Active Invariants), Warm Memory (Key Technical Learnings & Domain Insights), Cold Memory (Historical reference), and Archived Decisions (Superseded decisions & anti-regression ledger).
+  - Prohibited bookkeeping-only writes on read-only reviews; enforced repository-relative paths for references.
+- Test Suite & Documentation Synchronization:
+  - Added unit test `test_dual_brain_operational_contracts_present` to `tests/harness/test_agent_discovery.py`.
+  - Added unit test `test_sync_harness_ignores_nested_git_and_purges_readonly_files` to `tests/harness/test_update_harness.py`.
+  - Fixed Windows read-only packfile purge failure (`WinError 5`) and nested `.git` copy leak in `scripts/harness/sync_harness.py` using `_force_unlink`, `_force_rmtree` (`stat.S_IWRITE`), and `IGNORE_NAMES = {..., ".git"}`.
+  - Synchronized `docs/harness/review-contract.md` and `docs/harness/evidence-policy.md` with Zero Finding Quota, 4-Element Defect Contract, Subagent Handle Reuse, Baseline Test Integrity Guard, and Evidence Scope Isolation.
+  - Synchronized `AGENTS.md`, `Terukirdo_Protocol_v5.6.md`, `README.md`, `MEMORY.md`, and `docs/Terukirdo_Trajectory.txt`.
+  - Validated template via `scripts/harness/validate_harness.py --strict` and harness unit test discovery (33 tests passing).
+
+[2026-11-10] Purged Temporary Reference Folder & Synchronized Full README (TASK-20261110-README-SYNC-AND-CLEANUP).
+- Removed temporary untracked reference folder `reference/dual-brain` using Python `shutil.rmtree` with `stat.S_IWRITE` read-only unlinking handler.
+- Preserved all 4 tracked files under `reference/` (`ai-performance-cards.md`, `cross-ai-collaboration-guide.md`, `failure-catalog.md`, `review-prompt-template.md`).
+- Synchronized `README.md` across entire body:
+  - Top badges: Added `Harness_Tests-33_Passed` badge.
+  - Core philosophy: Expanded 8 core philosophies to 10 core philosophies explicitly covering Separation of Powers & 4-Element Defect Contract, Handle Reuse & Baseline Test Guard, 4-Tier Weighted Memory Ledger, and Zero Trust Hooks & Deterministic Mirror/Purge.
+  - Agent squad table: Updated roles of all 9 agents with dual-brain operational contracts (`send_message` handle reuse & compact briefs, No Finding Quota & 4-Element Defect Contract, Baseline Test Integrity Guard, raw `exit_code == 0` evidence scope isolation).
+  - Safety & physical verification section: Added subsection for deterministic harness validator (`validate_harness.py --strict`), one-click sync engine (`sync_harness.py`, `update_harness.bat`), and 33-test harness suite (`tests/harness/`).
+  - Directory structure: Updated `MEMORY.md` to 4-tier weighted ledger, added `tests/harness/` and `reference/`.
+  - Changelog: Updated top entry for 2026-11-10.
+- Synchronized turn-end state in `MEMORY.md` and verified with `validate_harness.py --strict` and 33 unit tests passing.

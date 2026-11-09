@@ -22,3 +22,5 @@ All executed test or verification commands must return one of the following stat
 1. **No False Pass**: A task must never report `PASS` unless the command was actually executed and succeeded. If no command ran, it must be reported as `SKIPPED_NO_COMMAND` or `NOT_RUN`.
 2. **Insufficient Evidence**: If any required verification command is `NOT_RUN`, the Universal Final Controller or Final Approach Control will reject the completion with `REJECTED — EVIDENCE INSUFFICIENT`.
 3. **P1/P2 Blockers**: Any open findings with severity `P1` or `P2` will automatically block completion.
+4. **Baseline Test Integrity Guard**: Existing baseline test files (`tests/**`) must never be modified, deleted, commented out, or had assertions weakened to force a pass unless explicitly authorized in the Execution Card. Adding new tests is encouraged; tampering with existing tests triggers immediate rework rejection.
+5. **Evidence Scope Isolation**: Completion evidence must derive exclusively from actual production code diffs and verifiable raw command/test execution outputs (`exit_code == 0`), never from agent transcript narrative claims, comments, or memory entries alone.

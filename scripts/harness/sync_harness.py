@@ -9,6 +9,7 @@ Terukirdo v5.6 Deterministic Harness Synchronizer & Legacy Purger
 
 import os
 import sys
+import stat
 import shutil
 import filecmp
 import argparse
@@ -61,11 +62,44 @@ KNOWN_LEGACY_PATHS = [
     "scripts/auto_evolve.py",
 ]
 
-IGNORE_NAMES = {"__pycache__", ".pytest_cache", ".pyc"}
+IGNORE_NAMES = {"__pycache__", ".pytest_cache", ".pyc", ".git"}
 
 
 def should_ignore(name: str) -> bool:
     return name in IGNORE_NAMES or name.endswith(".pyc")
+
+
+def _force_unlink(p: Path):
+    """Safely unlink a file, clearing read-only bit on Windows if necessary."""
+    try:
+        os.chmod(p, stat.S_IWRITE)
+    except Exception:
+        pass
+    p.unlink()
+
+
+def _force_rmtree(p: Path):
+    """Safely remove a directory tree, clearing read-only bits on Windows (e.g. .git packfiles)."""
+    def _handle_remove_readonly(func, path, exc_info):
+        try:
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+        except Exception:
+            pass
+
+    if sys.version_info >= (3, 12):
+        def _on_exc(func, path, exc):
+            try:
+                os.chmod(path, stat.S_IWRITE)
+                func(path)
+            except Exception:
+                pass
+        try:
+            shutil.rmtree(p, on_exc=_on_exc)
+        except TypeError:
+            shutil.rmtree(p, onerror=_handle_remove_readonly)
+    else:
+        shutil.rmtree(p, onerror=_handle_remove_readonly)
 
 
 def is_preserved_subpath(rel_posix: str) -> bool:
@@ -124,7 +158,7 @@ def mirror_directory(source_root: Path, target_root: Path, rel_dir: str, stats: 
                 src_file = corresponding_src_root / fname
                 if should_ignore(fname) or not src_file.is_file():
                     try:
-                        dst_file.unlink()
+                        _force_unlink(dst_file)
                         if not should_ignore(fname):
                             stats["deleted"].append(file_rel)
                     except Exception as e:
@@ -138,7 +172,7 @@ def mirror_directory(source_root: Path, target_root: Path, rel_dir: str, stats: 
                 src_subdir = corresponding_src_root / dname
                 if should_ignore(dname) or not src_subdir.is_dir():
                     try:
-                        shutil.rmtree(dst_subdir)
+                        _force_rmtree(dst_subdir)
                         if not should_ignore(dname):
                             stats["deleted"].append(dir_rel + "/")
                     except Exception as e:
@@ -147,6 +181,10 @@ def mirror_directory(source_root: Path, target_root: Path, rel_dir: str, stats: 
         if not src_dir.is_dir() and not is_preserved_subpath(rel_dir):
             try:
                 if not any(dst_dir.iterdir()):
+                    try:
+                        os.chmod(dst_dir, stat.S_IWRITE)
+                    except Exception:
+                        pass
                     dst_dir.rmdir()
                     stats["deleted"].append(rel_dir + "/")
             except Exception as e:
@@ -188,7 +226,7 @@ def purge_legacy_root_files(source_root: Path, target_root: Path, stats: dict):
     for target_proto in target_root.glob("Terukirdo_Protocol_*.md"):
         if target_proto.name not in source_protocols:
             try:
-                target_proto.unlink()
+                _force_unlink(target_proto)
                 stats["deleted"].append(target_proto.name)
             except Exception as e:
                 stats["errors"].append(f"Failed to delete stale protocol {target_proto.name}: {e}")
@@ -198,13 +236,13 @@ def purge_legacy_root_files(source_root: Path, target_root: Path, stats: dict):
         legacy_path = target_root / rel_legacy
         if legacy_path.is_file():
             try:
-                legacy_path.unlink()
+                _force_unlink(legacy_path)
                 stats["deleted"].append(rel_legacy)
             except Exception as e:
                 stats["errors"].append(f"Failed to delete legacy file {rel_legacy}: {e}")
         elif legacy_path.is_dir():
             try:
-                shutil.rmtree(legacy_path)
+                _force_rmtree(legacy_path)
                 stats["deleted"].append(rel_legacy + "/")
             except Exception as e:
                 stats["errors"].append(f"Failed to delete legacy dir {rel_legacy}: {e}")

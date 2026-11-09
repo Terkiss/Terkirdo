@@ -17,3 +17,18 @@ This document outlines the strict guidelines for gathering and validating verifi
 - `SKIPPED_NOT_APPLICABLE`: Verification not applicable.
 - `BLOCKED_ENVIRONMENT`: Execution blocked by lack of tools/dependencies.
 - `NOT_RUN`: Verified command was not executed.
+
+## Evidence-Before-Changes & 4-Element Defect Contract (No Finding Quota)
+
+1. **Zero Finding Quota**: Reviewers (`first-reviewer`, `tech-expert`, etc.) have zero quota of findings to manufacture. A clean review (`PASS` / `ARCHITECTURALLY ACCEPTABLE`) without finding defects is a 100% complete, successful verification outcome when existing code cleanly meets requirements.
+2. **Mandatory 4-Element Defect Contract**: Any `P1` or `P2` finding triggering `REWORK REQUIRED` MUST prove all four elements:
+   - **Element 1: Violated Contract / Requirement**: The exact specification, acceptance criterion, architectural invariant, or security boundary that is breached.
+   - **Element 2: Concrete Trigger**: The precise input, environment condition, state sequence, or edge case that triggers the defect.
+   - **Element 3: Current Code Evidence**: The actual file path and line number(s) in the current codebase demonstrating the failure logic.
+   - **Element 4: Material Consequence**: The concrete, tangible harm, operational failure, data loss, security exposure, or crash that results.
+3. **Hypotheses vs Proven Defects**: Speculative risks, unproven hypotheses, formatting churn, or optional style preferences must never be escalated to `P1`/`P2`. Label non-blocking suggestions as `P3` (`PASS WITH P3`) only when genuinely useful.
+
+## Baseline Test Integrity & Evidence Scope Isolation
+
+1. **Baseline Test Integrity Guard**: Existing baseline test files (`tests/**`) must never be modified, deleted, commented out, or had their assertion criteria weakened by workers simply to force a pass, unless explicitly authorized by the user or Execution Card. Adding new tests to verify new features or bug fixes is encouraged.
+2. **Evidence Scope Isolation**: Completion evidence must derive exclusively from actual production code diffs and raw command/test execution outputs (`exit_code == 0`). Agent transcript claims, narrative explanations, comments, or memory entries never substitute for raw execution evidence.

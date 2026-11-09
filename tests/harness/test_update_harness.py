@@ -1,8 +1,10 @@
+import os
+import sys
+import stat
 import unittest
 import tempfile
 import subprocess
 from pathlib import Path
-import sys
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "harness"))
@@ -111,6 +113,44 @@ class TestUpdateHarness(unittest.TestCase):
             self.assertEqual(res.returncode, 0, f"update_harness.bat failed:\n{res.stdout}\n{res.stderr}")
             self.assertFalse(zombie.exists(), "update_harness.bat did not purge Terukirdo_Protocol_v5.4.md")
             self.assertTrue((target / "update_harness.bat").is_file(), "update_harness.bat was not copied to target")
+
+    def test_sync_harness_ignores_nested_git_and_purges_readonly_files(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            target = Path(tmpdir)
+
+            # 1. Place a read-only packfile inside target/reference/zombie_dir/.git/objects/pack/test.idx
+            zombie_pack = target / "reference" / "zombie_dir" / ".git" / "objects" / "pack" / "test.idx"
+            zombie_pack.parent.mkdir(parents=True, exist_ok=True)
+            zombie_pack.write_bytes(b"\xff\x74\x4f\x63\x00\x00\x00\x02")
+            os.chmod(zombie_pack, stat.S_IREAD)
+
+            # 2. Place a zombie read-only file target/.agents/readonly_zombie.txt
+            readonly_zombie = target / ".agents" / "readonly_zombie.txt"
+            readonly_zombie.parent.mkdir(parents=True, exist_ok=True)
+            readonly_zombie.write_text("read-only zombie file", encoding="utf-8")
+            os.chmod(readonly_zombie, stat.S_IREAD)
+
+            # 3. Run sync_harness from REPO_ROOT to target with run_verification=False
+            success, stats = sync_harness(REPO_ROOT, target, run_verification=False)
+            self.assertTrue(success, f"sync_harness failed with errors: {stats['errors']}")
+            self.assertEqual(stats["errors"], [], f"Errors occurred during sync: {stats['errors']}")
+
+            # 4. Assertions:
+            # - (target / "reference" / "dual-brain" / ".git").exists() is False (nested .git is never copied)
+            self.assertFalse(
+                (target / "reference" / "dual-brain" / ".git").exists(),
+                "Nested .git repository was unexpectedly copied to target!",
+            )
+
+            # - Read-only zombie files and directories were cleanly purged
+            self.assertFalse(
+                (target / "reference" / "zombie_dir").exists(),
+                "Read-only zombie directory was not purged!",
+            )
+            self.assertFalse(
+                (target / ".agents" / "readonly_zombie.txt").exists(),
+                "Read-only zombie file was not purged!",
+            )
 
 
 if __name__ == "__main__":
