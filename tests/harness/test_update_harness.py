@@ -17,11 +17,12 @@ class TestUpdateHarness(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir)
 
-            # 1. Plant obsolete/deleted files from older Terukirdo versions (v5.2 ~ v5.5)
+            # 1. Plant obsolete/deleted files from older Terukirdo versions (v5.2 ~ v5.6)
             zombie_files = [
                 "Terukirdo_Protocol_v5.2.md",
                 "Terukirdo_Protocol_v5.3.md",
                 "Terukirdo_Protocol_v5.5.md",
+                "Terukirdo_Protocol_v5.6.md",
                 "IMPLEMENTATION_PROGRESS.md",
                 "Documents/Implementation_Plan.md",
                 "scripts/auto_evolve.py",
@@ -41,7 +42,7 @@ class TestUpdateHarness(unittest.TestCase):
 
             # 2. Plant outdated core harness files that must be overwritten
             (target / "AGENTS.md").write_text("old AGENTS.md v5.2", encoding="utf-8")
-            (target / "Terukirdo_Protocol_v5.6.md").write_text("outdated draft", encoding="utf-8")
+            (target / "Terukirdo_Protocol_v5.7.md").write_text("outdated draft", encoding="utf-8")
 
             # 3. Plant project-owned files that MUST be preserved
             preserved_files = {
@@ -77,8 +78,8 @@ class TestUpdateHarness(unittest.TestCase):
                 (REPO_ROOT / "AGENTS.md").read_text(encoding="utf-8"),
             )
             self.assertEqual(
-                (target / "Terukirdo_Protocol_v5.6.md").read_text(encoding="utf-8"),
-                (REPO_ROOT / "Terukirdo_Protocol_v5.6.md").read_text(encoding="utf-8"),
+                (target / "Terukirdo_Protocol_v5.7.md").read_text(encoding="utf-8"),
+                (REPO_ROOT / "Terukirdo_Protocol_v5.7.md").read_text(encoding="utf-8"),
             )
             self.assertTrue((target / ".agents/agents/legion-commander/agent.md").is_file())
             self.assertTrue((target / ".agents/skills/agent-legion/SKILL.md").is_file())

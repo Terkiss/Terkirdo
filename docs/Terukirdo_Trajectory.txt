@@ -149,3 +149,18 @@
   - Directory structure: Updated `MEMORY.md` to 4-tier weighted ledger, added `tests/harness/` and `reference/`.
   - Changelog: Updated top entry for 2026-11-10.
 - Synchronized turn-end state in `MEMORY.md` and verified with `validate_harness.py --strict` and 33 unit tests passing.
+
+[2026-11-11] Elevated Terukirdo Protocol to v5.7 & Optimized Asymmetric Tri-Engine Loop (TASK-20261111-V57-TRI-ENGINE-UPGRADE).
+- Elevated Terukirdo Protocol from v5.6 to v5.7 (Terukirdo_Protocol_v5.7.md active, v5.6 archived to docs/archive/Terukirdo_Protocol_v5.6.md).
+- Upgraded Asymmetric Multi-Model Architecture to v5.7 Tri-Engine Architecture (Gemini 4 Carbon [inherit] × Gemini 4 Argon [pro] × Gemini 3.8 Flash [flash]):
+  - Gemini 4 Carbon (`inherit`): Main Orchestrator (Terukirdo), UltimateMake Master Planning, Command Spine (`legion-commander`, `ralph-orchestrator`), and Core/Parallel Implementation Workers (`agy-worker`, `legion-worker`).
+  - Gemini 4 Argon (`pro`): Execution Card Decomposition (`terukirdo-plan`), 1st Deep Micro-Contract Review (`first-reviewer`), and Cross-Model 2nd Macro-Architecture/Security/Anti-Cheating Judgment (`tech-expert`).
+  - Gemini 3.8 Flash (`flash`): Physical Environment/Build/Test Verification (`universal-final-controller`), Raw Git Index/Staging Gatekeeping (`final-approach-control`), and Tier 1 Rapid Assistance.
+- Established Parent-Child `inherit` Chain Invariant: `legion-commander` and `ralph-orchestrator` declare `model: inherit` to guarantee child workers inherit parent session Carbon model without tier degradation.
+- Established Cross-Model Review Separation: Carbon implementations are rigorously reviewed by Argon (`first-reviewer` and `tech-expert`), completely eliminating same-model self-justification bias and conserving Carbon implementation quota.
+- Enhanced deterministic harness validator `scripts/harness/validate_harness.py --strict` with `EXPECTED_AGENT_MODELS` Tri-Engine routing contract.
+- Added unit test `test_tri_engine_agent_model_routing_contract` to `tests/harness/test_agent_discovery.py` (34 total tests passing).
+- Updated `scripts/harness/sync_harness.py` and `update_harness.bat` to purge stale root `Terukirdo_Protocol_v5.6.md` and mirror `v5.7` to target projects.
+- Updated `tests/harness/test_update_harness.py` with `Terukirdo_Protocol_v5.6.md` in zombie files and `Terukirdo_Protocol_v5.7.md` overwrite test.
+- Synchronized `AGENTS.md`, `.agents/skills/multi-agent-conference/SKILL.md`, `docs/harness/*`, `reference/ai-performance-cards.md`, `reference/cross-ai-collaboration-guide.md`, `README.md`, `MEMORY.md`, and rebuilt `.terkirdo_pre_cache.md` & `skills_meta.json`.
+- Verified all modifications with `validate_harness.py --strict`, 34 harness unit tests passing, `agy agents`, `git diff --check`, and clean status.

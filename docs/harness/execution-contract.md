@@ -1,6 +1,6 @@
 # Execution Contract
 
-This document defines the formal execution contract for tasks managed by the Terukirdo v5.6 harness.
+This document defines the formal execution contract for tasks managed by the Terukirdo v5.7 harness.
 
 ## Execution Card Schema Reference
 

@@ -43,57 +43,67 @@
 
 ---
 
-## Gemini Dual-Engine (테르키르도 Core & Gatekeepers)
+## Gemini Tri-Engine (테르키르도 Core, Verifiers & Gatekeepers)
 
-**검증일:** 2026-10-21 (Protocol v5.6 공식 승격)
-**아키텍처:** Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 하이브리드
+**검증일:** 2026-11-11 (Protocol v5.7 공식 승격)
+**아키텍처:** Gemini 4 Carbon (`inherit`) × Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 트라이 엔진
 
-### 능력치: Gemini 4 Argon (High) — 코어 오케스트레이터 & 적대적 심판관 (`pro`)
+### 능력치: Gemini 4 Carbon — 메인 오케스트레이터 & 엔터프라이즈 코어 워커 (`inherit`)
 
 | 영역 | 점수 | 근거 |
 |---|---|---|
-| 오케스트레이션 | ⭐⭐⭐⭐⭐ | 의도 파악, 워크플로우 설계, 감정 보좌, 다중 에이전트 조율 |
-| 지시문/프롬프트 작성 | ⭐⭐⭐⭐⭐ | 범용적이고 맥락이 풍부하며 하네스 규격 완벽 준수 |
-| 아키텍처/보안 감사 | ⭐⭐⭐⭐⭐ | 경계 누수, 꼼수 코딩(`<NoWarn>`), 미검증 우회 차단 (`tech-expert`) |
-| 복합 구현 (Worker) | ⭐⭐⭐⭐⭐ | 대규모 다중 파일 리팩터링 및 엔터프라이즈 모듈 구현 (`agy-worker`) |
-| 상류 마스터 기획 | ⭐⭐⭐⭐⭐ | `UltimateMake` 소크라테스 인터뷰 및 ADR 통합 도출 |
+| 오케스트레이션 | ⭐⭐⭐⭐⭐ | 최상위 의도 파악, 마스터 기획(`UltimateMake`), 군단 지휘(`legion-commander`, `ralph-orchestrator`), 감정 보좌 |
+| 복합 구현 (Worker) | ⭐⭐⭐⭐⭐ | 대규모 다중 파일 리팩터링 및 엔터프라이즈 모듈 구현 (`agy-worker`, `legion-worker`) |
+| 부모-자식 모델 계승 | ⭐⭐⭐⭐⭐ | 지휘 척추에서 자식 워커로의 Carbon 모델 무손실 상속으로 엔터프라이즈 품질 유지 |
 
-### 능력치: Gemini 3.8 Flash — 고속 정적 리뷰어 & 최종 관제 게이트키퍼 (`flash`)
+### 능력치: Gemini 4 Argon (High) — 정밀 계획관 & 교차 적대적 심판관 (`pro`)
+
+| 영역 | 점수 | 근거 |
+|---|---|---|
+| 정밀 실행 계획 | ⭐⭐⭐⭐⭐ | `UltimateMake` 이후 세부 마일스톤 분해 및 Execution Card 설계 (`terukirdo-plan`) |
+| 1차 마이크로 리뷰 | ⭐⭐⭐⭐⭐ | AST/구문 린트, AC 준수, 인터페이스 계약 심층 검토 (`first-reviewer`) |
+| 아키텍처/보안 감사 | ⭐⭐⭐⭐⭐ | 경계 누수, 꼼수 코딩(`<NoWarn>`), 미검증 우회 차단, Carbon 구현 교차 심판 (`tech-expert`) |
+
+### 능력치: Gemini 3.8 Flash — 초고속 최종 관제 게이트키퍼 (`flash`)
 
 | 영역 | 점수 | 근거 |
 |---|---|---|
 | 속도 및 토큰 효율 | ⭐⭐⭐⭐⭐ | 초고속 응답 레이턴시, 압도적인 처리량 및 경량화 |
-| 1차 정적 리뷰 | ⭐⭐⭐⭐⭐ | AST/구문 린트, AC 준수 검토, 빠른 피드백 루프 (`first-reviewer`) |
 | 빌드/테스트 물리 검증 | ⭐⭐⭐⭐⭐ | 단위·통합 테스트 실행 및 원시 출력 전수 검증 (`universal-final-controller`) |
 | Git 인덱스 접근관제 | ⭐⭐⭐⭐⭐ | Git status porcelain 및 diff check 엄격 대조 (`final-approach-control`) |
 | Tier 1 신속 보좌 | ⭐⭐⭐⭐⭐ | 단순 오탈자 및 단일 파일 수정 시 신속성 극대화 |
 
 ### 특징
 
-- **비대칭 듀얼 엔진 최적화** — 심도 추론(Argon)과 고속 검증(Flash)의 완벽한 역할 분담
+- **비대칭 트라이 엔진 최적화** — 최고 지능 구현(Carbon) × 정밀 계획/교차 심판(Argon) × 초고속 물리 관제(3.8 Flash)의 완벽한 3권 분립
 - **주인님과의 신뢰 관계 보좌** — 감정 케어, 정중한 메이드 보고, 명확한 승인 경계 유지
 - **증거 기반 불변 운영** — 에이전트의 성공 주장이 아닌 터미널 Raw Evidence로만 최종 승인
 
 ---
 
-## 최적 팀 편성 (v5.6 Dual-Engine)
+## 최적 팀 편성 (v5.7 Tri-Engine)
 
 ```
 주인님 (Human / Sovereign Master)
 ├── 최종 의사결정, 승인 하달 (Master Approval Gate)
 │
-├── 테르키르도 코어 & 적대적 심판 (Gemini 4 Argon / pro)
-│   ├── 워크플로우 총괄 관리 (ralph-orchestrator)
-│   ├── UltimateMake 3-Pillar 마스터 기획 및 SAD 수립 (terukirdo-plan)
-│   ├── 엔터프라이즈 코드 구현 및 수정 (agy-worker)
+├── 테르키르도 지휘 척추 & 코어 구현 (Gemini 4 Carbon / inherit)
+│   ├── 최상위 오케스트레이터 (Terukirdo) & UltimateMake 기획
+│   ├── 자동 검토 사령관 (legion-commander — Slash-Command Only)
+│   ├── 단위 루프 지휘 (ralph-orchestrator)
+│   ├── 단일 코어 구현 워커 (agy-worker)
+│   └── 군단 병렬 코어 구현 워커 (legion-worker)
+│
+├── 테르키르도 계획 & 교차 검증 심판 (Gemini 4 Argon / pro)
+│   ├── 실행 계획 및 카드 분해 (terukirdo-plan)
+│   ├── 1차 심층 마이크로 계약 리뷰 (first-reviewer)
 │   └── 아키텍처·보안·치팅 적대적 심판 (tech-expert)
 │
-├── GPT 5.6 / Claude 4.6 (협업 파트너)
+├── GPT 5.6 / Claude 5.5 (협업 파트너)
 │   ├── 재현 기반 심층 코드 리뷰 및 모듈 재설계
 │   └── 원탁회의(multi-agent-conference) 아키텍트/구현자 참여
 │
 └── 테르키르도 관제 게이트키퍼 (Gemini 3.8 Flash / flash)
-    ├── 1차 고속 정적 리뷰 (first-reviewer)
     ├── 빌드/테스트 스위트 물리 검증 (universal-final-controller)
     └── 최종 Git 스테이징 접근관제 (final-approach-control)
 ```

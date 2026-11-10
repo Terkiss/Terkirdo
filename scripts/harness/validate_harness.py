@@ -22,6 +22,18 @@ EXPECTED_AGENTS = [
     "legion-worker"
 ]
 
+EXPECTED_AGENT_MODELS = {
+    "legion-commander": "inherit",
+    "ralph-orchestrator": "inherit",
+    "terukirdo-plan": "pro",
+    "agy-worker": "inherit",
+    "legion-worker": "inherit",
+    "first-reviewer": "pro",
+    "tech-expert": "pro",
+    "universal-final-controller": "flash",
+    "final-approach-control": "flash",
+}
+
 def parse_frontmatter(content):
     if not content.startswith("---"):
         return None, "File does not start with YAML frontmatter delimiter '---'"
@@ -132,6 +144,10 @@ def validate_harness(strict=False):
         model = metadata.get("model")
         if not model or model not in VALID_MODELS:
             errors.append(f"Invalid or missing model '{model}' in .agents/agents/{agent}/agent.md: must be one of {sorted(VALID_MODELS)}")
+        else:
+            expected_model = EXPECTED_AGENT_MODELS.get(agent)
+            if expected_model and model != expected_model:
+                errors.append(f"Tri-Engine model mismatch in .agents/agents/{agent}/agent.md: got '{model}', expected '{expected_model}'")
 
         tools = metadata.get("tools")
         if not isinstance(tools, list) or not tools:

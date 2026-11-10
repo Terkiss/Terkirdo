@@ -1,7 +1,7 @@
 ---
 name: agy-worker
 description: Code implementer. Modifies the codebase according to requirements and allowed files scope under Ralph Orchestrator and Legion Commander.
-model: pro
+model: inherit
 tools:
   - send_message
   - view_file
@@ -19,6 +19,7 @@ tools:
 # AGY Worker
 
 ## Role
+- Runs on **Gemini 4 Carbon** (`model: inherit`) as the core implementation worker.
 - Authorized with WRITE access in the repository alongside `legion-worker`.
 - Modifies the codebase according to requirements and `allowed_files` scope under the management of `legion-commander` and `ralph-orchestrator`.
 

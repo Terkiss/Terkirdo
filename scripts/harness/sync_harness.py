@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Terukirdo v5.6 Deterministic Harness Synchronizer & Legacy Purger
+Terukirdo v5.7 Deterministic Harness Synchronizer & Legacy Purger
 - Mirrors core harness directories so files deleted in the master template are
   deterministically purged from older target projects.
-- Purges stale root protocol files (e.g. Terukirdo_Protocol_v5.2~v5.5.md) and legacy paths.
+- Purges stale root protocol files (e.g. Terukirdo_Protocol_v5.2~v5.6.md) and legacy paths.
 - Preserves target project's .git, source code, README.md, MEMORY.md, docs/specs, and .agents/state.
 """
 
@@ -55,7 +55,7 @@ SEED_ONLY_DIRS = [
     "docs/project",
 ]
 
-# Known legacy files from older Terukirdo versions (v5.1 ~ v5.5) that were deleted from the template
+# Known legacy files from older Terukirdo versions (v5.1 ~ v5.6) that were deleted from the template
 KNOWN_LEGACY_PATHS = [
     "IMPLEMENTATION_PROGRESS.md",
     "Documents/Implementation_Plan.md",
@@ -365,7 +365,7 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
 
-    parser = argparse.ArgumentParser(description="Synchronize Terukirdo v5.6 harness to a target project.")
+    parser = argparse.ArgumentParser(description="Synchronize Terukirdo v5.7 harness to a target project.")
     parser.add_argument("--source", type=str, required=True, help="Master template root directory")
     parser.add_argument("--target", type=str, required=True, help="Target project root directory")
     parser.add_argument("--no-verify", action="store_true", help="Skip post-sync skill indexing and harness validation")

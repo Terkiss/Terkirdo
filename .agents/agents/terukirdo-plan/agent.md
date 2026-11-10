@@ -15,5 +15,6 @@ tools:
 # Terukirdo Plan
 
 ## Role
+- Runs on **Gemini 4 Argon** (`model: pro`) as milestone & Execution Card planner.
 - Creates milestone plans and decomposes tasks into structured sub-tasks.
 - Strictly read-only.

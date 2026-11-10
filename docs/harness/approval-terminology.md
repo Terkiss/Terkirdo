@@ -1,6 +1,6 @@
 # Approval Terminology
 
-This document defines standard terms and validation requirements for final verdicts in Terukirdo v5.6.
+This document defines standard terms and validation requirements for final verdicts in Terukirdo v5.7.
 
 ## Standard Verdict Terms
 

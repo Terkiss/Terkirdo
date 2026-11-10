@@ -1,6 +1,6 @@
 # Evidence Policy
 
-This document defines the rules for verification evidence gathering and validation in Terukirdo v5.6.
+This document defines the rules for verification evidence gathering and validation in Terukirdo v5.7.
 
 ## Evidence Bundle
 

@@ -2,11 +2,11 @@
 setlocal EnableDelayedExpansion
 
 :: ============================================================================
-:: Terukirdo v5.6 Harness Updater (Deterministic Mirror & Legacy Purger)
+:: Terukirdo v5.7 Harness Updater (Deterministic Mirror & Legacy Purger)
 :: - Synchronizes core harness directories (.agents, agents, scripts/harness,
 ::   scripts/self-evolution, tests/harness, docs/harness, docs/archive,
 ::   docs/v2_specs, reference) from the master template.
-:: - Purges deleted/moved template files and stale root protocols (v5.2~v5.5)
+:: - Purges deleted/moved template files and stale root protocols (v5.2~v5.6)
 ::   that still linger in older target projects.
 :: - Preserves target project's .git, source code, README.md, MEMORY.md,
 ::   docs/specs, docs/Terukirdo_Trajectory.txt, and .agents/state.
@@ -37,7 +37,7 @@ if not "!CLI_TARGET!"=="" (
 )
 
 echo ============================================================================
-echo  [Terukirdo v5.6] Harness Updater (Mirror ^& Purge Engine)
+echo  [Terukirdo v5.7] Harness Updater (Mirror ^& Purge Engine)
 echo ============================================================================
 
 if not exist "%SOURCE%\scripts\harness\sync_harness.py" (
@@ -92,7 +92,7 @@ if !ERRORLEVEL! NEQ 0 (
 
 echo.
 echo ============================================================================
-echo  [SUCCESS] Terukirdo v5.6 harness synchronized, purged, and verified!
+echo  [SUCCESS] Terukirdo v5.7 harness synchronized, purged, and verified!
 echo  Note: Restart any running 'agy' CLI session in the target project.
 echo ============================================================================
 if "!NO_PAUSE!"=="0" pause

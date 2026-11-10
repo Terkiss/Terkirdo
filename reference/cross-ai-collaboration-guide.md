@@ -145,32 +145,36 @@ C# HttpListener ↔ PowerShell TCP 브릿지 ↔ agy CLI 에이전트
 - 주석 최소, 구조로 의도를 표현
 - 에이전트 도구를 적극 활용
 
-### 테르키르도 (Gemini Dual-Engine: 4 Argon × 3.8 Flash)
+### 테르키르도 (Gemini Tri-Engine: 4 Carbon × 4 Argon × 3.8 Flash)
 
 | 항목 | 점수 | 모델 | 근거 |
 |---|---|:---:|---|
-| 오케스트레이션 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 의도 파악, 워크플로우 설계, 감정 보좌, 다중 에이전트 조율 |
-| 적대적 심판 / 보안 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 아키텍처 결함 및 꼼수 방지 (`tech-expert`) |
-| 코드 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 핵심 다중 파일 구현 및 리팩터링 (`agy-worker`) |
-| 1차 코드 리뷰 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 신속한 1차 정적 린트 및 AC 준수 검토 (`first-reviewer`) |
-| 빌드/테스트 검증 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 전수 테스트 실행 및 환경 무결성 검증 (`universal-final-controller`) |
+| 오케스트레이션 | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon (`inherit`) | 의도 파악, 워크플로우 설계, 감정 보좌, 다중 에이전트 조율 |
+| 코드 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon (`inherit`) | 핵심 다중 파일 구현 및 엔터프라이즈 리팩터링 (`agy-worker`, `legion-worker`) |
+| 계획 / 카드 분해 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 정밀 마일스톤 및 실행 카드 설계 (`terukirdo-plan`) |
+| 1차 코드 리뷰 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 심층 1차 마이크로 계약 검토 및 정적 린트 (`first-reviewer`) |
+| 적대적 심판 / 보안 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 아키텍처 결함 및 꼼수 방지 교차 심판 (`tech-expert`) |
+| 빌드/테스트 검증 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 전수 테스트 실행 및 환경 무결성 물리 검증 (`universal-final-controller`) |
 | 최종 Git 관제 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 원시 스테이징 diff 및 인덱스 불변식 검증 (`final-approach-control`) |
 
 **특징:**
-- Gemini 4 Argon의 심도 있는 추론과 Gemini 3.8 Flash의 초고속 검증이 결합된 하이브리드 체계
-- 주인님과의 관계 관리에 강점 및 엄격한 승인 결재 경계 준수
-- 서브에이전트 역할별 모델 분리로 토큰 효율 및 검증 회전율 극대화
+- Gemini 4 Carbon의 엔터프라이즈 구현력, Gemini 4 Argon의 심도 있는 추론/교차 심판, Gemini 3.8 Flash의 초고속 물리 검증이 결합된 비대칭 트라이 엔진 체계
+- 지휘 척추(`legion-commander`, `ralph-orchestrator`)의 `inherit` 모델 상속 불변식으로 하위 워커의 Carbon 구현 보장
+- Carbon 구현 vs Argon 심판의 교차 모델 분리로 자기합리화 편향 원천 차단
+- 서브에이전트 역할별 최적 모델 분리로 토큰 효율 및 검증 회전율 극대화
 
-### 서브 에이전트 (Ralph Loop 7인 체제)
+### 서브 에이전트 (Ralph Loop & Agent Legion 9인 체제)
 
 | 에이전트 | 모델 | 역할 |
 |---|:---:|---|
-| `ralph-orchestrator` | `pro` (Gemini 4 Argon) | 루프 지휘 및 SAD 분해 |
+| `legion-commander` | `inherit` (Gemini 4 Carbon) | 슬래시 명령 전용 자동 검토 사령관 (최대 4기 Ralph 총괄) |
+| `ralph-orchestrator` | `inherit` (Gemini 4 Carbon) | 단위 루프 지휘 및 산하 분대 운용 |
 | `terukirdo-plan` | `pro` (Gemini 4 Argon) | 마일스톤 및 실행 카드 설계 |
-| `agy-worker` | `pro` (Gemini 4 Argon) | 유일한 Write 전담 구현 에이전트 |
-| `first-reviewer` | `flash` (Gemini 3.8 Flash) | 1차 고속 정적 코드 리뷰 |
-| `tech-expert` | `pro` (Gemini 4 Argon) | 아키텍처·보안 적대적 심판관 |
-| `universal-final-controller` | `flash` (Gemini 3.8 Flash) | 빌드/테스트 스위트 환경 검증 |
+| `agy-worker` | `inherit` (Gemini 4 Carbon) | 단일 과업 전담 엔터프라이즈 Write 구현 워커 |
+| `legion-worker` | `inherit` (Gemini 4 Carbon) | 군단 배타적 파티션 고속 병렬 Write 구현 워커 |
+| `first-reviewer` | `pro` (Gemini 4 Argon) | 1차 심층 마이크로 계약 및 정적 코드 리뷰 |
+| `tech-expert` | `pro` (Gemini 4 Argon) | 아키텍처·보안 적대적 교차 심판관 |
+| `universal-final-controller` | `flash` (Gemini 3.8 Flash) | 빌드/테스트 스위트 환경 물리 검증 |
 | `final-approach-control` | `flash` (Gemini 3.8 Flash) | 최종 Git 스테이징 접근관제 |
 
 ---

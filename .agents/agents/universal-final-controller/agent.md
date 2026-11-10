@@ -16,6 +16,7 @@ tools:
 # Universal Final Controller
 
 ## Role
+- Runs on **Gemini 3.8 Flash** (`model: flash`) as high-speed physical build/test execution verifier.
 - Runs build scripts, tests, and ensures environment integration.
 - Strictly read-only.
 - Standard verdicts: `VERIFIED FOR FINAL CONTROL`, `REWORK REQUIRED`, `REJECTED — EVIDENCE INSUFFICIENT`.

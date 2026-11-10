@@ -145,5 +145,37 @@ class TestAgentDiscovery(unittest.TestCase):
             "MEMORY.md missing ## Archived Decisions section",
         )
 
+    def test_tri_engine_agent_model_routing_contract(self):
+        base_dir = Path(__file__).parent.parent.parent
+        agents_dir = base_dir / ".agents" / "agents"
+        expected_models = {
+            "legion-commander": "inherit",
+            "ralph-orchestrator": "inherit",
+            "terukirdo-plan": "pro",
+            "agy-worker": "inherit",
+            "legion-worker": "inherit",
+            "first-reviewer": "pro",
+            "tech-expert": "pro",
+            "universal-final-controller": "flash",
+            "final-approach-control": "flash",
+        }
+        for agent, expected_model in expected_models.items():
+            agent_file = agents_dir / agent / "agent.md"
+            self.assertTrue(agent_file.is_file(), f"Missing agent file: {agent_file}")
+            content = agent_file.read_text(encoding="utf-8")
+            parts = content.split("---", 2)
+            self.assertGreaterEqual(len(parts), 3, f"{agent} missing YAML frontmatter")
+            frontmatter = parts[1]
+            model = None
+            for line in frontmatter.splitlines():
+                if line.strip().startswith("model:"):
+                    model = line.split(":", 1)[1].strip().strip('"').strip("'")
+                    break
+            self.assertEqual(
+                model,
+                expected_model,
+                f"Tri-Engine model routing mismatch for {agent}: expected '{expected_model}', got '{model}'",
+            )
+
 if __name__ == "__main__":
     unittest.main()
