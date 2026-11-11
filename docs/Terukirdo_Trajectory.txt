@@ -164,3 +164,18 @@
 - Updated `tests/harness/test_update_harness.py` with `Terukirdo_Protocol_v5.6.md` in zombie files and `Terukirdo_Protocol_v5.7.md` overwrite test.
 - Synchronized `AGENTS.md`, `.agents/skills/multi-agent-conference/SKILL.md`, `docs/harness/*`, `reference/ai-performance-cards.md`, `reference/cross-ai-collaboration-guide.md`, `README.md`, `MEMORY.md`, and rebuilt `.terkirdo_pre_cache.md` & `skills_meta.json`.
 - Verified all modifications with `validate_harness.py --strict`, 34 harness unit tests passing, `agy agents`, `git diff --check`, and clean status.
+
+[2026-11-11] Introduced Peer Tactical Radio (legion_radio.py) & Doubled Agent Legion to Octa-Ralph (TASK-20261111-LEGION-RADIO-AND-OCTA-RALPH-UPGRADE).
+- Built zero-dependency Peer Tactical Radio & Shared Bulletin Board CLI engine `.agents/skills/agent-legion/scripts/legion_radio.py` (Python stdlib `sqlite3` WAL + `busy_timeout=5000` + `BEGIN IMMEDIATE` transactions + jitter backoff retry):
+  - Runtime DB defaults to `.agents/state/legion_radio.db` with `--db` and `LEGION_RADIO_DB` overrides for isolated testing.
+  - Implemented 5 subcommands (`init`, `roster-set`, `roster`, `post`, `read`) supporting `Commander` and `Ralph-1` ~ `Ralph-8` callsigns, atomic `#seq` issuance, incremental `--since` / `--to` (broadcast + direct) / `--tag` / `--limit` filtering, and strict `MAX_MSG_LENGTH = 2000` guard banning full source-code dumps.
+- Doubled Agent Legion concurrent squad limit from Quad-Ralph (`MAX_CONCURRENT_RALPH = 4`, `Ralph #1 ~ #4`) to Octa-Ralph (`MAX_CONCURRENT_RALPH = 8`, `Ralph #1 ~ #8`) per Master's directive:
+  - Updated `.agents/skills/agent-legion/scripts/partition_validator.py` and `tests/harness/test_partition_validator.py`.
+  - Updated `.agents/agents/legion-commander/agent.md`, `.agents/agents/ralph-orchestrator/agent.md` (added `run_command` with strict Read-Only Shell Guard + Dual-Channel Peer Tactical Radio protocol), `.agents/agents/legion-worker/agent.md`, and `.agents/skills/agent-legion/SKILL.md` (Protocol 5: Tactical Radio Net).
+  - Synchronized `AGENTS.md` and `Terukirdo_Protocol_v5.7.md` (including `.agents/state/legion_radio.db` in Read-Only runtime state write exceptions).
+- Upgraded deterministic harness verification & state guards:
+  - `scripts/harness/validate_harness.py`: enforced `REQUIRED_ORCHESTRATOR_TOOLS` (`invoke_subagent`, `manage_subagents`, `view_file`, `send_message`, `run_command`) and verified presence of `partition_validator.py` and `legion_radio.py`.
+  - `.agents/hooks/stop_quality_gate.py`: excluded `.agents/state/legion_radio.db*` runtime state files from dirty-worktree checks.
+  - `tests/harness/test_agent_discovery.py` & `tests/harness/test_update_harness.py`: verified orchestrator tool permissions, `legion_radio.py` mirroring, and `.agents/state/legion_radio.db` preservation during `sync_harness`.
+  - `tests/harness/test_legion_radio.py`: added 6 unit and concurrency stress tests including 8-process × 25-post (200 concurrent subprocesses) stress test with 0 lock errors and gap-free `#1 ~ #200` sequence verification.
+- Synchronized `README.md`, `reference/cross-ai-collaboration-guide.md`, `MEMORY.md` (Hot / Warm / Cold / Archived Decisions), rebuilt skill index via `skill_indexer.py --build`, and verified `validate_harness.py --strict`, 40 harness unit tests passing, `git diff --check`, and clean runtime state.

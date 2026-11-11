@@ -2,7 +2,7 @@
 """
 Partition Validator for Agent Legion (Deterministic Python Check)
 Ensures:
-1. At most MAX_CONCURRENT_RALPH (4) ralph-orchestrator instances run concurrently per wave.
+1. At most MAX_CONCURRENT_RALPH (8) ralph-orchestrator instances run concurrently per wave.
 2. Disjointness of allowed_files across parallel partitions within the same wave.
 """
 
@@ -12,12 +12,12 @@ import argparse
 from pathlib import Path
 from collections import defaultdict
 
-MAX_CONCURRENT_RALPH = 4
+MAX_CONCURRENT_RALPH = 8
 
 def validate_partitions(partition_data):
     """
     Validates that:
-    - Each wave has at most MAX_CONCURRENT_RALPH (4) parallel ralph-orchestrator partitions.
+    - Each wave has at most MAX_CONCURRENT_RALPH (8) parallel ralph-orchestrator partitions.
     - All concurrent partitions within a wave have non-overlapping allowed_files.
     Returns (is_valid, errors, summary)
     """
@@ -73,7 +73,7 @@ def validate_partitions(partition_data):
     return is_valid, errors, summary
 
 def main():
-    parser = argparse.ArgumentParser(description="Validate disjoint file partitions and Quad-Ralph concurrency for Agent Legion.")
+    parser = argparse.ArgumentParser(description="Validate disjoint file partitions and Octa-Ralph concurrency for Agent Legion.")
     parser.add_argument("partition_file", nargs="?", help="Path to JSON file containing partition definitions.")
     parser.add_argument("--json", action="store_true", help="Output results as JSON.")
     args = parser.parse_args()

@@ -264,18 +264,23 @@ Finding 발행
 
 ```text
 Terukirdo
-→ Legion Commander (자동 검토 사령관: 대규모 작업 DAG 분해, Wave당 최대 4개 비충돌 파티셔닝 검증)
-  ├── [하위에 ralph-orchestrator 최대 4기(Ralph #1 ~ #4) 동시 생성 및 병렬 운용]
+→ Legion Commander (자동 검토 사령관: 대규모 작업 DAG 분해, Wave당 최대 8개 비충돌 파티셔닝 검증 & 무전망 개통)
+  ├── [전술 무전망 초기화: legion_radio.py init --reset & 각 분대장 roster-set 호출부호 등록]
+  ├── [하위에 ralph-orchestrator 최대 8기(Octa-Ralph: Ralph #1 ~ #8, MAX_CONCURRENT_RALPH = 8) 동시 병렬 운용]
   │   ├── Ralph Orchestrator #1 (Partition 1) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
   │   ├── Ralph Orchestrator #2 (Partition 2) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
-  │   ├── Ralph Orchestrator #3 (Partition 3) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
-  │   └── Ralph Orchestrator #4 (Partition 4) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
-  └── [사령관 무인 자동 검토 & Auto-Rework Gate]
+  │   ├── ...                                 ◄══► [Peer Tactical Radio: legion_radio.py 공용 게시판 + send_message 직통 호출벨]
+  │   └── Ralph Orchestrator #8 (Partition 8) ──▶ 산하 분대 운용 (terukirdo-plan → legion-worker/agy-worker → First Reviewer → Tech Expert → UFC → FAC)
+  └── [사령관 무인 자동 검토, 무전 중재 & Auto-Rework Gate]
       → 결함/실패 시: 사령관이 해당 ralph-orchestrator(#k)에게 즉시 자동 재작업(Auto-Rework, 최대 3회) 명령
       → 통과 시: 사령관이 중간 검토를 무인 대행하여 다음 Wave 파티션 자동 승인 및 전진
 → Consolidated Universal Verification (사령관 최종 통합 빌드 및 전역 테스트 전수 물리 검증)
 → Unified Evidence Bundle 상신
 ```
+
+* **2중 전술 교신 프로토콜 (Peer Tactical Radio)**:
+  - **[채널 1] 공용 무전 게시판 (`.agents/skills/agent-legion/scripts/legion_radio.py`)**: SQLite WAL + `busy_timeout=5000` + `BEGIN IMMEDIATE` 기반 무락(Lock-free) 게시판(`.agents/state/legion_radio.db`)을 통해 `Commander` 및 `Ralph-1` ~ `Ralph-8`이 공유 인터페이스·스키마·결정·블로커를 게시(`post`, 2,000자 상한 가드, 원자적 `#seq` 발급)하고 증분 열람(`read --since`)한다.
+  - **[채널 2] 직통 무전 호출벨 (`send_message` Zero-Waste Wakeup)**: 대기 중인 특정 형제 분대장이나 사령관의 즉각 조율이 필요한 경우에만 먼저 `post`로 `#seq`를 발급받은 뒤 `send_message(Recipient=<대상 conv_id>, Message="[RADIO #seq] 핵심 용건 1줄")`로 해당 대상만 선택적으로 기상시킨다. 타 분대의 `allowed_files` 대리 수정은 엄격히 금지된다.
 
 ### Write 권한 예외
 
@@ -288,6 +293,7 @@ Read-Only 에이전트는 코드나 SSOT를 수정할 수 없다.
 * Evidence Bundle 저장 경로
 * 검증 결과 append-only log
 * `.agents/state/stop_gate_state.json`
+* `.agents/state/legion_radio.db` (및 SQLite WAL/SHM 전술 무전 런타임 상태 파일 — `legion_radio.py` 경유 전용)
 * harness가 명시적으로 승인한 상태 저장 경로
 
 이 예외는 코드나 SSOT 수정 권한을 의미하지 않는다.

@@ -93,6 +93,11 @@ class TestAgentDiscovery(unittest.TestCase):
                     tool_set.isdisjoint(write_tools),
                     f"Read-only agent {agent} must not have write tools: {tool_set & write_tools}",
                 )
+                if agent in ("ralph-orchestrator", "legion-commander"):
+                    self.assertTrue(
+                        {"run_command", "send_message", "invoke_subagent", "manage_subagents", "view_file"}.issubset(tool_set),
+                        f"Orchestrator agent {agent} missing required tactical radio / dispatch tools: {tool_set}",
+                    )
 
     def test_dual_brain_operational_contracts_present(self):
         base_dir = Path(__file__).parent.parent.parent

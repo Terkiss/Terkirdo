@@ -8,7 +8,7 @@ VALID_MODELS = {"inherit", "pro", "flash", "flash_lite"}
 WRITE_TOOLS = {"write_file", "edit_file", "notebook_edit"}
 REQUIRED_WORKER_TOOLS = {"write_file", "edit_file", "run_command", "view_file"}
 REQUIRED_SHELL_VERIFIER_TOOLS = {"run_command", "view_file"}
-REQUIRED_ORCHESTRATOR_TOOLS = {"invoke_subagent", "manage_subagents", "view_file"}
+REQUIRED_ORCHESTRATOR_TOOLS = {"invoke_subagent", "manage_subagents", "view_file", "send_message", "run_command"}
 
 EXPECTED_AGENTS = [
     "ralph-orchestrator",
@@ -190,6 +190,15 @@ def validate_harness(strict=False):
         for f in os.listdir(old_agents_dir):
             if f not in ["README.md", ".gitkeep"] and f.endswith(".md"):
                 errors.append(f"Stale duplicate agent file found in root agents/ directory: agents/{f}")
+
+    required_legion_scripts = [
+        os.path.join(".agents", "skills", "agent-legion", "scripts", "partition_validator.py"),
+        os.path.join(".agents", "skills", "agent-legion", "scripts", "legion_radio.py"),
+    ]
+    for rel_script in required_legion_scripts:
+        full_script = os.path.join(base_dir, rel_script)
+        if not os.path.isfile(full_script):
+            errors.append(f"Missing required Agent Legion script: {rel_script.replace(os.sep, '/')}")
 
     return errors
 

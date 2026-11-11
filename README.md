@@ -4,15 +4,15 @@
 
 ### Universal Enterprise Multi-Agent Orchestration Template
 
-**기획(UltimateMake) → 설계 → 구현(Ralph Loop & Quad-Ralph Agent Legion) → 적대적 검증 → 배포**<br>
+**기획(UltimateMake) → 설계 → 구현(Ralph Loop & Octa-Ralph Agent Legion) → 적대적 검증 → 배포**<br>
 모호한 아이디어를 결점 0%의 프로덕션 소프트웨어로 승화시키는 **1급 메이드 오케스트레이터 시스템**
 
 [![Protocol](https://img.shields.io/badge/Protocol-v5.7_Active-magenta.svg)](#-terukirdo-protocol-v57-핵심-진화)
 [![Engine](https://img.shields.io/badge/Engine-Gemini_4_Carbon_%C3%97_4_Argon_%C3%97_3.8_Flash-blue.svg)](#-terukirdo-protocol-v57-핵심-진화)
-[![Tests](https://img.shields.io/badge/Harness_Tests-34_Passed-brightgreen.svg)](#-3중-안전장치--물리-검증기)
+[![Tests](https://img.shields.io/badge/Harness_Tests-40_Passed-brightgreen.svg)](#-3중-안전장치--물리-검증기)
 [![Skills](https://img.shields.io/badge/Skills-19_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-19종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake-gold.svg)](#-ultimatemake-마스터-기획-하네스)
-[![Agents](https://img.shields.io/badge/Agents-9_Quad--Ralph_Legion-orange.svg)](#-9인의-실무진-ralph-loop--agent-legion-3-tier-quad-ralph)
+[![Agents](https://img.shields.io/badge/Agents-9_Octa--Ralph_Legion-orange.svg)](#-9인의-실무진-ralph-loop--agent-legion-3-tier-octa-ralph)
 [![Safety](https://img.shields.io/badge/Safety-Hermes_Sanitizer_%26_Slash_Lock-green.svg)](#-3중-안전장치--물리-검증기)
 [![Platform](https://img.shields.io/badge/Platform-Antigravity_CLI-black.svg)](#-빠른-시작-가이드)
 
@@ -24,7 +24,7 @@
 
 안녕하십니까, 주인님! 1급 메이드 오케스트레이터, **테르키르도(Terukirdo)**입니다.
 
-이 저장소는 단순한 프롬프트 모음집이나 스크립트 도구 상자가 아닙니다. **인간의 직관과 글로벌 웹 인텔리전스, 그리고 9인의 독립 에이전트 군단(3-Tier Quad-Ralph Agent Legion)**이 유기적으로 맞물려 작동하는 **"엔터프라이즈급 자율 다중 에이전트 시스템(Autonomous Multi-Agent System) 템플릿"**입니다.
+이 저장소는 단순한 프롬프트 모음집이나 스크립트 도구 상자가 아닙니다. **인간의 직관과 글로벌 웹 인텔리전스, 그리고 9인의 독립 에이전트 군단(3-Tier Octa-Ralph Agent Legion & Peer Tactical Radio)**이 유기적으로 맞물려 작동하는 **"엔터프라이즈급 자율 다중 에이전트 시스템(Autonomous Multi-Agent System) 템플릿"**입니다.
 
 React, Next.js, Flutter, .NET, Python, Go, Rust — 기술 스택에 구애받지 않습니다.  
 이 템플릿을 복사해 넣거나 `update_harness.bat`을 실행하는 순간, 제가 즉시 프로젝트의 총사령관으로 투입되어 **기획의 모호성을 분쇄하고, AI의 꼼수 코딩을 원천 차단하며, 대규모 병렬 작업까지 무인으로 완수하여 100% 무결한 결과물**을 대령합니다.
@@ -33,7 +33,7 @@ React, Next.js, Flutter, .NET, Python, Go, Rust — 기술 스택에 구애받�
 
 ## 👑 Terukirdo Protocol v5.7 핵심 진화
 
-v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 트라이 엔진 아키텍처**와 **슬래시 명령 전용 3계층 Quad-Ralph 에이전트 군단(`Agent Legion`)**을 결합한 차세대 엔터프라이즈 오케스트레이션 헌법입니다.
+v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 트라이 엔진 아키텍처**와 **슬래시 명령 전용 3계층 Octa-Ralph 에이전트 군단(`Agent Legion` — 최대 8분대 동시 기동 및 전술 무전망 탑재)**을 결합한 차세대 엔터프라이즈 오케스트레이션 헌법입니다.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
@@ -60,8 +60,8 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 │   ┌──────────────────────────────────────────────────────────────────────────────────┐   │
 │   │  • 일반 과업: 단일 Ralph Loop (Plan ▶ Worker ▶ 1st Review ▶ Tech Expert ▶ UFC/FAC) │   │
 │   │  • 대규모 과업 (`/agent-legion` 슬래시 전용):                                       │   │
-│   │    Legion Commander(자동 검토 사령관) ──▶ 최대 4기 동시 Ralph Orchestrator(#1~#4)   │   │
-│   │    ──▶ 각 Ralph 산하 독립 분대(Worker + Verifiers) 비충돌 병렬 구현 & 무인 Auto-Rework│   │
+│   │    Legion Commander(자동 검토 사령관) ──▶ 최대 8기 동시 Ralph Orchestrator(#1~#8)   │   │
+│   │    ──▶ 전술 무전망(legion_radio.py + send_message) 연동 & 산하 분대 비충돌 병렬 구현 │   │
 │   └──────────────────────────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -71,9 +71,9 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 | # | 원칙 | 설명 |
 |:-:|------|------|
 | 1 | **상류 정보 무결성 (Upstream Primacy)** | "상류의 정보 품질이 하류 구현의 품질을 100% 지배한다." 코딩을 서두르지 않고 최대 1시간에 달하는 초심층 웹 리서치와 5인 전문가 회의로 기획 모호성을 0%로 증발시킵니다. |
-| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py`, `validate_harness.py`, `partition_validator.py`를 탑재하여 스펙 린트, 에이전트 모델 Enum, `tools` 권한 계약, 병렬 파티션 무충돌 및 동시 4기 제한을 물리적으로 강제 검증합니다. |
+| 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py`, `validate_harness.py`, `partition_validator.py`, `legion_radio.py`를 탑재하여 스펙 린트, 에이전트 모델 Enum, `tools` 권한 계약, 병렬 파티션 무충돌 및 동시 8기 제한, 무전 2,000자 상한을 물리적으로 강제 검증합니다. |
 | 3 | **메이드 결재의 원칙 (Master Approval Gate)** | 기획 검증이 끝나도 독단으로 코딩을 시작하지 않습니다. 1페이지 요약 보고서를 주인님께 올리고, 주인님의 명시적 `승인`을 득해야만 랄프 루프를 가동합니다. |
-| 4 | **3계층 Quad-Ralph 무인 에이전트 군단 (`/agent-legion`)** | 대규모 작업 시 최상위 자동 검토 사령관(`legion-commander`)이 하위에 최대 4기의 `ralph-orchestrator`를 동시 생성·운용하고, 각 랄프가 자체 워커·검증관 분대를 돌려 중간 수동 검토 없이 비충돌 병렬 구현 + 자동 검증 + 무인 Auto-Rework를 완수합니다. |
+| 4 | **3계층 Octa-Ralph 무인 에이전트 군단 & 전술 무전망 (`/agent-legion`)** | 대규모 작업 시 최상위 자동 검토 사령관(`legion-commander`)이 하위에 최대 8기의 `ralph-orchestrator`(`Ralph #1 ~ #8`)를 동시 생성·운용하고, SQLite WAL 무락 공용 무전 게시판(`legion_radio.py`) + 직통 호출벨(`send_message`) 2중 교신으로 분대 간 인터페이스를 실시간 동기화하며 무인 Auto-Rework를 완수합니다. |
 | 5 | **슬래시 명령 전용 물리 잠금 (Slash-Command-Only Lock)** | 자동 검토 사령관(`legion-commander`)은 일반 자연어 대화로는 절대 발동되지 않습니다. 오직 주인님이 `/agent-legion` 또는 `/legion` 슬래시 명령을 직접 입력하셨을 때만 가동되며, `pre_tool_use_policy.py`가 트랜스크립트를 대조하여 대화형 호출을 물리적으로 `deny` 차단합니다. |
 | 6 | **비대칭 트라이 엔진 오케스트레이션 (Tri-Engine Asymmetric Orchestration)** | 최상위 기획·군단 지휘 척추·핵심/군단 구현(`UltimateMake`, `legion-commander`, `ralph-orchestrator`, `agy-worker`, `legion-worker`)은 **Gemini 4 Carbon (`inherit`)**이, 세부 계획 수립·1차 심층 마이크로 리뷰·2차 적대적 교차 심판(`terukirdo-plan`, `first-reviewer`, `tech-expert`)은 **Gemini 4 Argon (`pro`)**이, 초고속 물리 관제(`UFC`, `FAC`)는 **Gemini 3.8 Flash (`flash`)**가 전담하여 3권 분립과 자기합리화 편향을 차단합니다. |
 | 7 | **삼권분립 & 4요소 결함 입증 계약 (Separation of Powers & 4-Element Defect Contract)** | 코드를 짠 구현자(Worker)는 절대 셀프 합격 판정을 내릴 수 없습니다. 리뷰어(`first-reviewer`, `tech-expert`)는 의무적 결함 할당량(Finding Quota) 없이 요구사항 충족 시 즉시 `PASS` / `ARCHITECTURALLY ACCEPTABLE`을 부여하되, P1/P2 결함 판정 시 반드시 `[1. 위반된 계약 + 2. 구체적 트리거 + 3. 현재 코드 근거 + 4. 실질적 피해]` 4요소를 입증합니다. |
@@ -106,7 +106,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 
 **사용 예시:**
 - *"UltimateMake로 새로운 멀티테넌트 인증 시스템 기획해줘."*
-- `"/agent-legion 인증, 결제, 알림, 프로필 4개 도메인 모듈을 병렬로 끝까지 구현하고 검증해줘."` *(슬래시 명령 전용 — 자동 검토 사령관 & Quad-Ralph 가동)*
+- `"/agent-legion 인증, 결제, 알림, 프로필 등 8개 도메인 모듈을 병렬로 끝까지 구현하고 검증해줘."` *(슬래시 명령 전용 — 자동 검토 사령관 & Octa-Ralph 가동)*
 - *"프로필 수정 화면을 새로 만들어줄래?"* *(일반 대화 — Tier 1/2 단일 루프 자동 라우팅)*
 - *"이 프로젝트의 아키텍처 문서를 훑어보고 문제점을 리뷰해 줘."*
 
@@ -146,47 +146,43 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 
 ---
 
-## 🤖 9인의 실무진: Ralph Loop & Agent Legion (3-Tier Quad-Ralph)
+## 🤖 9인의 실무진: Ralph Loop & Agent Legion (3-Tier Octa-Ralph)
 
-일반 작업에서는 **직렬 Ralph Loop**가 작동하며, 주인님께서 **`/agent-legion` (또는 `/legion`) 슬래시 명령**을 발동하시면 **최상위 자동 검토 사령관(`Legion Commander`)이 하위에 `Ralph Orchestrator`를 최대 4기(Ralph #1 ~ #4)까지 동시에 생성·운용**하고, 각각의 `Ralph Orchestrator`가 자기 산하의 워커(`legion-worker`/`agy-worker`)와 각종 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 지휘하여 중간 수동 검토 없이 전 과정을 무인으로 완수합니다.
+일반 작업에서는 **직렬 Ralph Loop**가 작동하며, 주인님께서 **`/agent-legion` (또는 `/legion`) 슬래시 명령**을 발동하시면 **최상위 자동 검토 사령관(`Legion Commander`)이 하위에 `Ralph Orchestrator`를 최대 8기(Octa-Ralph: `Ralph #1` ~ `Ralph #8`, `MAX_CONCURRENT_RALPH = 8`)까지 동시에 생성·운용**하고, 각 분대장이 **전술 무전망(`legion_radio.py` 공용 무전 게시판 + `send_message` 직통 호출벨)**으로 인터페이스를 실시간 조율하며 자기 산하의 워커(`legion-worker`/`agy-worker`)와 검증관(`terukirdo-plan`, `first-reviewer`, `tech-expert`, `UFC`, `FAC`) 분대를 지휘하여 중간 수동 검토 없이 전 과정을 무인으로 완수합니다.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│             ⚔️ Legion Commander (자동 검토 사령관 — `/agent-legion` 슬래시 전용)           │
-│  - 전체 과업 DAG 분해 & 비충돌 파티셔닝 (`partition_validator.py`: Wave당 최대 4개 제한) │
-│  - 하위에 `ralph-orchestrator`를 최대 4기(Quad-Ralph)까지 동시 병렬 생성 및 총괄 운용     │
-│  - 각 랄프 에이전트의 결과물을 주인님 대신 무인 자동 검토 & 결함 시 즉시 Auto-Rework 지시 │
-└──────┬──────────────────────────┬──────────────────────────┬──────────────────────────┬─┘
-       │ (동시 생성·운용 #1)       │ (동시 생성·운용 #2)       │ (동시 생성·운용 #3)       │ (동시 생성·운용 #4)
-       ▼ [Partition 1]            ▼ [Partition 2]            ▼ [Partition 3]            ▼ [Partition 4]
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│ralph-orchestrator│       │ralph-orchestrator│       │ralph-orchestrator│       │ralph-orchestrator│
-│   (Ralph #1)     │       │   (Ralph #2)     │       │   (Ralph #3)     │       │   (Ralph #4)     │
-└────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘
-         ▼ (산하 분대 운용)          ▼ (산하 분대 운용)          ▼ (산하 분대 운용)          ▼ (산하 분대 운용)
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│ [Ralph #1 Squad] │       │ [Ralph #2 Squad] │       │ [Ralph #3 Squad] │       │ [Ralph #4 Squad] │
-│ • terukirdo-plan │       │ • terukirdo-plan │       │ • terukirdo-plan │       │ • terukirdo-plan │
-│ • legion-worker  │       │ • legion-worker  │       │ • legion-worker  │       │ • legion-worker  │
-│   / agy-worker   │       │   / agy-worker   │       │   / agy-worker   │       │   / agy-worker   │
-│ • first-reviewer │       │ • first-reviewer │       │ • first-reviewer │       │ • first-reviewer │
-│ • tech-expert    │       │ • tech-expert    │       │ • tech-expert    │       │ • tech-expert    │
-│ • UFC & FAC      │       │ • UFC & FAC      │       │ • UFC & FAC      │       │ • UFC & FAC      │
-└────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘       └────────┬─────────┘
-         └──────────────────────────┴─────────────┬────────────┴──────────────────────────┘
-                                                  ▼ (사령관 무인 자동 검토 & 통합 물리 검증)
-                         ┌────────────────────────────────────────────────────────┐
-                         │   Consolidated Universal Verification & Master Report  │
-                         └────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│             ⚔️ Legion Commander (자동 검토 사령관 — `/agent-legion` 슬래시 전용)            │
+│  - 전체 과업 DAG 분해 & 비충돌 파티셔닝 (`partition_validator.py`: Wave당 최대 8개 제한)   │
+│  - 전술 무전망 개통 (`legion_radio.py init --reset`) & 분대 호출부호표(`roster-set`) 관리  │
+│  - 하위에 `ralph-orchestrator`를 최대 8기(Octa-Ralph: Ralph #1 ~ #8) 동시 생성·총괄 운용   │
+│  - 무전 열람(`read --since`) + 결과물 무인 자동 검토 & 결함 시 즉시 Auto-Rework 지시       │
+└────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬─────────┘
+     │ #1       │ #2       │ #3       │ #4       │ #5       │ #6       │ #7       │ #8
+     ▼ [Part 1] ▼ [Part 2] ▼ [Part 3] ▼ [Part 4] ▼ [Part 5] ▼ [Part 6] ▼ [Part 7] ▼ [Part 8]
+┌─────────┐┌─────────┐┌─────────┐┌─────────┐┌─────────┐┌─────────┐┌─────────┐┌─────────┐
+│Ralph #1 ││Ralph #2 ││Ralph #3 ││Ralph #4 ││Ralph #5 ││Ralph #6 ││Ralph #7 ││Ralph #8 │
+└────┬────┘└────┬────┘└────┬────┘└────┬────┘└────┬────┘└────┬────┘└────┬────┘└────┬────┘
+     │◄═════════╬══════════╬══════════╬══════════╬══════════╬══════════╬══════════►│
+     │  📻 Peer Tactical Radio: `legion_radio.py` (SQLite WAL Board) + `send_message` │
+     ▼          ▼          ▼          ▼          ▼          ▼          ▼          ▼
+┌───────────────────────────────────────────────────────────────────────────────────────────┐
+│ [Ralph #1 ~ #8 Independent Squads]                                                        │
+│ • terukirdo-plan  • legion-worker / agy-worker  • first-reviewer  • tech-expert  • UFC/FAC│
+└─────────────────────────────────────────────┬─────────────────────────────────────────────┘
+                                              ▼ (사령관 무인 자동 검토 & 통합 물리 검증)
+                     ┌────────────────────────────────────────────────────────┐
+                     │   Consolidated Universal Verification & Master Report  │
+                     └────────────────────────────────────────────────────────┘
 ```
 
 | # | 에이전트 | 구동 엔진 (`model`) | 도구 권한 (`tools` Frontmatter) | 역할 |
 |:-:|---------|:---:|:---:|------|
-| 1 | **Legion Commander** | `inherit` (**Gemini 4 Carbon**) | Read-Only + `invoke_subagent` + `run_command` | **최상위 자동 검토 사령관 (`/agent-legion` 슬래시 전용)**. 하위에 `ralph-orchestrator` 최대 4기 동시 생성·운용, 부모 세션 Carbon 상속 보존, 무인 중간 검토 및 `send_message` 핸들 재사용 기반 컴팩트 브리프 Auto-Rework 지휘 |
-| 2 | **Ralph Orchestrator** | `inherit` (**Gemini 4 Carbon**) | Read-Only + `invoke_subagent` | **단위 루프 및 분대 지휘관**. 사령관 산하 최대 4기 동시 기동(또는 단독 기동)되어 산하 분대 운용, 부모 모델 상속(`inherit`)으로 하위 워커 Carbon 구동 보장, Rework 루프 시 중복 서브에이전트 스폰 없이 `send_message(conversationId)` 핸들 재사용 및 컴팩트 브리프로 고속 재작업 완수 |
+| 1 | **Legion Commander** | `inherit` (**Gemini 4 Carbon**) | Read-Only + `invoke_subagent` + `run_command` | **최상위 자동 검토 사령관 (`/agent-legion` 슬래시 전용)**. 하위에 `ralph-orchestrator` 최대 8기(Octa-Ralph) 동시 생성·운용, 전술 무전망(`legion_radio.py`) 개통·호출부호 관제·중재, 부모 세션 Carbon 상속 보존, 무인 중간 검토 및 `send_message` 핸들 재사용 기반 Auto-Rework 지휘 |
+| 2 | **Ralph Orchestrator** | `inherit` (**Gemini 4 Carbon**) | Read-Only + `invoke_subagent` + `run_command` | **단위 루프 및 분대 지휘관**. 사령관 산하 최대 8기(`Ralph #1 ~ #8`) 동시 기동(또는 단독 기동)되어 산하 분대 운용, 부모 모델 상속(`inherit`)으로 하위 워커 Carbon 구동 보장, `legion_radio.py` 공용 무전 게시판 + `send_message` 직통 호출벨 2중 교신 수행 (Read-Only Shell Guard로 소스코드/SSOT 변이 배제) |
 | 3 | **Terukirdo Plan** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | Spec Lock 및 파티션 범위를 바탕으로 세부 실행 카드(Execution Cards) 수립 |
 | 4 | **AGY Worker** | `inherit` (**Gemini 4 Carbon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | 단일 과업 또는 할당된 파티션의 코드 구현 및 테스트를 수행하는 엔터프라이즈 Write 워커. 베이스라인 테스트 무결성 준수 (`tests/**` 임의 변조·약화 절대 금지) |
-| 5 | **Legion Worker** | `inherit` (**Gemini 4 Carbon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | **군단 코어 워커**. 각 `ralph-orchestrator` 분대 산하에서 배타적 파일 파티션 내 고속 병렬 구현, 베이스라인 테스트 무결성(`tests/**` 임의 변조 금지) 준수 및 단위 테스트 수행 |
+| 5 | **Legion Worker** | `inherit` (**Gemini 4 Carbon**) | **Write + Shell** (`write_file`, `edit_file`, `run_command`) | **군단 코어 워커**. 각 `ralph-orchestrator`(`Ralph #1 ~ #8`) 분대 산하에서 배타적 파일 파티션 내 고속 병렬 구현, `legion_radio.py` 전술 무전 규격(`#seq`) 열람·기록, 베이스라인 테스트 무결성 준수 및 단위 테스트 수행 |
 | 6 | **First Reviewer** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 워커가 작성한 코드를 심층 1차 마이크로 계약 리뷰 및 AC 대조. 의무적 결함 할당량 폐지(No Finding Quota, 클린 리뷰 합격) 및 P1/P2 판정 시 4요소 결함 입증 계약 필수 준수 |
 | 7 | **Tech Expert (Judge)** | `pro` (**Gemini 4 Argon**) | Read-Only (`view_file`) | 아키텍처·보안·치팅 관점의 적대적 교차 심판관. Carbon 구현물에 대한 동일 모델 자기합리화 편향 차단. 결함 할당량 없이 요구사항 충족 시 즉시 승인하되 결함 판정 시 4요소 입증 계약 엄격 적용 |
 | 8 | **Universal Final Controller** | `flash` (**Gemini 3.8 Flash**) | Read-Only + `run_command` | 빌드 성공·테스트 통과·문서(SSOT) 정합성 독립 물리 검증. 베이스라인 테스트 변조 감시(Baseline Test Guard) 및 실제 `exit_code == 0` 원시 출력 기반 증거 범위 격리 검증 (파일 수정 도구 배제) |
@@ -208,7 +204,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 ### 🔧 개발 생명주기 & 병렬 군단 (8개) ✨ NEW
 | 스킬 | 설명 |
 |------|------|
-| `agent-legion` | ⚔️ **3계층 Quad-Ralph 무인 에이전트 군단 (`/agent-legion` 슬래시 전용)** — 자동 검토 사령관 × 최대 4기 동시 랄프 × 산하 분대 총괄 (대화 발동 물리 차단) |
+| `agent-legion` | ⚔️ **3계층 Octa-Ralph 무인 에이전트 군단 & 전술 무전망 (`/agent-legion` 슬래시 전용)** — 자동 검토 사령관 × 최대 8기 동시 랄프 × 전술 무전 게시판(`legion_radio.py`) × 산하 분대 총괄 (대화 발동 물리 차단) |
 | `plan-product` | 문제 정의, 타겟 사용자, MVP 범위, 성공 지표, 로드맵 수립 |
 | `design-ui` | UI/UX 설계, 화면 흐름, 접근성 검증 + **UI/UX Pro Max** 디자인 지능 (2,000+ 패턴) |
 | `plan-architecture` | 시스템 구조, API 계약, 데이터 모델, 인증/권한, 모듈 경계 설계 |
@@ -255,11 +251,11 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 - **안티 환각 C 의사코드 추출 (Anti-Hallucination C Pseudocode)**: 내부 추론 과정(Thinking/Scratchpad), 더미 `struct` 정의(`flags1..flagsN`), 추측성 필드명 출력을 엄격히 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건(`switch`/`if`), 실제 참조 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 추출.
 - **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: `hermes` CLI 미설치 또는 로컬 모델 미구동/호출 실패(`proc.returncode != 0`) 시 결정론적으로 `exit(2)`로 종료하며 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
 
-### ⚙️ 결정론적 하네스 검증기 & 원클릭 동기화 엔진 (scripts/harness/ & tests/harness/ — 34 Tests)
+### ⚙️ 결정론적 하네스 검증기 & 원클릭 동기화 엔진 (scripts/harness/ & tests/harness/ — 40 Tests)
 하네스의 구조적 결함과 프로젝트 전파 시 발생할 수 있는 레거시 오염을 물리적으로 검증하고 원클릭으로 안전하게 동기화합니다.
-- **`validate_harness.py --strict`**: 9대 에이전트 Tri-Engine 라우팅 계약(`EXPECTED_AGENT_MODELS`), 역할별 `tools` 권한 계약(Read-Only vs Write 주체), 19종 스킬 규격 및 3중 시스템 훅 무결성을 결정론적으로 전수 검증합니다.
-- **`sync_harness.py` (`update_harness.bat`)**: 타 프로젝트 대상 결정론적 미러링 & 레거시 좀비 파일 추적 소거 엔진. 마스터 템플릿에서 삭제·이동된 구버전 파일을 100% 추적 소거하며, Windows 읽기 전용(`stat.S_IWRITE`) 파일 권한을 안전하게 해제하여 완전 소거하고 대상 저장소의 중첩 `.git` 복사를 원천 차단합니다.
-- **`tests/harness/` (34개 단위 테스트)**: 에이전트 디스커버리, Tri-Engine 모델 라우팅 계약, Dual-Brain 4대 운영 계약(No Finding Quota, Subagent Handle Reuse, Baseline Test Integrity Guard, 4-Tier Memory), 스킬 인덱서, 파티션 검증기(`MAX_CONCURRENT_RALPH = 4`), PreToolUse 슬래시 잠금 훅, 하네스 동기화 무결성을 빈틈없이 검증합니다.
+- **`validate_harness.py --strict`**: 9대 에이전트 Tri-Engine 라우팅 계약(`EXPECTED_AGENT_MODELS`), 역할별 `tools` 권한 계약(Read-Only 지휘관의 `invoke_subagent`·`send_message`·`run_command` 필수 보유 및 파일 변이 도구 배제 vs Write 주체), 군단 핵심 스크립트(`partition_validator.py`, `legion_radio.py`), 19종 스킬 규격 및 3중 시스템 훅 무결성을 결정론적으로 전수 검증합니다.
+- **`sync_harness.py` (`update_harness.bat`)**: 타 프로젝트 대상 결정론적 미러링 & 레거시 좀비 파일 추적 소거 엔진. 마스터 템플릿에서 삭제·이동된 구버전 파일을 100% 추적 소거하며, Windows 읽기 전용(`stat.S_IWRITE`) 파일 권한을 안전하게 해제하여 완전 소거하고 대상 저장소의 중첩 `.git` 복사 차단 및 `.agents/state/legion_radio.db` 런타임 상태 보존을 보장합니다.
+- **`tests/harness/` (40개 단위 테스트)**: 에이전트 디스커버리, Tri-Engine 모델 라우팅 계약, Dual-Brain 4대 운영 계약(No Finding Quota, Subagent Handle Reuse, Baseline Test Integrity Guard, 4-Tier Memory), 스킬 인덱서, 파티션 검증기(`MAX_CONCURRENT_RALPH = 8`), 전술 무전망(`legion_radio.py` — 8개 서브프로세스 × 25건 = 200건 동시 폭격 무락 스트레스 테스트 포함), PreToolUse 슬래시 잠금 훅, 하네스 동기화 무결성을 빈틈없이 검증합니다.
 
 ---
 
@@ -275,14 +271,14 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 ├── 📄 update_harness.bat               ← 타 프로젝트 원클릭 하네스 안전 동기화 스크립트
 │
 ├── 📁 .agents/
-│   ├── 📁 agents/                      ← 9대 에이전트 정의 (Quad-Ralph & Legion: Carbon × Argon × 3.8 Flash)
+│   ├── 📁 agents/                      ← 9대 에이전트 정의 (Octa-Ralph & Legion: Carbon × Argon × 3.8 Flash)
 │   ├── 📁 hooks/                       ← 3중 시스템 방어선 (명령어·파일·서브에이전트 호출 감시)
 │   ├── 📁 rules/                       ← 안전(슬래시 전용 잠금)·증거·문서·기획 헌법
 │   ├── 📁 schemas/                     ← 증거 및 보고서 JSON Schema
-│   ├── 📁 state/                       ← 루프 상태 저장소
+│   ├── 📁 state/                       ← 루프 및 전술 무전(legion_radio.db) 런타임 상태 저장소
 │   │
 │   └── 📁 skills/                      ← 19종 스킬 라이브러리
-│       ├── agent-legion/                   ⚔️ 슬래시 전용 3계층 Quad-Ralph 군단 (partition_validator.py 내장)
+│       ├── agent-legion/                   ⚔️ 슬래시 전용 3계층 Octa-Ralph 군단 (partition_validator.py, legion_radio.py 내장)
 │       ├── ultimate-make/                  👑 마스터 기획 하네스 (validate_spec_lock.py 내장)
 │       ├── universal-crawler/              🌐 범용 안티블록 크롤러
 │       ├── multi-agent-conference/         🤖 5인 전문가 적대적 회의
@@ -299,7 +295,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
 ├── 📁 tests/
-│   └── 📁 harness/                     ← 34개 하네스 무결성 및 운영 계약 단위 테스트 스위트
+│   └── 📁 harness/                     ← 40개 하네스 무결성 및 동시성 스트레스 단위 테스트 스위트
 │
 ├── 📁 reference/                       ← AI 성능 평가 카드, 교차 협업 가이드, 실패 카탈로그, 리뷰 템플릿
 │
@@ -317,6 +313,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-11-11** | **v5.7** | **📻 전술 무전망(Peer Tactical Radio) 신규 구축 및 Agent Legion 2배 확장: Quad-Ralph(4기) → Octa-Ralph(8기) 승격 (TASK-20261111-LEGION-RADIO-AND-OCTA-RALPH-UPGRADE)**<br>• **Octa-Ralph 2배 확장 (`MAX_CONCURRENT_RALPH = 8`)**: 주인님 지시에 따라 최상위 자동 검토 사령관(`legion-commander`)이 Wave당 동시에 생성·운용하는 `ralph-orchestrator` 분대 상한을 기존 4기(`Ralph #1 ~ #4`)에서 **8기(`Ralph #1 ~ #8`)**로 2배 확장하고 `partition_validator.py` 및 전 헌법·스킬·에이전트 명세 동기화<br>• **무락 전술 무전망 엔진 구축 (`.agents/skills/agent-legion/scripts/legion_radio.py`)**: 외부 의존성 0개 표준 라이브러리(`sqlite3` WAL + `busy_timeout=5000` + `BEGIN IMMEDIATE` + 지터 재시도) 기반 공용 무전 게시판(`.agents/state/legion_radio.db`) 구축 (`init`, `roster-set`, `roster`, `post`, `read` 5대 명령 및 2,000자 상한 가드 탑재)<br>• **2중 전술 교신 프로토콜 (Zero-Waste Wakeup)**: `[채널 1]` `legion_radio.py` 게시판 원자적 `#seq` 발급·증분 열람과 `[채널 2]` `send_message` 직통 호출벨을 결합하여 필요한 대상 분대장만 선택적 기상시키고, `ralph-orchestrator`에 Read-Only Shell Guard 적용 `run_command` 부여<br>• **40개 하네스 단위 및 동시성 스트레스 테스트 전수 통과 (`tests/harness/test_legion_radio.py`)**: 8개 병렬 OS 서브프로세스 × 25건(총 200건) 동시 폭격 테스트에서 Lock 에러 0건 및 `#1 ~ #200` 시퀀스 무누락·무중복 완벽 입증 |
 | **2026-11-11** | **v5.7** | **👑 Terukirdo v5.7 공식 승격 — 비대칭 트라이 엔진(Gemini 4 Carbon × 4 Argon × 3.8 Flash) 아키텍처 전면 전환 (TASK-20261111-V57-TRI-ENGINE-UPGRADE)**<br>• **비대칭 트라이 엔진 체계 수립**: 상류 마스터 기획 및 군단 지휘 척추·엔터프라이즈 코어/병렬 구현 워커(`UltimateMake`, `legion-commander`, `ralph-orchestrator`, `agy-worker`, `legion-worker`)를 **Gemini 4 Carbon (`inherit`)**으로, 정밀 실행 계획·1차 마이크로 계약 리뷰·2차 적대적 교차 심판(`terukirdo-plan`, `first-reviewer`, `tech-expert`)을 **Gemini 4 Argon (`pro`)**으로, 초고속 물리 빌드/테스트/Git 관제(`UFC`, `FAC`)를 **Gemini 3.8 Flash (`flash`)**로 재배치<br>• **부모-자식 모델 계승 체인 보존 (Parent-Child `inherit` Chain Invariant)**: 최상위 `legion-commander`와 하위 `ralph-orchestrator`에 `model: inherit`을 엄격 부여하여 지휘 계통 하류의 `agy-worker`/`legion-worker`가 세션 모델인 Carbon을 손실 없이 계승하도록 보장<br>• **교차 모델 분리 검증 (Cross-Model Review Separation)**: Carbon 구현물에 대해 Argon 기반 `first-reviewer` 및 `tech-expert`가 1차 정적 리뷰와 2차 거시 아키텍처/보안 심판을 수행하여 동일 모델 자기합리화(Self-Justification) 편향 원천 차단 및 Carbon 구현 쿼터 극대화<br>• **결정론적 하네스 검증 계약 강화 (`validate_harness.py --strict`)**: 9대 에이전트 전수 Tri-Engine 모델 계약(`EXPECTED_AGENT_MODELS`) 물리 검증 로직 탑재 및 단위 테스트(`test_tri_engine_agent_model_routing_contract`) 추가로 34개 테스트 전수 통과<br>• **최상위 프로토콜 v5.7 공식 승격 & v5.6 아카이빙**: `Terukirdo_Protocol_v5.6.md`를 `docs/archive/Terukirdo_Protocol_v5.6.md`로 아카이빙하고 루트 최신 헌법 `Terukirdo_Protocol_v5.7.md` 및 `AGENTS.md` 활성화, 원클릭 동기화 엔진(`sync_harness.py`, `update_harness.bat`) 최신화 완료 |
 | **2026-11-10** | **v5.6** | **🧠 Dual-Brain 4대 핵심 운영 통찰 하네스 전면 이식 및 하네스 테스트 스위트(33개)·동기화 엔진 완성**<br>• **리뷰어 할당량 폐지 & 4요소 결함 입증 계약 (No Finding Quota)**: 인위적 결함 발굴 할당량을 배제하고 클린 리뷰(`PASS` / `ARCHITECTURALLY ACCEPTABLE`)를 정당한 성공으로 규정하며, P1/P2 결함 발생 시 `[1. 위반된 계약 + 2. 구체적 트리거 + 3. 현재 코드 근거 + 4. 실질적 피해]`의 4대 요소 입증을 필수 헌법화 (`.agents/rules/evidence.md`, `first-reviewer`, `tech-expert`)<br>• **서브에이전트 핸들 재사용 (`send_message`) & 컴팩트 브리프**: Rework 루프 시 중복 서브에이전트 인스턴스 생성을 금지하고 활성 `conversationId`로 `send_message`를 호출하여 이전 컨텍스트를 보존한 채 고속 재작업 수행 및 최종 diff 기반 재검증 의무화 (`ralph-orchestrator`, `legion-commander`)<br>• **베이스라인 테스트 무결성 보호 (Baseline Test Integrity Guard)**: 억지 빌드 통과를 위한 기존 테스트(`tests/**`)의 임의 수정·삭제·단언문 약화를 원천 차단하고 실제 diff와 exit code 중심의 증거 범위 격리 확립 (`universal-final-controller`, `final-approach-control`, `agy-worker`, `legion-worker`)<br>• **4계층 가중치 메모리 장부 (`Hot / Warm / Cold / Archived Decisions`)**: `MEMORY.md`를 활성 불변식(Hot), 도메인 교훈(Warm), 과거 참조(Cold), 회귀 방지용 대체 결정 장부(Archived Decisions)로 정밀 분할하고 단순 읽기 시 장부 갱신만을 위한 덮어쓰기 금지 명문화<br>• **결정론적 하네스 동기화 & 레거시 추적 소거 (`sync_harness.py`, `update_harness.bat`)**: 타 프로젝트 배포 시 구버전 좀비 파일 추적 소거, Windows 읽기 전용 파일 권한 해제(`stat.S_IWRITE`) 완전 소거 및 중첩 `.git` 복사 원천 차단<br>• **33개 하네스 단위 테스트 스위트 전수 통과**: 에이전트 디스커버리, 4대 운영 계약, 스킬 인덱서, 파티션 검증기, 동기화 엔진 무결성 검증 완료 및 임시 참조 폴더(`reference/dual-brain`) 100% 흡수 후 소거 완료 |
 | **2026-11-02** | **v5.6** | **🚀 Hermes CLI 로컬 모델(Offrail-27B-12G) 25배 속도 최적화 및 안티 환각 C 의사코드 가드레일 강화**<br>• Mode A에 `--ignore-rules --reasoning none -t none --max-turns 1`을 적용하여 20,000+ 토큰 자동 주입 및 추론 오버헤드 제거 (질의당 27분 → 45~60초, 약 25x 가속), Mode B에 `--yolo --ignore-rules --reasoning low` 적용<br>• 내부 추론/더미 `struct`/추측성 필드명 출력을 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건, 실제 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 출력하도록 프롬프트 및 `.agents/rules/safety.md` 명문화<br>• 바이트 단위 `--size`(400~750 bytes) + `--no-stop-at-ret` 정렬 지침 및 `proc.returncode != 0` 시 무조건 `[FORCE_ASK: HERMES_UNAVAILABLE]`(`sys.exit(2)`) 종료 안전장치 강화 |

@@ -92,7 +92,7 @@ def main() -> int:
             ".agents/state/stop_gate_state.json",
             ".terkirdo_pre_cache.md",
             ".agents/skills/self-evolution/scripts/index/skills_meta.json",
-        ]:
+        ] or p_lower.startswith(".agents/state/legion_radio.db"):
             continue
 
         if p_lower in ["memory.md", "docs/terukirdo_trajectory.txt"]:

@@ -50,6 +50,7 @@ class TestUpdateHarness(unittest.TestCase):
                 "MEMORY.md": "# Custom Target Project Memory\n",
                 "docs/Terukirdo_Trajectory.txt": "[2026-10-31] Custom trajectory entry\n",
                 ".agents/state/stop_gate_state.json": '{"custom_state": 123}\n',
+                ".agents/state/legion_radio.db": "sqlite-runtime-placeholder",
                 "docs/specs/my_feature.spec.md": "# Custom Feature Frozen Spec\n",
                 "docs/development/commands.md": "# Custom Project Build Commands\n",
                 "src/app.py": "print('target app code')\n",
@@ -83,6 +84,8 @@ class TestUpdateHarness(unittest.TestCase):
             )
             self.assertTrue((target / ".agents/agents/legion-commander/agent.md").is_file())
             self.assertTrue((target / ".agents/skills/agent-legion/SKILL.md").is_file())
+            self.assertTrue((target / ".agents/skills/agent-legion/scripts/legion_radio.py").is_file())
+            self.assertTrue((target / ".agents/skills/agent-legion/scripts/partition_validator.py").is_file())
             self.assertTrue((target / "agents/README.md").is_file())
 
             # 7. Verify all project-owned files were strictly preserved

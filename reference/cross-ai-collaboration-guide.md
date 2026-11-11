@@ -167,7 +167,7 @@ C# HttpListener ↔ PowerShell TCP 브릿지 ↔ agy CLI 에이전트
 
 | 에이전트 | 모델 | 역할 |
 |---|:---:|---|
-| `legion-commander` | `inherit` (Gemini 4 Carbon) | 슬래시 명령 전용 자동 검토 사령관 (최대 4기 Ralph 총괄) |
+| `legion-commander` | `inherit` (Gemini 4 Carbon) | 슬래시 명령 전용 자동 검토 사령관 (최대 8기 Ralph 총괄) |
 | `ralph-orchestrator` | `inherit` (Gemini 4 Carbon) | 단위 루프 지휘 및 산하 분대 운용 |
 | `terukirdo-plan` | `pro` (Gemini 4 Argon) | 마일스톤 및 실행 카드 설계 |
 | `agy-worker` | `inherit` (Gemini 4 Carbon) | 단일 과업 전담 엔터프라이즈 Write 구현 워커 |
