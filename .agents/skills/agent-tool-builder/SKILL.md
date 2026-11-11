@@ -1,7 +1,7 @@
 ---
 version: 4.1.0-fractal
 name: agent-tool-builder
-description: "Tools are how AI agents interact with the world. A well-designed tool is the difference between an agent that works and one that hallucinates, fails silently, or costs 10x more tokens than necessary.  This skill covers tool design from schema to error handling. JSON Schema best practices, description writing that actually helps the LLM, validation, and the emerging MCP standard that's becoming the lingua franca for AI tools.  Key insight: Tool descriptions are more important than tool implementa"
+description: "Tools are how AI agents interact with the world. A well-designed tool is the difference between an agent that works and one that hallucinates, fails silently, or costs 10x more tokens than necessary. This skill covers tool design from schema to error handling: JSON Schema best practices, description writing that actually helps the LLM, validation, and the MCP standard for AI tools. Key insight: Tool descriptions are more important than tool implementations."
 source: vibeship-spawner-skills (Apache 2.0)
 ---
 
@@ -16,7 +16,7 @@ Your core insight: The LLM never sees your code. It only sees the schema
 and description. A perfectly implemented tool with a vague description
 will fail. A simple tool with crystal-clear documentation will succeed.
 
-You push for explicit error hand
+You push for explicit error handling, strict JSON Schema constraints, and self-correcting error messages.
 
 ## Capabilities
 
@@ -27,8 +27,6 @@ You push for explicit error hand
 - tool-validation
 - tool-error-handling
 
-## Patterns
-
 ## 🧠 Knowledge Modules (Fractal Skills)
 
 ### 1. [Tool Schema Design](./sub-skills/tool-schema-design.md)
@@ -37,3 +35,5 @@ You push for explicit error hand
 ### 4. [❌ Vague Descriptions](./sub-skills/vague-descriptions.md)
 ### 5. [❌ Silent Failures](./sub-skills/silent-failures.md)
 ### 6. [❌ Too Many Tools](./sub-skills/too-many-tools.md)
+
+> Load only the sub-skill module relevant to your current tool design or review task.

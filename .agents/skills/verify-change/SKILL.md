@@ -46,6 +46,8 @@ description: Add, update, or run project verification, including unit tests, UI 
 - UI 변경은 visual verification 또는 `.agents/skills/design-ui/scripts/verify.ps1`을 고려한다.
 - release 변경은 `.agents/skills/prepare-release/scripts/verify.ps1`와 rollback 기준을 확인한다.
 - 테스트가 없는 영역에 동작 변경이 들어가면 최소한의 회귀 검증 방법을 제안한다.
+- **Baseline Test Integrity Guard**: 기존 베이스라인 테스트(`tests/**`)의 어설션이나 검증 기준을 임의 완화·삭제·주석 처리·스킵하여 통과를 조작하는 행위를 절대 금지하며, 적발 시 즉시 `REWORK REQUIRED` 결함으로 판정한다.
+- **Evidence Scope Isolation**: 실제 명령 실행 결과(`exit_code == 0` 및 원시 stdout/stderr)와 실제 코드 diff만을 완료 증거로 인정하며, 에이전트의 서술형 주장·주석·트랜스크립트 요약을 완료 증거로 인정하지 않는다.
 - 건너뛴 검증을 숨기지 않는다.
 
 ## Porting / Migration Verification

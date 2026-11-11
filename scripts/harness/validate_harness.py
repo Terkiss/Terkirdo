@@ -2,6 +2,7 @@
 import os
 import sys
 import re
+from pathlib import Path
 
 VALID_MODELS = {"inherit", "pro", "flash", "flash_lite"}
 
@@ -33,6 +34,44 @@ EXPECTED_AGENT_MODELS = {
     "universal-final-controller": "flash",
     "final-approach-control": "flash",
 }
+
+FORBIDDEN_SKILL_PATTERNS = (
+    "model: opus",
+    "model: sonnet",
+    "auto_evolve.py",
+    "implementation-playbook.md",
+    "undetected_chromedriver",
+    ".agent/skills/",
+    ".claude4net",
+)
+
+FENCE_RE = re.compile(r"^`{3,}")
+INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+MD_LINK_RE = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
+SKILL_REL_PATH_RE = re.compile(r"\.agents/skills/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+")
+
+
+def strip_code_blocks_and_inline(markdown_text):
+    """Remove fenced code blocks and inline code spans before link extraction."""
+    outside_fences = []
+    in_fence = False
+    fence_marker = None
+    for line in markdown_text.splitlines():
+        stripped = line.strip()
+        m = FENCE_RE.match(stripped)
+        if m:
+            ticks = m.group(0)
+            if not in_fence:
+                in_fence = True
+                fence_marker = ticks
+            elif len(ticks) >= len(fence_marker):
+                in_fence = False
+                fence_marker = None
+            continue
+        if not in_fence:
+            outside_fences.append(INLINE_CODE_RE.sub("", line))
+    return "\n".join(outside_fences)
+
 
 def parse_frontmatter(content):
     if not content.startswith("---"):
@@ -79,7 +118,7 @@ def parse_frontmatter(content):
                 folded_lines.append(line)
                 continue
         
-        if ":" in line:
+        if ":" in line and not line.startswith(" ") and not line.startswith("\t"):
             key, val = line.split(":", 1)
             key = key.strip()
             val = val.strip()
@@ -96,6 +135,9 @@ def parse_frontmatter(content):
                 if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
                     val = val[1:-1]
                 metadata[key] = val
+                current_key = key
+        elif current_key and (line.startswith(" ") or line.startswith("\t")) and isinstance(metadata.get(current_key), str):
+            metadata[current_key] = f"{metadata[current_key]} {line_stripped}".strip()
                 
     if folded_mode and current_key:
         metadata[current_key] = "\n".join(folded_lines).strip()
@@ -104,8 +146,91 @@ def parse_frontmatter(content):
         
     return metadata, body_text
 
-def validate_harness(strict=False):
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+def validate_skills_directory(base_dir, strict=False):
+    skills_dir = Path(base_dir) / ".agents" / "skills"
+    errors = []
+
+    if not skills_dir.is_dir():
+        errors.append(f"Directory not found: {skills_dir}")
+        return errors
+
+    skill_folders = sorted([d for d in skills_dir.iterdir() if d.is_dir()], key=lambda p: p.name)
+    if not skill_folders:
+        errors.append("No skill directories found in .agents/skills")
+        return errors
+
+    for folder in skill_folders:
+        skill_md = folder / "SKILL.md"
+        rel_skill = f".agents/skills/{folder.name}/SKILL.md"
+        if not skill_md.is_file():
+            errors.append(f"Missing skill definition file: {rel_skill}")
+            continue
+
+        try:
+            content = skill_md.read_text(encoding="utf-8")
+        except Exception as e:
+            errors.append(f"Failed to read {rel_skill}: {e}")
+            continue
+
+        metadata, _ = parse_frontmatter(content)
+        if not isinstance(metadata, dict):
+            errors.append(f"Invalid frontmatter in {rel_skill}: {metadata}")
+            continue
+
+        name = metadata.get("name")
+        if name != folder.name:
+            errors.append(f"Skill name mismatch in {rel_skill}: frontmatter name '{name}' != folder name '{folder.name}'")
+
+        description = metadata.get("description")
+        if not isinstance(description, str) or not description.strip():
+            errors.append(f"Missing or empty description in {rel_skill} frontmatter")
+        elif description.strip().endswith("implementa"):
+            errors.append(f"Truncated description detected in {rel_skill}")
+
+    if strict:
+        for md_path in sorted(skills_dir.rglob("*.md")):
+            if "skillopt-engine" in md_path.parts:
+                continue
+            rel_md = md_path.relative_to(base_dir).as_posix()
+            try:
+                text = md_path.read_text(encoding="utf-8")
+            except Exception as e:
+                errors.append(f"Failed to read {rel_md}: {e}")
+                continue
+
+            for forbidden in FORBIDDEN_SKILL_PATTERNS:
+                if forbidden in text:
+                    errors.append(f"Forbidden pattern '{forbidden}' found in {rel_md}")
+
+            if rel_md == ".agents/skills/cluedoc/SKILL.md":
+                for cluedoc_forbidden in ("<!-- cluedoc:start -->", "without being asked"):
+                    if cluedoc_forbidden in text:
+                        errors.append(f"Protocol-conflicting pattern '{cluedoc_forbidden}' found in {rel_md}")
+
+            stripped = strip_code_blocks_and_inline(text)
+            for match in MD_LINK_RE.finditer(stripped):
+                raw_target = match.group(2).strip()
+                target = raw_target.split("#", 1)[0].strip()
+                if not target or target.startswith(("http://", "https://", "mailto:")):
+                    continue
+                resolved = (md_path.parent / target).resolve()
+                if not resolved.exists():
+                    errors.append(f"Broken relative markdown link '{raw_target}' in {rel_md}")
+
+            for match in SKILL_REL_PATH_RE.finditer(stripped):
+                ref_rel = match.group(0).rstrip(".,;:)")
+                if not (Path(base_dir) / ref_rel).exists():
+                    errors.append(f"Missing referenced skill path '{ref_rel}' in {rel_md}")
+
+    return errors
+
+
+def validate_harness(strict=False, base_dir=None):
+    if base_dir is None:
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    else:
+        base_dir = os.path.abspath(str(base_dir))
     agents_dir = os.path.join(base_dir, ".agents", "agents")
     old_agents_dir = os.path.join(base_dir, "agents")
     errors = []
@@ -199,6 +324,8 @@ def validate_harness(strict=False):
         full_script = os.path.join(base_dir, rel_script)
         if not os.path.isfile(full_script):
             errors.append(f"Missing required Agent Legion script: {rel_script.replace(os.sep, '/')}")
+
+    errors.extend(validate_skills_directory(base_dir, strict=strict))
 
     return errors
 

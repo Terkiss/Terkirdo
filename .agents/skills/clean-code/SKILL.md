@@ -20,7 +20,7 @@ layer: master-skill
 | **DRY** | Don't Repeat Yourself - extract duplicates, reuse |
 | **KISS** | Keep It Simple - simplest solution that works |
 | **YAGNI** | You Aren't Gonna Need It - don't build unused features |
-| **Boy Scout** | Leave code cleaner than you found it |
+| **Boy Scout** | Leave touched code cleaner within authorized scope |
 
 ---
 
@@ -33,7 +33,7 @@ layer: master-skill
 | **Booleans** | Question form: `isActive`, `hasPermission`, `canEdit` |
 | **Constants** | SCREAMING_SNAKE: `MAX_RETRY_COUNT` |
 
-> **Rule:** If you need a comment to explain a name, rename it.
+> **Rule:** If you need a comment to explain a new symbol's name, rename it instead.
 
 ---
 
@@ -64,8 +64,8 @@ layer: master-skill
 
 | Situation | Action |
 |-----------|--------|
-| User asks for feature | Write it directly |
-| User reports bug | Fix it, don't explain |
+| User asks for feature | Write it directly within `allowed_files` |
+| User reports bug | Fix root cause and verify with tests |
 | No clear requirement | Ask, don't assume |
 
 ---
@@ -74,7 +74,7 @@ layer: master-skill
 
 | ❌ Pattern | ✅ Fix |
 |-----------|-------|
-| Comment every line | Delete obvious comments |
+| Comment every new line | Avoid obvious comments in new code (preserve existing unrelated comments/docstrings) |
 | Helper for one-liner | Inline the code |
 | Factory for 2 objects | Direct instantiation |
 | utils.ts with 1 function | Put code where used |
@@ -93,18 +93,18 @@ layer: master-skill
 |----------|-----|
 | **What imports this file?** | They might break |
 | **What does this file import?** | Interface changes |
-| **What tests cover this?** | Tests might fail |
+| **What tests cover this?** | Tests might fail (never weaken baseline tests!) |
 | **Is this a shared component?** | Multiple places affected |
 
 **Quick Check:**
 ```
 File to edit: UserService.ts
 └── Who imports this? → UserController.ts, AuthController.ts
-└── Do they need changes too? → Check function signatures
+└── Do they need changes too? → Check function signatures & allowed_files scope
 ```
 
-> 🔴 **Rule:** Edit the file + all dependent files in the SAME task.
-> 🔴 **Never leave broken imports or missing updates.**
+> 🔴 **Rule:** Keep all dependent updates coherent within the authorized task scope.
+> 🔴 **Never leave broken imports, missing updates, or weakened baseline tests.**
 
 ---
 
@@ -113,13 +113,13 @@ File to edit: UserService.ts
 | Do | Don't |
 |----|-------|
 | Write code directly | Write tutorials |
-| Let code self-document | Add obvious comments |
-| Fix bugs immediately | Explain the fix first |
+| Let new code self-document | Add redundant comments (never strip existing unrelated docstrings) |
+| Fix bugs immediately | Explain the fix without verifying |
 | Inline small things | Create unnecessary files |
 | Name things clearly | Use abbreviations |
 | Keep functions small | Write 100+ line functions |
 
-> **Remember: The user wants working code, not a programming lesson.**
+> **Remember: Deliver verified working code with minimal surface churn.**
 
 ---
 
@@ -129,19 +129,19 @@ File to edit: UserService.ts
 
 | Check | Question |
 |-------|----------|
-| ✅ **Goal met?** | Did I do exactly what user asked? |
-| ✅ **Files edited?** | Did I modify all necessary files? |
-| ✅ **Code works?** | Did I test/verify the change? |
-| ✅ **No errors?** | Lint and TypeScript pass? |
-| ✅ **Nothing forgotten?** | Any edge cases missed? |
+| ✅ **Goal met?** | Did I satisfy every acceptance criterion within `allowed_files`? |
+| ✅ **Files edited?** | Did I modify all necessary files without touching unauthorized files? |
+| ✅ **Code works?** | Did I execute physical verification commands (`exit_code == 0`)? |
+| ✅ **No errors?** | Do static analysis, build, and test gates pass cleanly? |
+| ✅ **Nothing forgotten?** | Are edge cases covered and baseline tests untouched? |
 
-> 🔴 **Rule:** If ANY check fails, fix it before completing.
+> 🔴 **Rule:** If ANY check fails, fix the implementation before reporting completion.
 
 ---
 
-## Verification Scripts (MANDATORY)
+## Verification Scripts (Terukirdo v5.7 Mandatory Gate)
 
-> 🔴 **CRITICAL:** Each agent runs ONLY their own skill's scripts after completing work.
+> 🔴 **CRITICAL:** Under Terukirdo Protocol v5.7, completion claims require raw command execution evidence (`exit_code == 0`) from the assigned `target_skill` verification script (`.agents/skills/<skill>/scripts/verify.ps1`), harness/unit test suites, and applicable project build/test gates.
 
 ## 🧠 Knowledge Modules (Fractal Skills)
 
@@ -150,3 +150,5 @@ File to edit: UserService.ts
 ### 3. [❌ Errors Found (X items)](./sub-skills/errors-found-x-items.md)
 ### 4. [⚠️ Warnings (Y items)](./sub-skills/warnings-y-items.md)
 ### 5. [✅ Passed (Z items)](./sub-skills/passed-z-items.md)
+
+> Consult the sub-skill modules above when mapping Terukirdo v5.7 agents to verification scripts and formatting evidence reports.

@@ -12,5 +12,3 @@ After generating your response, verify it meets these criteria:
 
 If verification fails, revise your response."""
 ```
-
-## Performance Optimization

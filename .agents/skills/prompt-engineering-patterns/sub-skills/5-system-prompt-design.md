@@ -32,5 +32,3 @@ prompt = template.render(
     examples=selector.select(query="user registration date filter")
 )
 ```
-
-## Key Patterns

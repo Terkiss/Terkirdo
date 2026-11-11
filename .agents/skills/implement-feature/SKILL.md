@@ -53,6 +53,8 @@ description: Implement project code, features, bug fixes, refactors, configurati
 - 동작이 바뀌면 테스트를 갱신하거나 검증 필요성을 명시한다.
 - 인증, 권한, 결제, 개인정보, 데이터 삭제, migration, 배포 설정 변경은 high-risk로 보고 `AGENTS.md`의 Risk Policy와 Safety Policy를 따른다.
 - 기존 코드에서 하드코딩된 API 키, 시크릿, 기본값을 발견해도 즉시 제거하지 않는다. 사용자가 의도적으로 배치한 것일 수 있으므로 반드시 사용자에게 의도를 확인(FORCE_ASK)한 후 처리한다.
+- **Baseline Test Integrity Guard**: Execution Card의 `allowed_files`에 명시적으로 승인된 정당한 갱신이 아닌 한, 기존 베이스라인 테스트(`tests/**`)의 검증 기준이나 어설션을 통과 목적으로 임의 완화·삭제·주석 처리하지 않는다.
+- **Peer Tactical Radio Sync (`/agent-legion` 파티션 작업 시)**: `/agent-legion` 병렬 분대 파티션 작업 수행 시 `python .agents/skills/agent-legion/scripts/legion_radio.py read --since`로 공유 인터페이스·스키마 합의(`#seq`)를 확인하고 배타적 `allowed_files` 경계를 준수한다.
 - 관련 검증 또는 실행하지 못한 이유 없이 기능 작업을 완료로 보고하지 않는다.
 
 ## Documentation Updates

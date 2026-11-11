@@ -56,7 +56,7 @@ def run_evolution():
     if proposed_doc.is_file():
         try:
             content = proposed_doc.read_text(encoding="utf-8")
-            content += "\n\n# Self-Evolution Candidate Note\n- Verified UX/UI pattern guidelines v5.3 incorporated."
+            content += "\n\n# Self-Evolution Candidate Note\n- Verified UX/UI pattern guidelines v5.7 incorporated."
             proposed_doc.write_text(content, encoding="utf-8")
             has_candidate = True
         except Exception as e:

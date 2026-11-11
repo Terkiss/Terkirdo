@@ -8,11 +8,9 @@ layer: master-skill
 
 # MCP Builder
 
-> Principles for building MCP servers.
+> Principles for building reliable, schema-safe Model Context Protocol (MCP) servers for Antigravity CLI and standard MCP hosts.
 
 ---
-
-## 1. MCP Overview
 
 ## 🧠 Knowledge Modules (Fractal Skills)
 
@@ -31,3 +29,5 @@ layer: master-skill
 ### 13. [API Keys](./sub-skills/api-keys.md)
 ### 14. [Claude Desktop Config](./sub-skills/claude-desktop-config.md)
 ### 15. [Test Categories](./sub-skills/test-categories.md)
+
+> Open only the specific MCP sub-skill module needed for your server architecture, schema, security, or host configuration step.

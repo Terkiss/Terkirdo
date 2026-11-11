@@ -23,5 +23,3 @@ Build prompts that gracefully handle failures:
 - **Context overflow**: Exceeding token limits with excessive examples
 - **Ambiguous instructions**: Leaving room for multiple interpretations
 - **Ignoring edge cases**: Not testing on unusual or boundary inputs
-
-## Integration Patterns

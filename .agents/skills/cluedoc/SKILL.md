@@ -1,16 +1,26 @@
 ---
 name: cluedoc
 description: >-
-  Automatically document a codebase as a set of interlinked, visual "papers". Use proactively after making code changes to keep the docs in .cluedoc/ in sync — updating the papers for features that were added, changed, or removed — without being asked. Also use when the user explicitly wants to generate or fully re-sync documentation for a repository (monorepo or single-package). Run the `init` command (e.g. "/cluedoc init") to bootstrap a new repository: it writes a shallow starter tree of papers and wires a sync-trigger block into the repo's agent-instructions file. Additionally, whenever the user asks a question about how the system works and .cluedoc/ papers exist, append a short "Reading Guide" to the answer pointing at the most relevant existing papers to read.
+  Document a codebase as a set of interlinked, visual "papers" under .cluedoc/. Operates with default auto_sync: false under Terukirdo governance: generate or synchronize .cluedoc/ visual paper trees only upon the user's explicit request (e.g. "/cluedoc init" or explicit Cluedoc creation/sync instruction) or when explicitly enabled by project policy Opt-In. Never auto-inject sync triggers into AGENTS.md or other SSOT files. Additionally, whenever the user asks a question about how the system works and .cluedoc/ papers already exist, append a short "Reading Guide" pointing at the most relevant existing papers.
 license: MIT
 metadata:
   author: keunwoo
-  version: "0.2.0"
+  version: "0.3.0-terukirdo-v5.7"
 ---
 
 # Cluedoc
 
-Cluedoc automatically documents a repository by writing a set of **papers** — one focused document per **feature** of the system. Papers are richly visual and cross-reference each other, so a reader can start anywhere and follow links to the context they need.
+Cluedoc documents a repository by writing a set of **papers** — one focused document per **feature** of the system. Papers are richly visual and cross-reference each other, so a reader can start anywhere and follow links to the context they need.
+
+## Terukirdo Governance & Opt-In Rule (`auto_sync: false`)
+
+Under `Terukirdo_Protocol_v5.7.md` (§9.4) and `.agents/rules/documentation.md`, Cluedoc strictly obeys the following governance rules:
+
+1. **Explicit Opt-In Only (`auto_sync: false` Default):** The default configuration is `auto_sync: false`. Do **not** automatically create or modify `.cluedoc/` files after ordinary code changes unless the user explicitly instructs you to create/update Cluedoc papers or the project policy has explicitly opted in. After code changes when `.cluedoc/` exists, simply report if any Cluedoc papers may be stale and await user approval before updating them.
+2. **No Automatic SSOT / Agent-Instructions Injection:** Even when running `init` (e.g., `/cluedoc init`), **never** automatically edit or inject sync-trigger blocks into `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or any project SSOT / agent-instructions file. If persistent synchronization policy registration is desired, propose it only as a candidate agenda item to the user and wait for explicit approval.
+3. **Documentation Candidate, Not Completion Evidence:** Cluedoc papers are documentation candidates, never verification evidence. Always verify actual source code and test states before generating or relying on papers.
+
+---
 
 Cluedoc has **one mode**, not two. It organizes papers by **capability**, not by code layout — one unified feature tree spans the whole repository regardless of how the code is packaged. This is why the usual "monorepo vs. single-package" distinction never comes up: Cluedoc does not detect or branch on repo shape. A capability that lives in its own package appears as a feature next to the capabilities it builds on, and a `sources` list (see below) can freely point across package boundaries. Whether the repo is one package or twenty, the documentation is the same kind of capability tree.
 
@@ -43,14 +53,12 @@ Making every feature a folder (even leaves) keeps the structure uniform and lets
 
 ## How Cluedoc Builds Docs — Progressively, Both Directions
 
-Cluedoc does **not** document the whole repository in one pass. It builds the documentation **progressively**, driven by code changes.
-
-A software system is an organism: a code change propagates **both up and down** the feature hierarchy, so a single change can require updating parent *and* child papers.
+When authorized by the user (or Opt-In policy) to document a feature or sync a code change, Cluedoc does **not** document the whole repository in one giant pass. It builds the documentation **progressively**, propagating **both up and down** the feature hierarchy:
 
 - **Upward (what contains this):** scan **where the changed code is used** — call sites, imports, references. This reveals the larger feature the code participates in, and how the change affects that parent.
 - **Downward (what this depends on):** scan **what the changed code uses** — the functions and modules it calls. These are its child features/collaborators, and the change may alter how they are described or which ones matter.
 
-When code is added or changed, Cluedoc:
+When requested to document added or changed code, Cluedoc:
 
 1. **Locates the code** and scans **both directions** — its callers (upward) and its callees (downward).
 2. **Infers its purpose** — what capability this code serves, in language-neutral terms.
@@ -73,47 +81,26 @@ When code is added or changed, Cluedoc:
    deeper children ────────► add/refine if new dependencies appeared
 ```
 
-Over many changes the tree fills in and sharpens from every direction. Early on it may be shallow; it deepens as features reveal both the structures that contain them and the collaborators they rely on.
+## The `init` Command — Explicit Starter Bootstrap
 
-## The `init` Command — Bootstrap and Wire-Up
+`init` is the one-time way to *start* Cluedoc in a repository when the user explicitly runs `/cluedoc init` or asks to initialize Cluedoc.
 
-`init` is the one-time way to *start* Cluedoc in a repository. Trigger it when the user runs `/cluedoc init`, says "cluedoc init", or asks to initialize/bootstrap/set up Cluedoc here. It does two things: lay down a shallow starter tree of papers, and wire up a persistent trigger so future sessions keep the docs in sync.
+### Starter Paper Generation (shallow, breadth-first)
 
-This is **not** a second documentation mode. `init` produces the same capability tree as the progressive build — it just does a fast, shallow first pass and stops. Everything after `init` is ordinary progressive updating.
+Create a starter skeleton under `.cluedoc/`, leaving deeper sub-features for future user-approved updates:
 
-### Job 1 — Generate the quick essential papers (shallow, breadth-first)
-
-Create a starter skeleton, then let the progressive build deepen it later.
-
-1. **Guard.** If `.cluedoc/` already has papers, do **not** overwrite. Tell the user it's already initialized and offer a normal sync instead. Only proceed when `.cluedoc/` is absent or empty.
-2. **Find the top-level features.** Survey the repository and identify its handful of major capabilities in language-neutral terms (the same "capability, not code layout" judgment used everywhere in Cluedoc). Aim for a small set — typically 3–7 — not an exhaustive list.
+1. **Guard.** If `.cluedoc/` already has papers, do **not** overwrite. Tell the user it is already initialized and ask if they want an explicit sync instead. Only proceed when `.cluedoc/` is absent or empty.
+2. **Find the top-level features.** Survey the repository and identify its handful of major capabilities in language-neutral terms (typically 3–7).
 3. **Write only two levels:**
    - The **root paper** (`.cluedoc/README.md`) — the whole-repository overview.
    - **One paper per top-level feature** (`.cluedoc/<slug>/README.md`).
    Each is a full paper: frontmatter (`title`, `sources`) plus the six sections and a hero visual, per *The Paper Structure*.
-4. **Do not recurse.** Stop at the top level. Sub-features are left for the progressive build — this keeps `init` fast and honors the "progressive, not one pass" principle. The root's Related Work links the top-level papers you just created (they exist now, so the links are live — never link papers you haven't written).
+4. **Do not recurse.** Stop at the top level. The root's Related Work links the top-level papers you just created (never link papers you haven't written).
+5. **SSOT Protection (No Auto-Wire-Up).** Do **not** modify `AGENTS.md`, `CLAUDE.md`, or any repository policy file during `init`. Report the created `.cluedoc/` papers to the user; if the user wishes to enable ongoing synchronization policy in project rules, present that option as a separate candidate proposal requiring explicit user approval.
 
-### Job 2 — Wire up the sync trigger
+## Keeping Papers in Sync (Upon Explicit Request or Opt-In)
 
-Write a short, marker-delimited block into the repository's agent-instructions file so every future session is reminded to keep `.cluedoc/` in sync — closing the gap where a proactive update is missed because the agent never reached for the skill.
-
-- **Target file.** Prefer `AGENTS.md` at the repository root. If it is absent, fall back to whatever agent-instructions file the repo already uses (for example `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, or `.github/copilot-instructions.md`). If none exists, create `AGENTS.md`.
-- **Idempotent.** Wrap the injected text in `<!-- cluedoc:start -->` … `<!-- cluedoc:end -->`. On re-run, replace the existing block in place — never duplicate it. When adding to a file that already has content, append the block after a blank line and leave the rest untouched.
-- **Block content** (keep it short — point at the skill, don't restate it):
-
-```markdown
-<!-- cluedoc:start -->
-## Documentation (Cluedoc)
-
-This repository keeps human-readable, visual "papers" under `.cluedoc/`, one per feature. After finishing a set of code changes, use the **cluedoc** skill to update every affected paper — parent, self, and children — so the docs stay in sync with the code. When answering questions about how the system works, consult these papers and append a short Reading Guide.
-<!-- cluedoc:end -->
-```
-
-After both jobs, briefly report what was created: the root paper, the top-level feature papers, and which file received the trigger block.
-
-## Keeping Papers in Sync
-
-Because the docs track real code, the tree must stay consistent as features appear, move, and disappear:
+When updating `.cluedoc/` under user approval:
 
 - **New feature** → create its folder + `README.md`; add it to its parent's Related Work.
 - **Feature grows sub-capabilities** → split it: create subfolders for the new sub-features, move the fine-grained detail down, leave the parent paper as an overview that links to its children.
@@ -134,7 +121,7 @@ Papers are **about** the code but must never **contain** the code. The reading e
 
 Name concepts the way a user or designer would ("the option's *value source*", "the *parse loop*"), not the way the compiler would (`getOptionValueSource()`). If you feel the urge to paste code to explain something, draw a visual instead.
 
-**In the frontmatter — anchor to code.** So an agent (or curious reader) can still jump from a paper to the implementation, each `README.md` carries a `sources` list in YAML frontmatter pointing at the files or directories that realize the feature. This is the *only* place raw paths appear, and it is metadata, not narrative:
+**In the frontmatter — anchor to code.** Each `README.md` carries a `sources` list in YAML frontmatter pointing at the files or directories that realize the feature. This is the *only* place raw paths appear, and it is metadata, not narrative:
 
 ```markdown
 ---
@@ -145,34 +132,26 @@ sources:
 ---
 ```
 
-Keep `sources` at the granularity of files or directories (not symbols or line numbers) so it survives ordinary refactors. When code moves, update `sources`; the prose usually needn't change at all — which is exactly the point of keeping them separate.
-
-**`sources` may overlap across papers.** One file often contributes to several features (an entry point that implements part of many capabilities; a shared module that a "hub" feature and its consumers both draw on). Listing the same file under multiple papers is expected and correct — `sources` maps *feature → the code that realizes it*, not code → one owner. Do not force a file to belong to exactly one paper.
+Keep `sources` at the granularity of files or directories (not symbols or line numbers) so it survives ordinary refactors. **`sources` may overlap across papers** because one file often contributes to several features.
 
 ## The Paper Structure
 
 Every doc Cluedoc produces is a *paper* with YAML frontmatter (`title`, `sources`) followed by exactly these sections, in order:
 
-1. **Hero visual** — a diagram that captures the essence of the subject at a glance (see *Visuals*): a diagram of its key flow or structure. Opens the paper before any prose.
+1. **Hero visual** — a diagram that captures the essence of the subject at a glance (Mermaid or CLI graphic). Opens the paper before any prose.
 2. **Abstract** — a short paragraph: what this part of the system is and why it exists.
 3. **Introduction** — the problem it solves and the context a reader needs to start.
-4. **Related Work** — hyperlinks to *other Cluedoc papers* that give the reader context. This is how the documentation forms a navigable graph.
+4. **Related Work** — hyperlinks to *other Cluedoc papers* that give the reader context.
 5. **Description** — the substance: how the subject works, its behavior, structure, and important details. Heavy use of visuals.
 6. **Conclusion** — what to take away; where the reader might go next.
 
 ## Visuals Are Mandatory
 
-Papers must be **visual**. Never explain a system or concept in prose alone when a visual would make it clearer. Use a visual aid whenever describing structure, flow, relationships, states, or sequences.
-
-Choose the form that fits the subject best:
-- **Mermaid diagrams** — for structure, flows, relationships, state, sequences (graphs, flowcharts, sequence diagrams, state diagrams, ER diagrams, etc.).
-- **CLI-style text graphics** — for things that read better as monospace/terminal art: directory trees, ASCII boxes-and-arrows, tables, timelines, layouts.
-
-Pick whichever communicates the idea most clearly. Every paper opens with a **hero visual** — a diagram (Mermaid or CLI graphic) of its key flow or structure — and uses additional visuals throughout the Description.
+Papers must be **visual**. Never explain a system or concept in prose alone when a visual would make it clearer:
+- **Mermaid diagrams** — for structure, flows, relationships, state, sequences (`flowchart TD`, `sequenceDiagram`, `stateDiagram-v2`, `classDiagram`, `erDiagram`).
+- **CLI-style text graphics** — for directory trees, ASCII boxes-and-arrows, tables, layouts.
 
 ## Related Work = the Link Graph
-
-"Related Work" is the connective tissue of the documentation. When a paper depends on, builds upon, or is clarified by another paper, cite it there as a hyperlink to that paper's `README.md`. This lets a reader traverse the docs like a citation graph — landing on any paper and walking outward to the context they need.
 
 Related Work carries **all** cross-paper links, including hierarchy links:
 - The **parent feature** paper (the folder above).
@@ -182,26 +161,21 @@ Related Work carries **all** cross-paper links, including hierarchy links:
 Guidelines:
 - Prefer linking to Cluedoc papers over re-explaining shared concepts.
 - Every listed reference must be a working relative hyperlink (e.g. `../README.md`, `./login/README.md`).
-- **Link only papers that already exist. Never create a dead link to a planned-but-unwritten paper.** Because the tree is built progressively, many features will be known before they are documented. Refer to such a feature by name in plain text (no link), or — if it is important context — write its paper first, then link it. A missing paper you keep wanting to cite is a signal to write it next.
+- **Link only papers that already exist. Never create a dead link to a planned-but-unwritten paper.**
 
 ## Reading Guide — Recommend Papers When Answering Questions
 
-The papers are not only for writing; they are a map for reading. Whenever the user asks a question about **how the system works** — a feature, a flow, an architectural decision, "where does X happen", "how does Y work" — answer the question first, then **append a short "Reading Guide"** that points them at the Cluedoc papers most worth reading to go deeper on that question.
+Whenever the user asks a question about **how the system works** — a feature, a flow, an architectural decision, "where does X happen", "how does Y work" — answer the question first, then **append a short "Reading Guide"** that points them at the Cluedoc papers most worth reading to go deeper on that question.
 
 **When to append a guide.** Only when both hold:
 - The question is about understanding the system (its behavior, structure, or design) — not a pure coding task, a shell command, or a question unrelated to this repository.
-- A `.cluedoc/` folder with papers actually exists. If it does not, say nothing about a reading guide (optionally suggest running Cluedoc to generate the docs), and never invent papers or links.
+- A `.cluedoc/` folder with papers actually exists. If it does not, say nothing about a reading guide, and never invent papers or links.
 
 **How to build the guide.**
-1. **Map the question to features.** Identify which capabilities the question touches, then find the papers that cover them — start from the root paper and walk the feature tree / Related Work graph, the same structure Cluedoc writes.
-2. **Pick the entry point, then the path.** Recommend the single best paper to start from, followed by the few papers that build the necessary context around it (parents for the big picture, children for detail, non-adjacent papers for cross-cutting concerns). Order them as a **suggested reading sequence**, not an unranked list.
-3. **Keep it short.** Typically 2–5 papers. More than that is a table of contents, not a guide — prefer the most load-bearing ones.
-4. **Say why each matters.** One clause per entry: what the reader gets from it and why it's relevant to *their* question.
-
-**Rules.**
-- **Link only papers that exist** — the same dead-link rule as Related Work. If the ideal paper hasn't been written yet, name the feature in plain text and (optionally) note it as a gap worth documenting. Never fabricate a path.
-- Use working relative hyperlinks to each paper's `README.md`, resolved from the repository root (e.g. `.cluedoc/authentication/README.md`).
-- The guide **supplements** the answer; it never replaces answering the question. Do not defer the reader to the papers instead of responding.
+1. **Map the question to features.** Identify which capabilities the question touches, then find the existing papers that cover them.
+2. **Pick the entry point, then the path.** Recommend the single best paper to start from, followed by 1–4 papers that build context around it in a suggested reading sequence.
+3. **Say why each matters.** One concise clause per entry explaining what the reader gets from it.
+4. **Link only papers that exist**, using working relative hyperlinks from the repository root (e.g. `.cluedoc/authentication/README.md`).
 
 **Format.** Close the answer with a compact section, for example:
 

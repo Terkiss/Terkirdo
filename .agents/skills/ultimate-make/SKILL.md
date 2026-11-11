@@ -27,7 +27,7 @@ description: >-
                               ▼       ▼
    🌐 [영역 2: 초심층 웹 리서치]  ◀─────▶  🤖 [영역 3: 다중 에이전트 회의]
     (Deep Web Intelligence)               (Multi-Agent Adversarial Debate)
-   "최대 1시간 심층 탐색: 표준, 소스, 장애"     "아키텍트·보안·QA·악마의 변호인 맹점 분쇄"
+   "최대 1시간 심층 탐색: 표준, 소스, 장애"     "아키텍트·구현·적대적심판·UX·QA 맹점 분쇄"
 ```
 
 ---
@@ -71,7 +71,7 @@ description: >-
 ---
 
 ### 🤖 Phase 3: 다중 에이전트 적대적 회의 (Multi-Agent Adversarial Conference)
-5인 가상 전문가(수석 아키텍트, 보안관, 악마의 변호인, QA 리드, UX 전문가)가 모여 리서치 번들을 토대로 끝장 토론을 벌인다.
+`multi-agent-conference` 스킬의 최신 v5.7 Tri-Engine 5인 전문가 페르소나(**수석 아키텍트, 실행/구현 엔지니어, 적대적 심판관, UX/UI 리드, QA 리드**)가 모여 리서치 번들을 토대로 끝장 토론을 벌인다 (Round 1 `invoke_subagent` 병렬 독립 발제 → Round 2~3 `send_message` 핸들 재사용 및 4요소 결함 입증 적용).
 - 산출물: 합의된 아키텍처 결정(ADR) 및 핵심 A/B 트레이드오프 도출.
 
 ---
@@ -95,5 +95,7 @@ description: >-
 
 ---
 
-### ⚡ Phase 6: Ralph Loop 이관 (Execution Hand-Off)
-주인님의 명시적 승인(`승인`, `진행해`, `시작해`)이 떨어진 순간, 비로소 `agy-worker`에게 실행 카드를 넘겨 100% 무결점 구현에 착수한다.
+### ⚡ Phase 6: Ralph Loop / Agent Legion 이관 (Execution Hand-Off)
+주인님의 명시적 승인(`승인`, `진행해`, `시작해`)이 떨어진 순간 비로소 구현 단계로 이관한다:
+- **단일/일반 범위**: 표준 `Ralph Loop`(`agy-worker` 구현 → Argon 교차 리뷰 → Flash 물리 검증)로 Execution Card를 넘겨 무결점 구현에 착수한다.
+- **다중 비충돌 모듈 대규모 스펙**: 주인님이 `/agent-legion` 슬래시 명령을 명시적으로 발동·승인할 경우, **Octa-Ralph(Wave당 최대 8분대 병렬 `MAX_CONCURRENT_RALPH = 8`) + `.agents/skills/agent-legion/scripts/legion_radio.py` 공용 무전망**으로 배타적 파티션(`allowed_files`) 및 공유 인터페이스를 시딩하여 병렬 이관할 수 있다.
