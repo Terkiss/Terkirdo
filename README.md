@@ -33,14 +33,14 @@ React, Next.js, Flutter, .NET, Python, Go, Rust — 기술 스택에 구애받�
 
 ## 👑 Terukirdo Protocol v5.7 핵심 진화
 
-v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 트라이 엔진 아키텍처**와 **슬래시 명령 전용 3계층 Octa-Ralph 에이전트 군단(`Agent Legion` — 최대 8분대 동시 기동 및 전술 무전망 탑재)**을 결합한 차세대 엔터프라이즈 오케스트레이션 헌법입니다.
+v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 풀스펙트럼 5대 엔진 아키텍처(Carbon · Orchestrator · Hydrogen [`inherit`] × Argon [`pro`] × 3.8 Flash [`flash`])**와 **슬래시 명령 전용 3계층 Octa-Ralph 에이전트 군단(`Agent Legion` — 최대 8분대 동시 기동 및 전술 무전망 탑재)**을 결합한 차세대 엔터프라이즈 오케스트레이션 헌법입니다.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│             Terukirdo v5.7 Tri-Engine (Gemini 4 Carbon × 4 Argon × 3.8 Flash)            │
+│     Terukirdo v5.7 Full-Spectrum (Carbon·Orchestrator·Hydrogen × Argon × 3.8 Flash)      │
 │                                                                                          │
 │   👑 [주인님의 직관/대화]     🌐 [최대 1h 초심층 웹 리서치]     🤖 [5인 전문가 적대적 회의]      │
-│   (Socratic Elicitation)    (universal-crawler / RFC)  (4 Carbon × 4 Argon × 3.8 Flash)  │
+│  (Socratic Elicitation)   (universal-crawler / RFC) (Adaptive Spine × Argon × 3.8 Flash) │
 │             │                           │                           │                    │
 │             └───────────────────────────┼───────────────────────────┘                    │
 │                                         ▼                                                │
@@ -88,9 +88,9 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 | 구동 티어 (`agent.md`) | 실제 런타임 엔진 | 담당 에이전트 | 핵심 설계 근거 |
 |:---:|:---:|:---|:---|
 | `model: inherit` | **Adaptive Session Spine** (`Gemini 4 Carbon` · `Orchestrator` · `Gemini 4 Hydrogen`) | `Terukirdo`, `legion-commander`, `ralph-orchestrator`, `agy-worker`, `legion-worker` | 최상위 세션 엔진 계승. 부모-자식 직계 `inherit` 상속 체인을 지휘 척추 전체에 유지하여 세션 모델(`Carbon` / `Orchestrator` / `Hydrogen`)을 하위 워커까지 무손실 전파하고 `Argon`으로의 비의도적 다운그레이드 방지 |
-| `model: pro` | **Gemini 4 Argon** | `terukirdo-plan`, `first-reviewer`, `tech-expert` | Antigravity CLI 고정 `pro` 서브에이전트 티어. `Carbon`/`Orchestrator`/`Hydrogen` 구현물을 이종 모델(`Argon`)로 1차 정적 리뷰 및 2차 적대적 심판하여 동일 모델 자기합리화 편향 원천 차단 |
-| `model: flash` | **Gemini 3.8 Flash** | `universal-final-controller`, `final-approach-control` | Antigravity CLI 고정 `flash` 서브에이전트 티어. 초고속 물리 빌드·테스트 스위트 검증(`exit_code == 0`) 및 원시 Git 스테이징 무결성 게이트키핑 |
-| `model: flash_lite` | **Gemini 3.8 Flash (Lite)** | *(예비 경량 서브태스크 허용 티어)* | Antigravity CLI 커스텀 에이전트 로더가 공식 허용하는 4번째 초경량 티어 (`agent.md`에 원시 슬러그 기입 시 로더 스킵 발생 방지) |
+| `model: pro` | **Gemini 4 Argon 포지션** (상위 추론 티어) | `terukirdo-plan`, `first-reviewer`, `tech-expert` | Antigravity CLI 고정 `pro` 서브에이전트 티어. `Carbon`/`Orchestrator`/`Hydrogen` 구현물을 이종 모델(`Argon`)로 1차 정적 리뷰 및 2차 적대적 심판하여 동일 모델 자기합리화 편향 원천 차단 |
+| `model: flash` | **Gemini 3.8 Flash 계열** | `universal-final-controller`, `final-approach-control` | Antigravity CLI 고정 `flash` 서브에이전트 티어. 초고속 물리 빌드·테스트 스위트 검증(`exit_code == 0`) 및 원시 Git 스테이징 무결성 게이트키핑 |
+| `model: flash_lite` | **초경량 Flash-Lite / Gemini 3.8 Flash (Low)급 슬롯** | *(예비 경량 서브태스크 허용 티어)* | Antigravity CLI 서버 측 티어 해석이 허용하는 4번째 초경량 슬롯 (`agy models`에 별도 `lite` 슬러그는 없으며, `agent.md`에 원시 슬러그 기입 시 로더 스킵 방지) |
 
 #### 2. Antigravity CLI v1.5.7 내장 5대 Gemini 엔진 · 14슬러그 카탈로그 & 3대 세션 모드 (`--model` / `/swarm`)
 
@@ -211,7 +211,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 | 스킬 | 설명 |
 |------|------|
 | `ultimate-make` | 👑 **마스터 기획 하네스 진입점** — 대화 × 1시간 초심층 리서치 × 5인 회의 × 파이썬 스펙 락 |
-| `universal-crawler` | 🌐 **범용 안티블록 웹 크롤러** — IETF RFC, GitHub, 기술 블로그를 차단 없이 대규모 스캔 |
+| `universal-crawler` | 🌐 **합법적·복원력 중심 범용 웹 수집 파이프라인** — 공식 API·피드·IETF RFC·GitHub 문서를 최우선 수집 (CAPTCHA·봇 차단 조우 시 즉시 STOP 준수) |
 | `multi-agent-conference` | 🤖 **다중 에이전트 적대적 원탁회의** — 아키텍트, 보안, QA, 악마의 변호인의 끝장 토론 |
 
 ### 🔧 개발 생명주기 & 병렬 군단 (8개) ✨ NEW
@@ -240,7 +240,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 | `agent-tool-builder` | JSON Schema, 오류 처리, MCP 표준을 준수하는 견고한 에이전트 도구 설계 |
 | `mcp-builder` | Model Context Protocol(MCP) 서버 구축 원칙 및 구현 가이드 |
 | `self-evolution` | Microsoft SkillOpt 기반 에이전트 자기 진화 엔진 (**주인님의 수동 명령으로만** 실행) |
-| `cluedoc` | 코드 변경 시 기능 단위로 시각적 논문(Paper)을 `.cluedoc/`에 자동 생성·유지 |
+| `cluedoc` | 코드베이스를 상호 연결된 시각적 논문(Paper) 트리로 `.cluedoc/`에 문서화 (`auto_sync: false` 기본 — 주인님 명시 요청 시 생성·동기화 및 Reading Guide 안내) |
 
 ---
 
@@ -283,22 +283,23 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 📦 프로젝트 루트
 │
 ├── 📄 AGENTS.md                        ← 테르키르도 harness 설정 (진입점)
-├── 📄 Terukirdo_Protocol_v5.7.md       ← 정체성·모드·트라이엔진·기획게이트·군단·보안 최상위 헌법
+├── 📄 Terukirdo_Protocol_v5.7.md       ← 정체성·모드·Gemini 4 풀스펙트럼·기획게이트·군단·보안 최상위 헌법
 ├── 📄 README.md                        ← 지금 읽고 계신 이 문서
 ├── 📄 MEMORY.md                        ← 4계층 가중치 메모리 장부 (Hot / Warm / Cold / Archived Decisions)
 ├── 📄 update_harness.bat               ← 타 프로젝트 원클릭 하네스 안전 동기화 스크립트
 │
 ├── 📁 .agents/
-│   ├── 📁 agents/                      ← 9대 에이전트 정의 (Octa-Ralph & Legion: Carbon × Argon × 3.8 Flash)
+│   ├── 📄 hooks.json                   ← CLI v1.5.7 로더 규격 3중 라이프사이클 훅 매니페스트 (Flat Stop)
+│   ├── 📁 agents/                      ← 9대 에이전트 정의 (Octa-Ralph & Legion: Adaptive Spine × Argon × 3.8 Flash)
 │   ├── 📁 hooks/                       ← 3중 시스템 방어선 (명령어·파일·서브에이전트 호출 감시)
-│   ├── 📁 rules/                       ← 안전(슬래시 전용 잠금)·증거·문서·기획 헌법
+│   ├── 📁 rules/                       ← 상시 활성화(trigger: always_on) 안전·증거·문서·기획 4대 세부 규칙
 │   ├── 📁 schemas/                     ← 증거 및 보고서 JSON Schema
 │   ├── 📁 state/                       ← 루프 및 전술 무전(legion_radio.db) 런타임 상태 저장소
 │   │
 │   └── 📁 skills/                      ← 19종 스킬 라이브러리
 │       ├── agent-legion/                   ⚔️ 슬래시 전용 3계층 Octa-Ralph 군단 (partition_validator.py, legion_radio.py 내장)
 │       ├── ultimate-make/                  👑 마스터 기획 하네스 (validate_spec_lock.py 내장)
-│       ├── universal-crawler/              🌐 범용 안티블록 크롤러
+│       ├── universal-crawler/              🌐 합법적·복원력 중심 범용 웹 수집 파이프라인
 │       ├── multi-agent-conference/         🤖 5인 전문가 적대적 회의
 │       ├── plan-product/ / design-ui/      🔧 개발 주기 스킬군
 │       ├── plan-architecture/ ...          🔧
@@ -309,7 +310,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 │   ├── 📄 hermes_disasm.py             ← 바이너리 역공학 결정론적 살균 래퍼 (Offrail-27B-12G & REA)
 │   └── 📁 harness/
 │       ├── 📄 sync_harness.py          ← 타 프로젝트 결정론적 미러링 및 레거시 파일 추적 소거 엔진
-│       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (9대 에이전트 Tri-Engine 라우팅 & tools 권한 계약)
+│       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (2계층 모델 계약·TOOL_ALIAS_CONFLICTS·훅/규칙 스키마 검증)
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
 ├── 📁 tests/
@@ -332,6 +333,7 @@ v5.7은 상류 공학(`UltimateMake`) 위에 **Gemini 4 Carbon (`inherit`) × Ge
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
 | **2026-11-13** | **v5.7** | **🚀 Antigravity CLI v1.5.7 내장 Gemini 4 풀스펙트럼 모델군(Carbon · Orchestrator · Hydrogen [XHigh] · Argon · 3.8 Flash) 전면 재정렬 및 훅·규칙·도구 별칭 로더 무결성 패치 (TASK-20261113-GEMINI4-HARNESS-ALIGNMENT)**<br>• **2계층 Gemini 4 멀티 엔진 아키텍처 정렬**: CLI v1.5.7 공식 5대 엔진·14슬러그 카탈로그(`gemini-4-carbon-low\|medium\|high`, `gemini-pro-orchestrator`, `gemini-4-hydrogen-low\|medium\|high\|xhigh`, `gemini-4-argon-low\|medium\|high`, `gemini-3.8-flash-low\|medium\|high`)와 `.agents/agents/*/agent.md` 4종 로더 Enum(`inherit\|pro\|flash\|flash_lite`)의 2계층 계약을 확립하고, `inherit` 지휘 척추 3대 전략 세션 모드(Flagship `Carbon`, Dynamic Hybrid `Orchestrator`, High-Velocity `Hydrogen [High/XHigh]`) 전면 반영<br>• **CLI v1.5.7 훅·규칙 로더 및 서브에이전트 도구 별칭 충돌 방지**: `.agents/hooks.json`의 `Stop` 중첩 `hooks` 래퍼를 Flat 핸들러 배열로 교정하고 CWD 기준 상대 경로(`hooks/*.py`) 및 `write_file\|edit_file\|notebook_edit` 매처 적용, `.agents/rules/*.md` 4종에 `trigger: always_on` YAML Frontmatter 추가 (`agy plugin validate` 에러·경고 0건 달성), 그리고 CLI v1.5.7 서브에이전트 스폰 시 `view_file -> read_file` 내부 별칭 중복으로 발생하는 executor 생성 충돌을 차단하는 `TOOL_ALIAS_CONFLICTS` 게이트 탑재<br>• **3중 훅 런타임 업그레이드**: `pre_tool_use_policy.py`·`post_tool_use_review.py`의 `write_file`/`edit_file` 인자(`Path`, `Content`, `Replacement`) 및 이식형 `lastUserInput`/`transcriptPath`/`artifactDirectoryPath` 지원, `stop_quality_gate.py`의 `<repo>/.agents/state/stop_gate_state.json` 절대 앵커링 및 `decision` + `continuationActive` 무한 루프 차단 계약 구현<br>• **결정론적 검증 게이트 확장 및 54개 단위 테스트 전수 통과**: `validate_harness.py --strict`에 `validate_rules_directory`·`validate_hooks_config`·`TOOL_ALIAS_CONFLICTS`·`GEMINI_CLI_CATALOG_MODELS` 추가 및 기존 베이스라인 테스트 무수정 보존 하에 신규 `tests/harness/test_cli_v157_alignment.py` (9개 통합 검증) 구축으로 총 54개 테스트 100% 통과 |
+| **2026-11-11** | **v5.7** | **🛠️ 13종 핵심 스킬 스위트 v5.7 전면 현대화 및 스킬 무결성 테스트 게이트 구축 (TASK-20261111-SKILLS-SUITE-V57-OVERHAUL)**<br>• **`cluedoc` 거버넌스 확립**: `auto_sync: false` 기본 정책을 명문화하고 무허가 자동 동기화 및 `AGENTS.md` 등 프로젝트 SSOT 마커 자동 주입 지시 영구 배제<br>• **`universal-crawler` 합법적 수집 파이프라인 전환**: 안티봇 우회 요소를 전면 제거하고 공식 API·피드·구조화 문서 최우선 수집 원칙 및 CAPTCHA·봇 차단 조우 시 즉시 STOP 불변식 헌법화<br>• **Fractal 및 확장 스킬군 문서 복원·정화**: `self-evolution`·`clean-code`·`agent-tool-builder`·`mcp-builder`·`code-reviewer`·`ui-visual-validator`·`prompt-engineering-patterns`의 절단된 설명/하위 스텁 복원, 유령 스크립트 참조 제거 및 코드 펜스/고아 헤더 정화<br>• **코어 스킬 무결성 강화**: `ultimate-make`·`implement-feature`·`verify-change`에 베이스라인 테스트 무결성 보호(Baseline Test Integrity Guard), 원시 실행 증거 격리 및 `legion_radio.py` 연동 수칙 보강<br>• **결정론적 스킬 무결성 테스트 게이트 구축**: `tests/harness/test_skills_integrity.py` 신규 구축 및 `validate_harness.py --strict` 통합으로 19개 스킬·107개 마크다운 전수 검증 및 총 45개 하네스 단위 테스트 통과 |
 | **2026-11-11** | **v5.7** | **📻 전술 무전망(Peer Tactical Radio) 신규 구축 및 Agent Legion 2배 확장: Quad-Ralph(4기) → Octa-Ralph(8기) 승격 (TASK-20261111-LEGION-RADIO-AND-OCTA-RALPH-UPGRADE)**<br>• **Octa-Ralph 2배 확장 (`MAX_CONCURRENT_RALPH = 8`)**: 주인님 지시에 따라 최상위 자동 검토 사령관(`legion-commander`)이 Wave당 동시에 생성·운용하는 `ralph-orchestrator` 분대 상한을 기존 4기(`Ralph #1 ~ #4`)에서 **8기(`Ralph #1 ~ #8`)**로 2배 확장하고 `partition_validator.py` 및 전 헌법·스킬·에이전트 명세 동기화<br>• **무락 전술 무전망 엔진 구축 (`.agents/skills/agent-legion/scripts/legion_radio.py`)**: 외부 의존성 0개 표준 라이브러리(`sqlite3` WAL + `busy_timeout=5000` + `BEGIN IMMEDIATE` + 지터 재시도) 기반 공용 무전 게시판(`.agents/state/legion_radio.db`) 구축 (`init`, `roster-set`, `roster`, `post`, `read` 5대 명령 및 2,000자 상한 가드 탑재)<br>• **2중 전술 교신 프로토콜 (Zero-Waste Wakeup)**: `[채널 1]` `legion_radio.py` 게시판 원자적 `#seq` 발급·증분 열람과 `[채널 2]` `send_message` 직통 호출벨을 결합하여 필요한 대상 분대장만 선택적 기상시키고, `ralph-orchestrator`에 Read-Only Shell Guard 적용 `run_command` 부여<br>• **40개 하네스 단위 및 동시성 스트레스 테스트 전수 통과 (`tests/harness/test_legion_radio.py`)**: 8개 병렬 OS 서브프로세스 × 25건(총 200건) 동시 폭격 테스트에서 Lock 에러 0건 및 `#1 ~ #200` 시퀀스 무누락·무중복 완벽 입증 |
 | **2026-11-11** | **v5.7** | **👑 Terukirdo v5.7 공식 승격 — 비대칭 트라이 엔진(Gemini 4 Carbon × 4 Argon × 3.8 Flash) 아키텍처 전면 전환 (TASK-20261111-V57-TRI-ENGINE-UPGRADE)**<br>• **비대칭 트라이 엔진 체계 수립**: 상류 마스터 기획 및 군단 지휘 척추·엔터프라이즈 코어/병렬 구현 워커(`UltimateMake`, `legion-commander`, `ralph-orchestrator`, `agy-worker`, `legion-worker`)를 **Gemini 4 Carbon (`inherit`)**으로, 정밀 실행 계획·1차 마이크로 계약 리뷰·2차 적대적 교차 심판(`terukirdo-plan`, `first-reviewer`, `tech-expert`)을 **Gemini 4 Argon (`pro`)**으로, 초고속 물리 빌드/테스트/Git 관제(`UFC`, `FAC`)를 **Gemini 3.8 Flash (`flash`)**로 재배치<br>• **부모-자식 모델 계승 체인 보존 (Parent-Child `inherit` Chain Invariant)**: 최상위 `legion-commander`와 하위 `ralph-orchestrator`에 `model: inherit`을 엄격 부여하여 지휘 계통 하류의 `agy-worker`/`legion-worker`가 세션 모델인 Carbon을 손실 없이 계승하도록 보장<br>• **교차 모델 분리 검증 (Cross-Model Review Separation)**: Carbon 구현물에 대해 Argon 기반 `first-reviewer` 및 `tech-expert`가 1차 정적 리뷰와 2차 거시 아키텍처/보안 심판을 수행하여 동일 모델 자기합리화(Self-Justification) 편향 원천 차단 및 Carbon 구현 쿼터 극대화<br>• **결정론적 하네스 검증 계약 강화 (`validate_harness.py --strict`)**: 9대 에이전트 전수 Tri-Engine 모델 계약(`EXPECTED_AGENT_MODELS`) 물리 검증 로직 탑재 및 단위 테스트(`test_tri_engine_agent_model_routing_contract`) 추가로 34개 테스트 전수 통과<br>• **최상위 프로토콜 v5.7 공식 승격 & v5.6 아카이빙**: `Terukirdo_Protocol_v5.6.md`를 `docs/archive/Terukirdo_Protocol_v5.6.md`로 아카이빙하고 루트 최신 헌법 `Terukirdo_Protocol_v5.7.md` 및 `AGENTS.md` 활성화, 원클릭 동기화 엔진(`sync_harness.py`, `update_harness.bat`) 최신화 완료 |
 | **2026-11-10** | **v5.6** | **🧠 Dual-Brain 4대 핵심 운영 통찰 하네스 전면 이식 및 하네스 테스트 스위트(33개)·동기화 엔진 완성**<br>• **리뷰어 할당량 폐지 & 4요소 결함 입증 계약 (No Finding Quota)**: 인위적 결함 발굴 할당량을 배제하고 클린 리뷰(`PASS` / `ARCHITECTURALLY ACCEPTABLE`)를 정당한 성공으로 규정하며, P1/P2 결함 발생 시 `[1. 위반된 계약 + 2. 구체적 트리거 + 3. 현재 코드 근거 + 4. 실질적 피해]`의 4대 요소 입증을 필수 헌법화 (`.agents/rules/evidence.md`, `first-reviewer`, `tech-expert`)<br>• **서브에이전트 핸들 재사용 (`send_message`) & 컴팩트 브리프**: Rework 루프 시 중복 서브에이전트 인스턴스 생성을 금지하고 활성 `conversationId`로 `send_message`를 호출하여 이전 컨텍스트를 보존한 채 고속 재작업 수행 및 최종 diff 기반 재검증 의무화 (`ralph-orchestrator`, `legion-commander`)<br>• **베이스라인 테스트 무결성 보호 (Baseline Test Integrity Guard)**: 억지 빌드 통과를 위한 기존 테스트(`tests/**`)의 임의 수정·삭제·단언문 약화를 원천 차단하고 실제 diff와 exit code 중심의 증거 범위 격리 확립 (`universal-final-controller`, `final-approach-control`, `agy-worker`, `legion-worker`)<br>• **4계층 가중치 메모리 장부 (`Hot / Warm / Cold / Archived Decisions`)**: `MEMORY.md`를 활성 불변식(Hot), 도메인 교훈(Warm), 과거 참조(Cold), 회귀 방지용 대체 결정 장부(Archived Decisions)로 정밀 분할하고 단순 읽기 시 장부 갱신만을 위한 덮어쓰기 금지 명문화<br>• **결정론적 하네스 동기화 & 레거시 추적 소거 (`sync_harness.py`, `update_harness.bat`)**: 타 프로젝트 배포 시 구버전 좀비 파일 추적 소거, Windows 읽기 전용 파일 권한 해제(`stat.S_IWRITE`) 완전 소거 및 중첩 `.git` 복사 원천 차단<br>• **33개 하네스 단위 테스트 스위트 전수 통과**: 에이전트 디스커버리, 4대 운영 계약, 스킬 인덱서, 파티션 검증기, 동기화 엔진 무결성 검증 완료 및 임시 참조 폴더(`reference/dual-brain`) 100% 흡수 후 소거 완료 |

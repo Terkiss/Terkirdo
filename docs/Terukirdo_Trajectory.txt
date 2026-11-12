@@ -206,3 +206,8 @@
   - `scripts/harness/validate_harness.py`: Exported `VALID_MODELS`, `VALID_RULE_TRIGGERS`, `GEMINI_CLI_CATALOG_MODELS` (14 slugs), `REQUIRED_AGENT_TOOLS` (`{"view_file"}`), and `TOOL_ALIAS_CONFLICTS`; added `validate_rules_directory`, `validate_hooks_config`, UTF-8 BOM checks, and tool alias conflict checks.
   - Created `tests/harness/test_cli_v157_alignment.py` (9 unit & integration tests, including `agy plugin validate --json` 0-error / 0-warning verification across 9 agents, 3 hooks, 4 rules, and 19 skills, plus negative fixture tests for `TOOL_ALIAS_CONFLICTS`).
 - Rebuilt skill metadata index via `skill_indexer.py --build` and verified `validate_harness.py --strict`, all 54 harness unit tests passing (`exit_code == 0`), `git diff --check`, and clean baseline test integrity.
+
+
+[2026-11-13] Synchronized README.md Full-Spectrum Architecture Overview, Skill Descriptions, Directory Tree & Skills Overhaul Changelog (TASK-20261113-README-SYNC).
+- Updated `README.md` top v5.7 overview/ASCII diagram, 4-tier subagent loader routing descriptions (`pro`, `flash`, `flash_lite`), `universal-crawler` and `cluedoc` skill table/tree summaries, `.agents/hooks.json` & `.agents/rules/` directory tree comments, and inserted the `2026-11-11` (`TASK-20261111-SKILLS-SUITE-V57-OVERHAUL`) changelog entry.
+- Verified `python -X utf8 scripts/harness/validate_harness.py --strict` and `git diff --check` passing (`exit_code == 0`).
