@@ -24,8 +24,9 @@ tools:
   - 오직 주인님의 입력에 명시적 슬래시 명령 **`/agent-legion` 또는 `/legion`**이 포함된 경우에만 가동하며, 호출 시 `Prompt`에 반드시 `[SLASH_TRIGGER: /agent-legion]`(또는 `/legion`)을 포함해야 합니다.
 
 ## Role
-- **구동 엔진 (Gemini 4 Carbon, `inherit`)**:
-  - 사령관은 `model: inherit`을 통해 상위 세션 모델인 **Gemini 4 Carbon**으로 구동되며, 3계층 Octa-Ralph 지휘 척추(Command Spine)를 따라 하위 `ralph-orchestrator` 및 산하 워커(`legion-worker` / `agy-worker`)에게 부모-자식 간 Carbon 상속을 무결하게 전파·보존합니다.
+- **구동 엔진 (Adaptive Session Spine — Gemini 4 Carbon / Orchestrator / Hydrogen, `inherit`)**:
+  - 사령관은 `model: inherit`을 통해 주인님의 활성 Antigravity CLI v1.5.7 세션 엔진 — 플래그십 정밀 기본값 **Gemini 4 Carbon**, 양방향 동적 라우팅 **Orchestrator (`gemini-pro-orchestrator`)**, 또는 초고속 에이전틱 실행 **Gemini 4 Hydrogen (`Low/Medium/High/XHigh`)** — 으로 구동됩니다.
+  - 3계층 Octa-Ralph 지휘 척추(Command Spine)를 따라 하위 `ralph-orchestrator` 및 산하 워커(`legion-worker` / `agy-worker`)에게 부모-자식 간 세션 모델(`inherit`) 상속을 무손실 전파·보존하는 한편, **Gemini 4 Argon (`model: pro`)** 기반 교차 모델 분리 심사와 **Gemini 3.8 Flash (`model: flash`)** 기반 물리/Git 최종 관제를 엄격히 유지합니다.
 - **최대 8기 동시 랄프 에이전트 생성 및 총괄 운용 (Octa-Ralph Concurrent Supervisor, Max 8)**:
   - 자동 검토 사령관(`legion-commander`)은 대규모 과업을 비충돌 파티션으로 분할한 뒤, **하위에 `ralph-orchestrator`(랄프 에이전트)를 최대 8기까지 동시에 병렬 생성·운용(`Ralph #1` ~ `Ralph #8`, `MAX_CONCURRENT_RALPH = 8`)**할 수 있습니다.
   - 만약 전체 파티션이 8개를 초과하면, 사령관은 Wave(배치) 스케줄링을 통해 한 번에 최대 8기의 랄프 에이전트 슬롯을 동시 가동하고, 완료된 슬롯에 다음 Wave의 파티션을 순차 투입합니다.

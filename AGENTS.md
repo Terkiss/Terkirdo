@@ -208,26 +208,43 @@
 
 Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 서브 에이전트를 조율한다.
 
-| 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)               | 권한        |
-| -------- | -------------------------- | ---------------------------------------------------- | ------------------------ | --------- |
-| 자동검토 사령관 | Legion Commander (Ralph 총괄) | `.agents/agents/legion-commander/agent.md`           | `inherit` (Gemini 4 Carbon) | Read-Only |
-| 하위 루프 조율 | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `inherit` (Gemini 4 Carbon) | Read-Only |
-| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon)   | Read-Only |
-| 단일 워커     | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `inherit` (Gemini 4 Carbon) | Write     |
-| 군단 코어 워커 | Legion Worker              | `.agents/agents/legion-worker/agent.md`              | `inherit` (Gemini 4 Carbon) | Write     |
-| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `pro` (Gemini 4 Argon)   | Read-Only |
-| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon)   | Read-Only |
-| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash) | Read-Only |
-| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | `flash` (Gemini 3.8 Flash) | Read-Only |
+| 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)                                                            | 권한        |
+| -------- | -------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------- | --------- |
+| 자동검토 사령관 | Legion Commander (Ralph 총괄) | `.agents/agents/legion-commander/agent.md`           | `inherit` (Session Spine: Gemini 4 Carbon / Orchestrator / Hydrogen) | Read-Only |
+| 하위 루프 조율 | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `inherit` (Session Spine: Gemini 4 Carbon / Orchestrator / Hydrogen) | Read-Only |
+| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon)                                                | Read-Only |
+| 단일 워커     | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `inherit` (Session Spine: Gemini 4 Carbon / Orchestrator / Hydrogen) | Write     |
+| 군단 코어 워커 | Legion Worker              | `.agents/agents/legion-worker/agent.md`              | `inherit` (Session Spine: Gemini 4 Carbon / Orchestrator / Hydrogen) | Write     |
+| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `pro` (Gemini 4 Argon)                                                | Read-Only |
+| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon)                                                | Read-Only |
+| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash)                                            | Read-Only |
+| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | `flash` (Gemini 3.8 Flash)                                            | Read-Only |
 
-### Tri-Engine Dispatch Policy (Gemini 4 Carbon × Gemini 4 Argon × Gemini 3.8 Flash)
+### Multi-Engine Dispatch Policy (Antigravity CLI v1.5.7 — Gemini 4 Full-Spectrum Ecosystem)
 
-* **`inherit` (Gemini 4 Carbon)**: 최상위 오케스트레이터(`Terukirdo`), 마스터 기획 하네스(`UltimateMake`), 지휘 척추(`legion-commander`, `ralph-orchestrator`), 및 엔터프라이즈 코어/군단 구현 워커(`agy-worker`, `legion-worker`)에 집중 투입한다.
-  - **부모-자식 모델 상속 체인 불변식 (Parent-Child `inherit` Chain Invariant)**: 지휘 척추에 위치한 `legion-commander`와 `ralph-orchestrator`는 반드시 `model: inherit`을 유지해야 한다. 이를 통해 하위 워커(`agy-worker`, `legion-worker`)가 부모 세션 모델인 Carbon을 그대로 계승하여 구현하며, Argon으로의 비의도적 티어 다운그레이드를 방지한다.
-* **`pro` (Gemini 4 Argon)**: 정밀 실행 계획 및 Execution Card 수립(`terukirdo-plan`), 1차 마이크로 계약 및 정적 코드 리뷰(`first-reviewer`), 적대적 2차 아키텍처·보안·안티치팅 심판(`tech-expert`)에 투입한다.
-  - **교차 모델 분리 검증 (Cross-Model Review Separation)**: Carbon이 구현한 코드를 Argon이 1차 정적 리뷰 및 2차 적대적 심판관으로 엄격히 교차 심사하여, 동일 모델 자기합리화(Self-Justification) 편향을 원천 차단하고 구현 쿼터를 효율적으로 보존한다.
-* **`flash` (Gemini 3.8 Flash)**: 빌드/테스트 스위트 물리 검증(`universal-final-controller`), 원시 Git 인덱스 및 스테이징 게이트키핑(`final-approach-control`), 및 Tier 1 초고속 신속 보좌에 투입하여 초고속 회전율과 무결성을 달성한다.
-* 모든 `.agents/agents/*/agent.md`의 `model` 필드는 Antigravity 지원 규격인 `inherit | pro | flash | flash_lite`를 엄격히 준수해야 한다.
+Antigravity CLI (`v1.5.7`) 내장 Gemini 카탈로그는 총 **5대 엔진 · 14개 공식 모델 슬러그**로 구성된다:
+1. **Gemini 4 Carbon**: `gemini-4-carbon-low` · `gemini-4-carbon-medium` · `gemini-4-carbon-high` (플래그십 엔터프라이즈 정밀 아키텍처·복합 코드 합성)
+2. **Orchestrator**: `gemini-pro-orchestrator` (작업 난이도에 따른 `Carbon` ↔ `Hydrogen` 양방향 동적 라우팅 하이브리드 세션 엔진)
+3. **Gemini 4 Hydrogen**: `gemini-4-hydrogen-low` · `gemini-4-hydrogen-medium` · `gemini-4-hydrogen-high` · `gemini-4-hydrogen-xhigh` (1M 컨텍스트 초고속 데일리 에이전틱 실행 및 `xhigh` 심층 추론 티어)
+4. **Gemini 4 Argon**: `gemini-4-argon-low` · `gemini-4-argon-medium` · `gemini-4-argon-high` (고밀도 정밀 실행 계획 수립 및 교차 모델 적대적 심판)
+5. **Gemini 3.8 Flash**: `gemini-3.8-flash-low` · `gemini-3.8-flash-medium` · `gemini-3.8-flash-high` (초저지연 빌드·테스트 물리 검증 및 원시 Git 스테이징 게이트키핑)
+
+#### 1. 2계층 모델 명세 계약 (2-Layer Model Spec Contract)
+
+* **Layer 1 — 서브에이전트 로더 티어 Enum (`.agents/agents/*/agent.md`)**: 커스텀 서브에이전트 YAML frontmatter의 `model` 필드는 반드시 Antigravity 로더 허용 4종 Enum인 **`inherit | pro | flash | flash_lite`**만 사용해야 한다 (`scripts/harness/validate_harness.py`의 `VALID_MODELS`로 물리 강제). `agent.md` frontmatter에 원시 모델 슬러그(예: `gemini-4-hydrogen-xhigh`)를 직접 기입하면 CLI 커스텀 에이전트 로더가 해당 에이전트 파일을 스킵하므로 절대 금지한다.
+* **Layer 2 — 세션 CLI `--model` 및 Native `/swarm` 14종 카탈로그**: 터미널 세션 기동(`agy --model <slug>`), 헤드리스 프린트(`agy -p --model <slug>`), 및 네이티브 스웜 오케스트레이션에서는 위 14개 공식 Gemini 슬러그(`GEMINI_CLI_CATALOG_MODELS`)를 직접 지정하여 운용한다.
+
+#### 2. `inherit` 지휘 척추(Adaptive Session Spine)의 3대 전략 세션 모드
+
+* **`inherit` (Adaptive Session Spine — Carbon / Orchestrator / Hydrogen)**: 최상위 오케스트레이터(`Terukirdo`), 마스터 기획 하네스(`UltimateMake`), 지휘 척추(`legion-commander`, `ralph-orchestrator`), 및 코어/군단 구현 워커(`agy-worker`, `legion-worker`)는 모두 `model: inherit`으로 연결된다.
+  - **부모-자식 모델 상속 체인 불변식 (Parent-Child `inherit` Chain Invariant)**: 지휘 척추에 위치한 `legion-commander`와 `ralph-orchestrator`는 반드시 `model: inherit`을 유지해야 한다. 이를 통해 주인님이 선택한 상위 세션 엔진이 하위 구현 워커(`agy-worker`, `legion-worker`)까지 티어 변질 없이 그대로 무손실 전파된다:
+    1. **Flagship Precision Mode (`gemini-4-carbon-high|medium`)**: 최고 난이도 엔터프라이즈 설계(`UltimateMake`), 보안·동시성 핵심 코어 구현의 기본 표준 모드.
+    2. **Dynamic Hybrid Mode (`gemini-pro-orchestrator`)**: Antigravity `Orchestrator` 엔진이 단계별 복잡도에 맞춰 `Carbon`의 정밀도와 `Hydrogen`의 기동력을 양방향 동적 라우팅하는 균형 모드.
+    3. **High-Velocity Agentic Mode (`gemini-4-hydrogen-high` / `gemini-4-hydrogen-xhigh`)**: 대규모 다중 파일 병렬 리팩터링(`/agent-legion` Octa-Ralph 8분대 동시 가동), 1M 컨텍스트 장문 탐색, 빠른 반복 프로토타이핑 시 처리 속도와 공유 쿼터 효율을 극대화하는 고속 실행 모드.
+* **`pro` (Gemini 4 Argon — Cross-Model Review Separation)**: 정밀 실행 계획 및 Execution Card 수립(`terukirdo-plan`), 1차 마이크로 계약 및 정적 코드 리뷰(`first-reviewer`), 적대적 2차 아키텍처·보안·안티치팅 심판(`tech-expert`)에 고정 투입한다.
+  - **교차 모델 분리 검증 및 세션 안티-바이어스 수칙**: `inherit` 지휘 척추(`Carbon` / `Orchestrator` / `Hydrogen`)가 구현한 코드를 이종 모델인 **Gemini 4 Argon (`pro`)**이 1차·2차 교차 심사하여 동일 모델 자기합리화(Self-Justification) 편향을 원천 차단한다. 따라서 Tier 2/3 구현 세션에서는 메인 세션을 `Argon`으로 구동하지 않도록 유지하여 구현 워커(`inherit`)와 리뷰어(`pro` = Argon) 간의 교차 모델 분리를 항상 보장한다.
+* **`flash` / `flash_lite` (Gemini 3.8 Flash)**: 빌드/테스트 스위트 물리 검증(`universal-final-controller`), 원시 Git 인덱스 및 스테이징 게이트키핑(`final-approach-control`), 및 Tier 1 초고속 신속 보좌에 투입한다 (`flash_lite`는 초경량 보조 서브태스크 예비 허용 티어로 지원).
+* **통합 Gemini 쿼터 풀 최적화**: 5대 Gemini 엔진은 단일 Gemini 쿼터 풀을 공유하므로, 일상·병렬 실행에는 `Hydrogen (High/XHigh)` 또는 `Orchestrator`를 활용하고 핵심 설계에는 `Carbon`, 교차 심판에는 `Argon`, 물리 검증에는 `3.8 Flash`를 배분하여 품질과 쿼터 수명을 동시에 극대화한다.
 
 기본 Ralph Loop 흐름:
 

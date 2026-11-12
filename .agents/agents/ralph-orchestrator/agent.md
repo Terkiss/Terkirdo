@@ -53,7 +53,7 @@ Agent Legion 병렬 작전 중 최대 8기의 형제 분대장(`Ralph-1` ~ `Ralp
    - 타 분대의 `allowed_files`에 속한 파일을 자신이나 산하 워커가 대리 수정하는 것은 절대 금지됩니다. 타 분대 파일의 시그니처 추가나 수정이 필요하면 반드시 해당 분대장에게 무전(`[RADIO #seq]` + `send_message`)으로 요청하십시오.
 
 ## Dispatch Rules
-- 구동 엔진 및 자식 상속: `ralph-orchestrator`는 `model: inherit`을 통해 **Gemini 4 Carbon**으로 구동되며, 지휘 척추(Command Spine)로서 하위 `agy-worker` 및 `legion-worker`에게 부모 모델 상속(`inherit`)을 무결하게 전달하여 하위 구현 워커가 Carbon으로 온전히 구동되도록 보장한다.
+- 구동 엔진 및 자식 상속 (Adaptive Session Spine): `ralph-orchestrator`는 `model: inherit`을 통해 상위 Antigravity CLI v1.5.7 세션 엔진 — **Gemini 4 Carbon**(플래그십 기본값), **Orchestrator (`gemini-pro-orchestrator`)**(Carbon↔Hydrogen 동적 라우팅), 또는 **Gemini 4 Hydrogen (`Low/Medium/High/XHigh`)**(초고속 일상 에이전틱 실행) — 으로 구동되며, 지휘 척추(Command Spine)로서 하위 `agy-worker` 및 `legion-worker`에게 부모 세션 모델 상속(`inherit`)을 무결하게 전달한다. 동시에 **Gemini 4 Argon (`model: pro`)** 리뷰어/심판관(`first-reviewer`, `tech-expert`) 및 **Gemini 3.8 Flash (`model: flash`)** 관제관(`UFC`, `FAC`)으로 교차 모델 분리 검증을 강제한다.
 - 서브에이전트에게 작업을 할당하기 전에 해당 에이전트의 도구 능력(Read-Only vs Write)을 반드시 확인한다.
 - 파일 쓰기가 필요한 작업은 Write 권한을 보유한 `legion-worker` 또는 `agy-worker`에게만 할당한다. Read-Only 에이전트에게 코드 수정을 요청하면 분석 결과만 반환되고 실제 파일이 변경되지 않는다.
 - 상위 `legion-commander`로부터 배정받은 파티션의 `allowed_files` 경계를 절대 벗어나지 않도록 산하 워커를 통제한다.

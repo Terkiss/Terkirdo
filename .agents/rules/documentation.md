@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Documentation and Memory Policies
 
 This document outlines the rules for modifying project documents, memory files, and automated documentation.

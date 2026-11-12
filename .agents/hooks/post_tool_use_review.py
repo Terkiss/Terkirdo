@@ -25,6 +25,29 @@ HIGH_RISK_PATH_HINTS = [
     "rollback",
 ]
 
+
+def resolve_repo_root(payload: dict) -> Path:
+    cwd_val = payload.get("cwd")
+    if isinstance(cwd_val, str) and cwd_val.strip():
+        cwd_path = Path(cwd_val)
+        if cwd_path.is_dir():
+            try:
+                out = subprocess.check_output(
+                    ["git", "rev-parse", "--show-toplevel"],
+                    cwd=cwd_path,
+                    stderr=subprocess.DEVNULL,
+                    text=True,
+                ).strip()
+                if out:
+                    return Path(out)
+            except Exception:
+                pass
+    root = find_repo_root()
+    if root.name == ".agents":
+        return root.parent
+    return root
+
+
 def check_python_file_syntax(filepath: Path) -> str:
     if filepath.suffix != ".py":
         return ""
@@ -37,6 +60,7 @@ def check_python_file_syntax(filepath: Path) -> str:
         return f"Python syntax error in {filepath.name}: {e}"
     except Exception as e:
         return f"Failed to check syntax for {filepath.name}: {e}"
+
 
 def get_git_status_porcelain(root: Path) -> list[str]:
     try:
@@ -58,6 +82,7 @@ def get_git_status_porcelain(root: Path) -> list[str]:
     except Exception:
         return []
 
+
 def main() -> int:
     try:
         payload = load_input()
@@ -66,14 +91,26 @@ def main() -> int:
         respond_json({})
         return 0
 
-    root = find_repo_root()
+    root = resolve_repo_root(payload)
     tool_call = payload.get("toolCall", {})
-    args = tool_call.get("args", {})
-    target_path_str = args.get("TargetFile") or args.get("AbsolutePath") or ""
-    
+    args = tool_call.get("args", {}) if isinstance(tool_call, dict) else {}
+    if not isinstance(args, dict):
+        args = {}
+
+    target_path_str = (
+        args.get("Path")
+        or args.get("TargetFile")
+        or args.get("AbsolutePath")
+        or args.get("NotebookPath")
+        or ""
+    )
+
     analyzed_paths = []
     if target_path_str:
-        analyzed_paths.append(normalize_path(target_path_str))
+        target_path = Path(target_path_str)
+        if not target_path.is_absolute():
+            target_path = root / target_path
+        analyzed_paths.append(normalize_path(str(target_path)))
     else:
         changed = get_git_status_porcelain(root)
         analyzed_paths = [normalize_path(str(root / p)) for p in changed]
@@ -94,9 +131,10 @@ def main() -> int:
         log_stderr("[post-tool-review] WARNINGS:")
         for w in warnings:
             log_stderr(f"  - {w}")
-            
+
     respond_json({})
     return 0
+
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Safety Policies and Invariants
 
 This document outlines the safety guardrails, commands classifications, and permission priorities.

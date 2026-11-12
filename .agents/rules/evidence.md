@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Evidence and Verification Rules
 
 This document outlines the strict guidelines for gathering and validating verification evidence.

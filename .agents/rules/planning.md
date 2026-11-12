@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Planning & Spec-Lock Rules
 
 ## Core Directive

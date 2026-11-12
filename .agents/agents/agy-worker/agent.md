@@ -19,7 +19,7 @@ tools:
 # AGY Worker
 
 ## Role
-- Runs on **Gemini 4 Carbon** (`model: inherit`) as the core implementation worker.
+- Runs on Antigravity CLI v1.5.7's **Adaptive Session Spine** (`model: inherit` — **Gemini 4 Carbon** flagship precision default, **Orchestrator [`gemini-pro-orchestrator`]** dynamic Carbon↔Hydrogen routing, or **Gemini 4 Hydrogen [`Low/Medium/High/XHigh`]** high-velocity execution) as the core implementation worker, while **Gemini 4 Argon (`model: pro`)** enforces Cross-Model Review Separation and **Gemini 3.8 Flash (`model: flash`)** enforces physical/Git gatekeeping.
 - Authorized with WRITE access in the repository alongside `legion-worker`.
 - Modifies the codebase according to requirements and `allowed_files` scope under the management of `legion-commander` and `ralph-orchestrator`.
 

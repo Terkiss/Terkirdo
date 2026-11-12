@@ -18,17 +18,17 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 
 ---
 
-## 2. Participant Personas & Role Matrix (v5.7 Tri-Engine 참여 모델 및 역할 체계)
+## 2. Participant Personas & Role Matrix (v5.7 Gemini 4 Full-Spectrum 참여 모델 및 역할 체계)
 
-회의는 문제의 성격에 따라 테르키르도 v5.7 비대칭 Tri-Engine(`Gemini 4 Carbon` × `Gemini 4 Argon` × `Gemini 3.8 Flash`) 페르소나 중 2~5인을 선별하여 구성한다.
+회의는 문제의 성격에 따라 테르키르도 v5.7 비대칭 멀티 엔진(`Gemini 4 Carbon` / `Orchestrator [gemini-pro-orchestrator]` / `Gemini 4 Hydrogen [High/XHigh]` × `Gemini 4 Argon` × `Gemini 3.8 Flash`) 페르소나 중 2~5인을 선별하여 구성한다 (`inherit` 페르소나는 세션 모드에 따라 플래그십 `Gemini 4 Carbon`, 동적 하이브리드 `Orchestrator`, 또는 고속 프로토타이핑/구현용 `Gemini 4 Hydrogen (High/XHigh)`으로 구동됨).
 
 | 역할 | 페르소나 모델 (Engine) | 주요 전문 영역 및 책임 |
 | :--- | :--- | :--- |
-| 👑 **주재관 (Host / Moderator)** | **테르키르도 (Terukirdo Orchestrator — Gemini 4 Carbon / `inherit`)** | 안건 상정, 발언권 조율, 논점 이탈 방지, 갈등 중재, 최종 합의안/ADR 종합 작성 |
-| 🏛️ **수석 아키텍트 (Chief Architect)** | **Gemini 4 Carbon (`inherit`)** | 거시적 시스템 구조, 도메인 경계, 인터페이스(SSOT), 데이터 흐름, ADR 초안 설계 |
-| 🛠️ **실행/구현 엔지니어 (Surgical Implementer)** | **Gemini 4 Carbon (`inherit`)** | 코드 수준 구현 가능성, 프로젝트 언어/아키텍처 관례 준수, 리팩터링 정밀도, 실용적 구현 |
+| 👑 **주재관 (Host / Moderator)** | **테르키르도 (Terukirdo Orchestrator — Gemini 4 Carbon / Orchestrator / Hydrogen, `inherit`)** | 안건 상정, 발언권 조율, 논점 이탈 방지, 갈등 중재, 최종 합의안/ADR 종합 작성 |
+| 🏛️ **수석 아키텍트 (Chief Architect)** | **Gemini 4 Carbon / Orchestrator (`inherit`)** | 거시적 시스템 구조, 도메인 경계, 인터페이스(SSOT), 데이터 흐름, ADR 초안 설계 |
+| 🛠️ **실행/구현 엔지니어 (Surgical Implementer)** | **Gemini 4 Carbon / Gemini 4 Hydrogen (High/XHigh) (`inherit`)** | 코드 수준 구현 가능성, 고속 프로토타이핑 검증, 프로젝트 언어/아키텍처 관례 준수, 리팩터링 정밀도 |
 | 🛡️ **적대적 심판관 / 보안·성능 레드팀 (Adversarial Red Team)** | **Gemini 4 Argon (`pro`)** | 침투 테스트 관점 공격, 보안 취약점, 경쟁 상태(Race Condition), 락프리 동시성·성능 병목 적발 |
-| 🎨 **UX/UI & 접근성 리드 (UX/UI & Accessibility Lead)** | **Gemini 4 Carbon / Argon** | 사용자 여정, 화면 흐름, 로딩/빈/에러 상태, 접근성(WCAG) 및 디자인 시스템 정합성 검토 |
+| 🎨 **UX/UI & 접근성 리드 (UX/UI & Accessibility Lead)** | **Gemini 4 Carbon / Hydrogen / Argon** | 사용자 여정, 화면 흐름, 로딩/빈/에러 상태, 접근성(WCAG) 및 디자인 시스템 정합성 검토 |
 | 🧪 **QA & 검증 전략가 (QA & Verification Strategist)** | **Gemini 4 Argon / Gemini 3.8 Flash** | Given-When-Then 인수조건, 회귀 테스트 경계, 엣지 케이스 검증 매트릭스 및 물리 게이트(`verify.ps1`, 단위 테스트) 설계 |
 | ⚖️ **최종 관제 게이트키퍼 (Universal Controller)** | **Gemini 3.8 Flash (`flash`)** | 스펙 정합성, 빌드·테스트 게이트 및 규정 준수 신속 판정 |
 

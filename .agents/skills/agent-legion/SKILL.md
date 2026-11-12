@@ -76,9 +76,10 @@ description: STRICT SLASH-COMMAND ONLY (/agent-legion or /legion). Autonomous 3-
   2. 동일 Wave 내 각 파티션의 `allowed_files` 교집합이 **반드시 공집합($\emptyset$)**이 되도록 분할합니다.
 - 디스패치 전 반드시 `.agents/skills/agent-legion/scripts/partition_validator.py`를 실행하여 **동시 8기 이하 여부**와 **파일 충돌 0건**을 결정론적으로 검증합니다.
 
-### Protocol 2: Octa-Ralph Concurrent Dispatch & Squad Execution (최대 8기 랄프 동시 생성 및 분대 운용)
+### Protocol 2: Octa-Ralph Concurrent Dispatch, Adaptive Session Spine & Squad Execution (최대 8기 랄프 동시 생성 및 분대 운용)
 - 사령관은 `invoke_subagent`로 **최대 8기의 `ralph-orchestrator`(`Ralph #1` ~ `Ralph #8`)를 동시에 병렬 호출**합니다.
-- 각각의 `ralph-orchestrator`는 배정받은 파티션 내부에서 독립적으로 자기 산하 분대(`terukirdo-plan` → `legion-worker`/`agy-worker` → `first-reviewer` → `tech-expert` → `universal-final-controller` → `final-approach-control`)를 생성·운용하여 구현과 검증을 수행합니다.
+- **Adaptive Session Spine (`model: inherit` 무손실 전파)**: `legion-commander` → `ralph-orchestrator`(#1~#8) → `legion-worker`/`agy-worker`로 이어지는 지휘 척추 전체가 `model: inherit`으로 연결되어, 주인님의 세션 엔진(**Gemini 4 Carbon** 플래그십 정밀 모드, **Orchestrator [`gemini-pro-orchestrator`]** 동적 하이브리드 모드, 또는 **Gemini 4 Hydrogen [`High`/`XHigh`]** 초고속 병렬 실행 모드)을 8개 분대 전체에 손실 없이 전파합니다.
+- 각각의 `ralph-orchestrator`는 배정받은 파티션 내부에서 독립적으로 자기 산하 분대(`terukirdo-plan [Argon/pro]` → `legion-worker`/`agy-worker [inherit]` → `first-reviewer [Argon/pro]` → `tech-expert [Argon/pro]` → `universal-final-controller [3.8 Flash/flash]` → `final-approach-control [3.8 Flash/flash]`)를 생성·운용하여 이종 모델 교차 심판(`Argon`)과 물리/Git 관제(`3.8 Flash`)를 수행합니다.
 
 ### Protocol 3: Autonomous Meta-Review & Auto-Rework Gate (사령관 무인 자동 검토 및 자동 재작업)
 - 각 `ralph-orchestrator`가 자기 파티션의 구현 및 산하 검증관 판정 결과를 사령관에게 보고하면, 사령관이 주인님을 대신하여 무인으로 자동 검토(Meta-Review)합니다.

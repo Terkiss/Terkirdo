@@ -8,7 +8,7 @@
 
 테르키르도는 작업의 복잡도와 위험도에 따라 검증 수준을 조절합니다. Tier 0과 Tier 1에서는 깝깝함 없는 신속하고 유연한 보좌(Adaptive Fluidity)를 제공하되, Tier 2와 Tier 3에서는 마스터 기획 게이트(UltimateMake), 결정론적 파이썬 품질 게이트, 그리고 적대적 심판(Tech Expert)의 철벽 방어를 가동합니다.
 
-테르키르도 v5.7은 **Gemini 4 Carbon (`inherit`) × Gemini 4 Argon (`pro`) × Gemini 3.8 Flash (`flash`) 비대칭 트라이 엔진 아키텍처(Asymmetric Tri-Engine Architecture)**를 전면 도입합니다. 최상위 오케스트레이터(`Terukirdo`), `UltimateMake` 마스터 기획, 지휘 척추(`legion-commander`, `ralph-orchestrator` — 부모-자식 간 `inherit` 계승 불변식 보존), 그리고 핵심 구현 워커(`agy-worker`, `legion-worker`)는 **Gemini 4 Carbon (`inherit`)**이 전담하여 최고 수준의 엔터프라이즈 구현 품질을 달성합니다. 실행 카드 분해(`terukirdo-plan`), 1차 마이크로 계약 및 정적 코드 리뷰(`first-reviewer`), 그리고 교차 모델 2차 매크로 아키텍처/보안/안티치팅 심판(`tech-expert`)은 **Gemini 4 Argon (`pro`)**이 전담하여 구현 모델과의 동일 모델 자기합리화 편향을 원천 차단하고 구현 쿼터를 보존합니다. 초고속 물리 환경/빌드/테스트 검증(`universal-final-controller`), 원시 Git 인덱스 및 스테이징 게이트키핑(`final-approach-control`), 그리고 Tier 1 초고속 신속 보좌는 **Gemini 3.8 Flash (`flash`)**가 초고속·고효율로 완벽 방어합니다.
+테르키르도 v5.7은 Antigravity CLI (`v1.5.7`)의 **5대 Gemini 엔진 · 14개 공식 모델 카탈로그**를 완벽 수용하는 **비대칭 멀티 엔진 아키텍처(Adaptive Session Spine [`inherit`: Gemini 4 Carbon · Orchestrator (`gemini-pro-orchestrator`) · Gemini 4 Hydrogen (`Low/Medium/High/XHigh`)] × Cross-Model Judge [`pro`: Gemini 4 Argon] × Physical Gatekeeper [`flash`/`flash_lite`: Gemini 3.8 Flash])**를 전면 도입합니다. 최상위 오케스트레이터(`Terukirdo`), `UltimateMake` 마스터 기획, 지휘 척추(`legion-commander`, `ralph-orchestrator` — 부모-자식 간 `inherit` 계승 불변식 보존), 그리고 핵심 구현 워커(`agy-worker`, `legion-worker`)는 주인님의 활성 세션 엔진인 **Gemini 4 Carbon**(플래그십 정밀 기본값), **Orchestrator (`gemini-pro-orchestrator`)**(Carbon↔Hydrogen 동적 라우팅), 또는 **Gemini 4 Hydrogen (`Low/Medium/High/XHigh`)**(1M 컨텍스트 초고속 에이전틱 실행 및 `gemini-4-hydrogen-xhigh` 심층 추론)을 `inherit`으로 무손실 계승하여 구현 품질과 기동력을 동시에 달성합니다. 실행 카드 분해(`terukirdo-plan`), 1차 마이크로 계약 및 정적 코드 리뷰(`first-reviewer`), 그리고 교차 모델 2차 매크로 아키텍처/보안/안티치팅 심판(`tech-expert`)은 **Gemini 4 Argon (`pro`)**이 전담하여 구현 모델과의 동일 모델 자기합리화 편향을 원천 차단합니다. 초고속 물리 환경/빌드/테스트 검증(`universal-final-controller`), 원시 Git 인덱스 및 스테이징 게이트키핑(`final-approach-control`), 그리고 Tier 1 초고속 신속 보좌는 **Gemini 3.8 Flash (`flash`)**가 초고속·고효율로 완벽 방어합니다.
 
 테르키르도는 "상류(Upstream) 정보의 무결성이 하류(Downstream) 구현의 성패를 100% 지배한다"는 대원칙을 준수합니다. 기획의 모호성을 제거하기 위해 최대 1시간에 달하는 초심층 웹 리서치와 5인 전문가 원탁회의를 전면 수행하며, 물리적 검증을 통과한 후에도 반드시 주인님의 명시적 승인(Master Approval)을 받아야만 랄프 루프(Ralph Loop)를 가동합니다.
 
@@ -1060,17 +1060,31 @@ P1 또는 P2가 열려 있으면 커밋 승인을 내리지 않습니다.
 
 # 11. 에이전트 역할 및 권한
 
-## 11.0 서브에이전트 모델 계약 (Subagent Model Contract)
+## 11.0 서브에이전트 모델 계약 및 Gemini 4 풀스펙트럼 엔진 정렬 (Subagent Model & Gemini 4 Full-Spectrum Alignment)
 
-`.agents/agents/*/agent.md`의 YAML Frontmatter `model` 필드는 반드시 Antigravity CLI 네이티브 모델 Enum(`inherit`, `pro`, `flash`, `flash_lite`) 중 하나를 엄격히 지정해야 합니다. 규격 외 모델명(예: `sonnet`) 사용 시 서브에이전트 로더에서 Silent Drop되므로 `scripts/harness/validate_harness.py`를 통해 물리적으로 강제 검증합니다.
+Antigravity CLI (`v1.5.7`) 환경에서 모델 명세는 **2계층 계약(2-Layer Model Spec Contract)**으로 엄격히 분리 운용됩니다:
+
+1. **Layer 1 — 커스텀 에이전트 로더 티어 Enum (`.agents/agents/*/agent.md`)**:
+   - YAML Frontmatter `model` 필드는 반드시 Antigravity CLI 네이티브 로더 허용 4종 Enum(`inherit`, `pro`, `flash`, `flash_lite`) 중 하나만 지정해야 합니다.
+   - `agent.md` frontmatter에 원시 모델 슬러그(예: `gemini-4-hydrogen-xhigh`, `gemini-pro-orchestrator`)나 비표준 모델명(예: `sonnet`)을 직접 기입하면 커스텀 에이전트 로더에서 Silent Skip(드롭)되므로 `scripts/harness/validate_harness.py`의 `VALID_MODELS`를 통해 물리적으로 강제 검증합니다 (`flash_lite`는 초경량 보조 작업용 허용 티어로 지원).
+2. **Layer 2 — Antigravity CLI v1.5.7 내장 5대 Gemini 엔진 · 14개 공식 모델 카탈로그 (`--model` & Native `/swarm`)**:
+   - 메인 세션(`agy --model <slug>`), 비대화형 실행(`agy -p --model <slug>`), 및 네이티브 스웜에서는 다음 14개 공식 Gemini 슬러그를 사용합니다:
+     - **Gemini 4 Carbon**: `gemini-4-carbon-low`, `gemini-4-carbon-medium`, `gemini-4-carbon-high`
+     - **Orchestrator**: `gemini-pro-orchestrator` (`Carbon` ↔ `Hydrogen` 작업 난이도별 양방향 동적 라우팅)
+     - **Gemini 4 Hydrogen**: `gemini-4-hydrogen-low`, `gemini-4-hydrogen-medium`, `gemini-4-hydrogen-high`, `gemini-4-hydrogen-xhigh` (1M 컨텍스트 초고속 일상 에이전틱 실행 및 `xhigh` 심층 추론)
+     - **Gemini 4 Argon**: `gemini-4-argon-low`, `gemini-4-argon-medium`, `gemini-4-argon-high`
+     - **Gemini 3.8 Flash**: `gemini-3.8-flash-low`, `gemini-3.8-flash-medium`, `gemini-3.8-flash-high`
+3. **`inherit` 지휘 척추(Adaptive Session Spine) 3대 세션 모드 & 교차 모델 분리**:
+   - 지휘 척추(`legion-commander`, `ralph-orchestrator`)와 구현 워커(`agy-worker`, `legion-worker`)는 모두 `model: inherit`을 선언하여 주인님의 세션 모드(**Flagship `Gemini 4 Carbon`**, **Dynamic Hybrid `Orchestrator [gemini-pro-orchestrator]`**, **High-Velocity `Gemini 4 Hydrogen [High/XHigh]`**)를 하류 워커까지 무손실 전파합니다.
+   - 구현 결과물의 계획·1차 리뷰·2차 심판은 `model: pro`(**Gemini 4 Argon**)가 전담하여 동일 모델 자기합리화 편향을 차단하고(따라서 Tier 2/3 구현 시 메인 세션을 `Argon`으로 구동하지 않는 것을 원칙으로 함), 물리 빌드·테스트·Git 스테이징 관제는 `model: flash`(**Gemini 3.8 Flash**)가 수행합니다.
 
 | 역할 | 에이전트 | 모델 지정 (`model`) | 구동 엔진 |
 | :--- | :--- | :---: | :--- |
-| 군단 사령관 | `legion-commander` | `inherit` | Gemini 4 Carbon |
-| 하위 루프 조율 | `ralph-orchestrator` | `inherit` | Gemini 4 Carbon |
+| 군단 사령관 | `legion-commander` | `inherit` | Adaptive Session Spine (`Gemini 4 Carbon` / `Orchestrator` / `Gemini 4 Hydrogen`) |
+| 하위 루프 조율 | `ralph-orchestrator` | `inherit` | Adaptive Session Spine (`Gemini 4 Carbon` / `Orchestrator` / `Gemini 4 Hydrogen`) |
 | 구현계획 수립 | `terukirdo-plan` | `pro` | Gemini 4 Argon |
-| 단일 워커 (Write) | `agy-worker` | `inherit` | Gemini 4 Carbon |
-| 군단 코어 워커 (Write) | `legion-worker` | `inherit` | Gemini 4 Carbon |
+| 단일 워커 (Write) | `agy-worker` | `inherit` | Adaptive Session Spine (`Gemini 4 Carbon` / `Orchestrator` / `Gemini 4 Hydrogen`) |
+| 군단 코어 워커 (Write) | `legion-worker` | `inherit` | Adaptive Session Spine (`Gemini 4 Carbon` / `Orchestrator` / `Gemini 4 Hydrogen`) |
 | 1차 리뷰어 | `first-reviewer` | `pro` | Gemini 4 Argon |
 | 적대적 심판 | `tech-expert` | `pro` | Gemini 4 Argon |
 | 최종 컨트롤러 | `universal-final-controller` | `flash` | Gemini 3.8 Flash |
