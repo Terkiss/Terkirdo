@@ -5,7 +5,7 @@
 ## Lifecycle
 
 1. User prompt arrives.
-2. Antigravity CLI (`v1.5.7`) reads `AGENTS.md` and loads `.agents/rules/*.md` rules declaring `trigger: always_on` in YAML frontmatter (`safety.md`, `evidence.md`, `documentation.md`, `planning.md`).
+2. Antigravity CLI (`v1.5.7+ / v1.5.12`) reads `AGENTS.md` and loads `.agents/rules/*.md` rules declaring `trigger: always_on` in YAML frontmatter (`safety.md`, `evidence.md`, `documentation.md`, `planning.md`).
 3. Antigravity/AGY classifies intent, scope, risk.
 4. Antigravity/AGY selects the minimal skill set from `.agents/skills/*/SKILL.md`.
 5. The selected skill reads only the needed documents from its `Context Loading`.
@@ -23,7 +23,7 @@
 | --- | --- | --- | --- |
 | `PreToolUse` | `.agents/hooks.json` (grouped `matcher` + `hooks`, relative `hooks/...` CWD) | `.agents/hooks/pre_tool_use_policy.py` | Blocks destructive commands, workspace escapes, secret literals across `write_file`/`edit_file`/`notebook_edit`, and non-slash `legion-commander` invocations (`Prompt` + `lastUserInput` + `transcriptPath`). |
 | `PostToolUse` | `.agents/hooks.json` (grouped `matcher` + `hooks`, relative `hooks/...` CWD) | `.agents/hooks/post_tool_use_review.py` | Warns when paths touched via `write_file`/`edit_file`/`notebook_edit` or `run_command` look high-risk and checks Python AST syntax. |
-| `Stop` | `.agents/hooks.json` (flat handler list, relative `hooks/...` CWD) | `.agents/hooks/stop_quality_gate.py` | Validates harness structure (`validate_harness.py --strict`), `git diff --check`, and Turn-End Memory Sync (`MEMORY.md` / `docs/Terukirdo_Trajectory.txt`), anchored to `<repo>/.agents/state/stop_gate_state.json` with CLI v1.5.7 `decision` + `continuationActive` loop safety. |
+| `Stop` | `.agents/hooks.json` (flat handler list, relative `hooks/...` CWD) | `.agents/hooks/stop_quality_gate.py` | Validates harness structure (`validate_harness.py --strict`), `git diff --check`, and Turn-End Memory Sync (`MEMORY.md` / `docs/Terukirdo_Trajectory.txt`), anchored to `<repo>/.agents/state/stop_gate_state.json` with CLI v1.5.7+ / v1.5.12 `decision` + `continuationActive` loop safety. |
 
 Pre/Post hooks run around matched tool calls. Stop runs before completion. Hooks do not know the full product intent and do not replace skill selection, testing, or review.
 

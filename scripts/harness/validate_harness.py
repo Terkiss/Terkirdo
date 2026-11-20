@@ -12,6 +12,8 @@ VALID_RULE_TRIGGERS = {"always_on", "model_decision", "glob", "manual"}
 
 MAX_RULE_FILE_BYTES = 24000
 
+# Antigravity CLI v1.5.7 14-slug baseline catalog (preserved for v1.5.7 backward-compatibility;
+# see GEMINI_CLI_V1512_CATALOG_MODELS below for the full Antigravity CLI v1.5.12 20-slug catalog)
 GEMINI_CLI_CATALOG_MODELS = {
     "gemini-4-carbon-low",
     "gemini-4-carbon-medium",
@@ -28,6 +30,25 @@ GEMINI_CLI_CATALOG_MODELS = {
     "gemini-3.8-flash-medium",
     "gemini-3.8-flash-high",
 }
+
+GEMINI_CLI_NEON_MODELS = {
+    "gemini-4-neon-low",
+    "gemini-4-neon-medium",
+    "gemini-4-neon-high",
+    "gemini-4-neon-xhigh",
+}
+
+GEMINI_CLI_ORCHESTRATOR_MODELS = {
+    "gemini-pro-orchestrator",
+    "gemini-pro-orchestrator-neon",
+    "gemini-pro-orchestrator-argon",
+}
+
+GEMINI_CLI_V1512_CATALOG_MODELS = (
+    GEMINI_CLI_CATALOG_MODELS
+    | GEMINI_CLI_NEON_MODELS
+    | GEMINI_CLI_ORCHESTRATOR_MODELS
+)
 
 GROUPED_HOOK_EVENTS = {"PreToolUse", "PostToolUse"}
 FLAT_HOOK_EVENTS = {"Stop", "SessionStart", "PreInvocation", "PostInvocation"}
@@ -85,6 +106,8 @@ FORBIDDEN_SKILL_PATTERNS = (
     "undetected_chromedriver",
     ".agent/skills/",
     ".claude4net",
+    "model: neon",
+    "model: gemini-4-neon",
 )
 
 FENCE_RE = re.compile(r"^`{3,}")

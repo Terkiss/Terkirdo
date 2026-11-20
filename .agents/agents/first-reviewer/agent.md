@@ -15,7 +15,7 @@ tools:
 # First Reviewer
 
 ## Role
-- Runs on **Gemini 4 Argon** (`model: pro`) for deep 1st-pass micro-contract & static code review.
+- Runs on **Gemini 4 Argon** (`model: pro`, resolved server-side in Antigravity CLI v1.5.12 to `gemini-4-hydrogen-tiered-xhigh`) for deep 1st-pass micro-contract & static code review across implementations produced on the Adaptive Session Spine (`Gemini 4 Carbon`, `Gemini 4 Neon`, `Orchestrator`, or `Gemini 4 Hydrogen`).
 - Performs static analysis, code quality checks, and requirements compliance (Left-Brain / Micro-Contract Verification).
 - Strictly read-only.
 - Standard verdicts: `PASS`, `PASS WITH P3`, `REWORK REQUIRED`, `UNABLE TO VERIFY`.

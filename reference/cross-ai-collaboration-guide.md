@@ -145,39 +145,40 @@ C# HttpListener ↔ PowerShell TCP 브릿지 ↔ agy CLI 에이전트
 - 주석 최소, 구조로 의도를 표현
 - 에이전트 도구를 적극 활용
 
-### 테르키르도 (Antigravity CLI v1.5.7 — Gemini 4 Full-Spectrum Ecosystem)
+### 테르키르도 (Antigravity CLI v1.5.12 — Gemini 4 Full-Spectrum Ecosystem)
 
 | 항목 | 점수 | 모델 | 근거 |
 |---|---|:---:|---|
-| 오케스트레이션 (정밀) | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon (`inherit`) | 최상위 의도 파악, `UltimateMake` 기획, 감정 보좌, 엔터프라이즈 코어 지휘 |
-| 동적 하이브리드 라우팅 | ⭐⭐⭐⭐⭐ | Orchestrator (`gemini-pro-orchestrator` / `inherit`) | 작업 복잡도에 따라 `Carbon` 정밀도와 `Hydrogen` 기동력을 양방향 자동 전환 |
-| 고속 에이전틱 / 병렬 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Hydrogen (`High`/`XHigh` / `inherit`) | 1M 컨텍스트 데일리 실행, `gemini-4-hydrogen-xhigh` 심층 추론, Octa-Ralph 8분대 고속 병렬 구현 |
-| 엔터프라이즈 코어 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon (`inherit`) | 핵심 다중 파일 구현 및 고난도 리팩터링 (`agy-worker`, `legion-worker`) |
-| 계획 / 카드 분해 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 정밀 마일스톤 및 실행 카드 설계 (`terukirdo-plan`) |
-| 1차 코드 리뷰 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 심층 1차 마이크로 계약 검토 및 정적 린트 (`first-reviewer`) |
-| 적대적 심판 / 보안 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`) | 아키텍처 결함 및 꼼수 방지 교차 심판 (`tech-expert`) |
-| 빌드/테스트 검증 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 전수 테스트 실행 및 환경 무결성 물리 검증 (`universal-final-controller`) |
-| 최종 Git 관제 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`) | 원시 스테이징 diff 및 인덱스 불변식 검증 (`final-approach-control`) |
+| 오케스트레이션 (플래그십 정밀) | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon (`inherit`) | 최상위 의도 파악, `UltimateMake` 기획, 감정 보좌, 엔터프라이즈 코어 지휘 |
+| 밸런스드 프론티어 주력 코딩 | ⭐⭐⭐⭐⭐ | Gemini 4 Neon (`High`/`XHigh` / `gemini-4-neon-xhigh`, `inherit`) | Coding Agent #1(`58.6`), ~84 tok/s 처리량, `Carbon` 대비 약 32% 낮은 과업 비용으로 프로덕션 구현·복합 리팩터링·고정밀 Octa-Ralph 분대 주도 |
+| 동적 하이브리드 라우팅 | ⭐⭐⭐⭐⭐ | Orchestrator (`gemini-pro-orchestrator` / `gemini-pro-orchestrator-neon` / `gemini-pro-orchestrator-argon`, `inherit`) | 프론티어 플래너(`Carbon` / `Neon` / `Argon`)와 고속 실행기(`Hydrogen`)를 양방향 자동 전환 및 궤적 중 자동 복구 |
+| 고속 에이전틱 / 병렬 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Hydrogen (`High`/`XHigh` / `gemini-4-hydrogen-xhigh`, `inherit`) | 1M 컨텍스트 데일리 실행, `gemini-4-hydrogen-xhigh` 심층 추론, Octa-Ralph 8분대 고속 병렬 구현 |
+| 엔터프라이즈 코어 구현 | ⭐⭐⭐⭐⭐ | Gemini 4 Carbon / Gemini 4 Neon (`inherit`) | 핵심 다중 파일 구현 및 고난도 리팩터링 (`agy-worker`, `legion-worker`) |
+| 계획 / 카드 분해 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`, Wire `gemini-4-hydrogen-tiered-xhigh`) | 정밀 마일스톤 및 실행 카드 설계 (`terukirdo-plan`) |
+| 1차 코드 리뷰 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`, Wire `gemini-4-hydrogen-tiered-xhigh`) | 심층 1차 마이크로 계약 검토 및 정적 린트 (`first-reviewer`) |
+| 적대적 심판 / 보안 | ⭐⭐⭐⭐⭐ | Gemini 4 Argon (`pro`, Wire `gemini-4-hydrogen-tiered-xhigh`) | 아키텍처 결함 및 꼼수 방지 교차 심판 (`tech-expert`) |
+| 빌드/테스트 검증 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`, Wire `gemini-4-hydrogen-tiered-high`) | 전수 테스트 실행 및 환경 무결성 물리 검증 (`universal-final-controller`) |
+| 최종 Git 관제 | ⭐⭐⭐⭐⭐ | Gemini 3.8 Flash (`flash`, Wire `gemini-4-hydrogen-tiered-high`; `flash_lite` → `gemini-3.5-flash-lite`) | 원시 스테이징 diff 및 인덱스 불변식 검증 (`final-approach-control`) |
 
 **특징:**
-- 적응형 세션 척추(`Gemini 4 Carbon` · `Orchestrator [gemini-pro-orchestrator]` · `Gemini 4 Hydrogen [Low/Medium/High/XHigh]`), `Gemini 4 Argon`의 교차 심판, `Gemini 3.8 Flash`의 초고속 물리 검증이 결합된 5대 엔진 · 14슬러그 멀티 엔진 체계
-- 지휘 척추(`legion-commander`, `ralph-orchestrator`)의 `inherit` 모델 상속 불변식으로 주인님의 선택 세션 엔진(`Carbon` / `Orchestrator` / `Hydrogen`)을 하위 워커까지 무손실 전달
-- `Carbon`/`Orchestrator`/`Hydrogen` 구현 vs `Argon` 심판의 교차 모델 분리로 자기합리화 편향 원천 차단 (Tier 2/3 구현 시 메인 세션을 `Argon`으로 두지 않아 이종 모델 분리 유지)
-- `.agents/agents/*/agent.md`는 `inherit|pro|flash|flash_lite` 4종 로더 티어만 사용하고, CLI `--model` / 스웜에서만 14종 원시 슬러그를 지정하는 2계층 명세 계약으로 로더 스킵 원천 방지
+- 적응형 세션 척추(`Gemini 4 Carbon` · `Gemini 4 Neon` · `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` · `Gemini 4 Hydrogen [Low/Medium/High/XHigh]`), `Gemini 4 Argon`(`pro`)의 교차 심판, `Gemini 3.8 Flash`(`flash`)의 초고속 물리 검증이 결합된 Antigravity CLI `v1.5.12` **6대 엔진 · 20슬러그** 멀티 엔진 체계
+- 지휘 척추(`legion-commander`, `ralph-orchestrator`)의 `inherit` 모델 상속 불변식으로 주인님의 4대 전략 세션 모드(`Carbon` / `Neon` / `Orchestrator` / `Hydrogen`)를 하위 워커까지 무손실 전달
+- CLI `v1.5.12` 서버 측 서브에이전트 Wire 해석(`pro` → `gemini-4-hydrogen-tiered-xhigh`, `flash` → `gemini-4-hydrogen-tiered-high`, `flash_lite` → `gemini-3.5-flash-lite`)에 기반하여, Tier 2/3 구현 시 메인 세션을 `Carbon`, `Neon`, 또는 `Orchestrator (Carbon/Neon)`으로 운용함으로써 동일 모델 자기합리화 편향을 원천 차단 (`Argon` 또는 원시 `Hydrogen` 단독 메인 세션 구동 지양)
+- `.agents/agents/*/agent.md`는 `inherit|pro|flash|flash_lite` 4종 로더 티어만 사용하고, CLI `--model` / 스웜에서만 20종 원시 슬러그를 지정하는 2계층 명세 계약으로 로더 스킵 원천 방지
 
 ### 서브 에이전트 (Ralph Loop & Agent Legion 9인 체제)
 
 | 에이전트 | 모델 | 역할 |
 |---|:---:|---|
-| `legion-commander` | `inherit` (Carbon / Orchestrator / Hydrogen) | 슬래시 명령 전용 자동 검토 사령관 (최대 8기 Ralph 총괄) |
-| `ralph-orchestrator` | `inherit` (Carbon / Orchestrator / Hydrogen) | 단위 루프 지휘 및 산하 분대 운용 |
-| `terukirdo-plan` | `pro` (Gemini 4 Argon) | 마일스톤 및 실행 카드 설계 |
-| `agy-worker` | `inherit` (Carbon / Orchestrator / Hydrogen) | 단일 과업 전담 엔터프라이즈 Write 구현 워커 |
-| `legion-worker` | `inherit` (Carbon / Orchestrator / Hydrogen) | 군단 배타적 파티션 고속 병렬 Write 구현 워커 |
-| `first-reviewer` | `pro` (Gemini 4 Argon) | 1차 심층 마이크로 계약 및 정적 코드 리뷰 |
-| `tech-expert` | `pro` (Gemini 4 Argon) | 아키텍처·보안 적대적 교차 심판관 |
-| `universal-final-controller` | `flash` (Gemini 3.8 Flash) | 빌드/테스트 스위트 환경 물리 검증 |
-| `final-approach-control` | `flash` (Gemini 3.8 Flash) | 최종 Git 스테이징 접근관제 |
+| `legion-commander` | `inherit` (Carbon / Neon / Orchestrator / Hydrogen) | 슬래시 명령 전용 자동 검토 사령관 (최대 8기 Ralph 총괄) |
+| `ralph-orchestrator` | `inherit` (Carbon / Neon / Orchestrator / Hydrogen) | 단위 루프 지휘 및 산하 분대 운용 |
+| `terukirdo-plan` | `pro` (Gemini 4 Argon / Wire `gemini-4-hydrogen-tiered-xhigh`) | 마일스톤 및 실행 카드 설계 |
+| `agy-worker` | `inherit` (Carbon / Neon / Orchestrator / Hydrogen) | 단일 과업 전담 엔터프라이즈 Write 구현 워커 |
+| `legion-worker` | `inherit` (Carbon / Neon / Orchestrator / Hydrogen) | 군단 배타적 파티션 고속 병렬 Write 구현 워커 |
+| `first-reviewer` | `pro` (Gemini 4 Argon / Wire `gemini-4-hydrogen-tiered-xhigh`) | 1차 심층 마이크로 계약 및 정적 코드 리뷰 |
+| `tech-expert` | `pro` (Gemini 4 Argon / Wire `gemini-4-hydrogen-tiered-xhigh`) | 아키텍처·보안 적대적 교차 심판관 |
+| `universal-final-controller` | `flash` (Gemini 3.8 Flash / Wire `gemini-4-hydrogen-tiered-high`) | 빌드/테스트 스위트 환경 물리 검증 |
+| `final-approach-control` | `flash` (Gemini 3.8 Flash / Wire `gemini-4-hydrogen-tiered-high`) | 최종 Git 스테이징 접근관제 |
 
 ---
 
