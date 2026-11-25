@@ -18,18 +18,20 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 
 ---
 
-## 2. Participant Personas & Role Matrix (v5.7 × CLI v1.5.12 Gemini 4 Full-Spectrum 참여 모델 및 역할 체계)
+## 2. Participant Personas & Role Matrix (v5.8 × CLI v1.5.16 27-Slug Ecosystem 참여 모델 및 역할 체계)
 
-회의는 문제의 성격에 따라 테르키르도 v5.7 × Antigravity CLI `v1.5.12` 비대칭 멀티 엔진(`Gemini 4 Carbon` / `Gemini 4 Neon [High/XHigh]` / `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` / `Gemini 4 Hydrogen [High/XHigh]` × `Gemini 4 Argon [pro]` × `Gemini 3.8 Flash [flash]`) 페르소나 중 2~5인을 선별하여 구성한다 (`inherit` 페르소나는 4대 전략 세션 모드에 따라 플래그십 `Gemini 4 Carbon`, 밸런스드 프론티어 코딩 주력기 `Gemini 4 Neon`, 동적 하이브리드 `Orchestrator`, 또는 고속 프로토타이핑/구현용 `Gemini 4 Hydrogen (High/XHigh)`으로 구동됨).
+회의는 문제의 성격과 호출 컨텍스트에 따라 테르키르도 v5.8 × Antigravity CLI `v1.5.16` (`v1.5.12` 서버 측 Wire Tier 베이스라인) 비대칭 멀티 엔진 페르소나 중 2~5인을 선별하여 구성한다:
+- **Mode A — Native `swarm` Zero-Copy Board Mode** (명시적 `/swarm` 슬래시 명령 또는 인가된 `UltimateMake` Phase 3 세션): `architect`, `implementer`, `red-team`, `ux-lead`, `qa-lead` 페르소나를 스웜 보드에 직접 스폰하며(`narrator`/`monitor` 오버헤드 워커 `0`명), 27슬러그 카탈로그(`gemini-4-carbon-high`, `gemini-4-neon-xhigh`, `gemini-pro-orchestrator-neon`, `gemini-4-argon-high`, `gemini-3.8-flash-high`, `claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `gpt-oss-120b-medium` 등)로 페르소나별 모델을 개별 핀닝하거나 세션 모델을 균일 적용할 수 있다.
+- **Mode B — Standard `invoke_subagent` + `send_message` Handle Reuse Mode** (일반 대화형 원탁회의 요청 또는 `UltimateMake` 저쿼터 폴백): `.agents/hooks/pre_tool_use_policy.py`가 비슬래시 일반 대화의 `swarm` 호출을 차단하므로, 일반 대화에서는 `invoke_subagent`(`inherit`: `Gemini 4 Carbon` / `Gemini 4 Neon` / `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` / `Gemini 4 Hydrogen [High/XHigh]` / `Claude 5.5 · GPT-OSS 120B` × `pro`: `Gemini 4 Argon` × `flash`: `Gemini 3.8 Flash`) 및 `send_message` 핸들 재사용으로 운용한다.
 
-| 역할 | 페르소나 모델 (Engine) | 주요 전문 영역 및 책임 |
+| 역할 | 페르소나 모델 (Subagent Tier / Optional Swarm Slug) | 주요 전문 영역 및 책임 |
 | :--- | :--- | :--- |
-| 👑 **주재관 (Host / Moderator)** | **테르키르도 (Terukirdo Orchestrator — Gemini 4 Carbon / Neon / Orchestrator / Hydrogen, `inherit`)** | 안건 상정, 발언권 조율, 논점 이탈 방지, 갈등 중재, 최종 합의안/ADR 종합 작성 |
-| 🏛️ **수석 아키텍트 (Chief Architect)** | **Gemini 4 Carbon / Gemini 4 Neon / Orchestrator (`inherit`)** | 거시적 시스템 구조, 도메인 경계, 인터페이스(SSOT), 데이터 흐름, ADR 초안 설계 |
-| 🛠️ **실행/구현 엔지니어 (Surgical Implementer)** | **Gemini 4 Neon (High/XHigh) / Gemini 4 Carbon / Gemini 4 Hydrogen (High/XHigh) (`inherit`)** | 코드 수준 구현 가능성, 고속 프로토타이핑 검증, 프로젝트 언어/아키텍처 관례 준수, 리팩터링 정밀도 |
-| 🛡️ **적대적 심판관 / 보안·성능 레드팀 (Adversarial Red Team)** | **Gemini 4 Argon (`pro`, Wire `gemini-4-hydrogen-tiered-xhigh`)** | 침투 테스트 관점 공격, 보안 취약점, 경쟁 상태(Race Condition), 락프리 동시성·성능 병목 적발 |
-| 🎨 **UX/UI & 접근성 리드 (UX/UI & Accessibility Lead)** | **Gemini 4 Carbon / Neon / Hydrogen / Argon** | 사용자 여정, 화면 흐름, 로딩/빈/에러 상태, 접근성(WCAG) 및 디자인 시스템 정합성 검토 |
-| 🧪 **QA & 검증 전략가 (QA & Verification Strategist)** | **Gemini 4 Argon / Gemini 3.8 Flash** | Given-When-Then 인수조건, 회귀 테스트 경계, 엣지 케이스 검증 매트릭스 및 물리 게이트(`verify.ps1`, 단위 테스트) 설계 |
+| 👑 **주재관 (Host / Moderator)** | **테르키르도 (Terukirdo Orchestrator — Gemini 4 Carbon / Neon / Orchestrator / Hydrogen / Claude 5.5, `inherit`)** | 안건 상정, 발언권 조율, 논점 이탈 방지, 갈등 중재, 최종 합의안/ADR 종합 작성 및 스웜 `kill` 정리 |
+| 🏛️ **수석 아키텍트 (`architect`)** | **Gemini 4 Carbon / Gemini 4 Neon / Orchestrator (`inherit` 또는 `gemini-4-carbon-high` · `claude-opus-5-5-high`)** | 거시적 시스템 구조, 도메인 경계, 인터페이스(SSOT), 데이터 흐름, ADR 초안 설계 |
+| 🛠️ **실행/구현 엔지니어 (`implementer`)** | **Gemini 4 Neon (High/XHigh) / Gemini 4 Carbon / Gemini 4 Hydrogen (High/XHigh) (`inherit` 또는 `gemini-4-neon-xhigh` · `claude-sonnet-5-5-high`)** | 코드 수준 구현 가능성, 고속 프로토타이핑 검증, 프로젝트 언어/아키텍처 관례 준수, 리팩터링 정밀도 |
+| 🛡️ **적대적 심판관 / 레드팀 (`red-team`)** | **Gemini 4 Argon (`pro`, Wire `gemini-4-hydrogen-tiered-xhigh` 또는 `gemini-4-argon-high` · `gpt-oss-120b-medium`)** | 침투 테스트 관점 공격, 보안 취약점, 경쟁 상태(Race Condition), 락프리 동시성·성능 병목 적발 |
+| 🎨 **UX/UI & 접근성 리드 (`ux-lead`)** | **Gemini 4 Carbon / Neon / Hydrogen / Argon** | 사용자 여정, 화면 흐름, 로딩/빈/에러 상태, 접근성(WCAG) 및 디자인 시스템 정합성 검토 |
+| 🧪 **QA & 검증 전략가 (`qa-lead`)** | **Gemini 4 Argon / Gemini 3.8 Flash** | Given-When-Then 인수조건, 회귀 테스트 경계, 엣지 케이스 검증 매트릭스 및 물리 게이트(`verify.ps1`, 단위 테스트) 설계 |
 | ⚖️ **최종 관제 게이트키퍼 (Universal Controller)** | **Gemini 3.8 Flash (`flash`, Wire `gemini-4-hydrogen-tiered-high`)** | 스펙 정합성, 빌드·테스트 게이트 및 규정 준수 신속 판정 |
 
 ---
@@ -41,41 +43,43 @@ sequenceDiagram
     autonumber
     actor Master as 👑 Master (주인님)
     participant Host as 🎀 Host (Terukirdo / Carbon)
-    participant Arch as 🏛️ Architect (Carbon)
-    participant Impl as 🛠️ Implementer (Carbon)
+    participant Arch as 🏛️ Architect (Carbon / Neon)
+    participant Impl as 🛠️ Implementer (Neon / Claude 5.5)
     participant Red as 🛡️ Red Team (Argon)
     participant Flash as ⚖️ Controller (3.8 Flash)
 
-    Host->>Host: 1단계: 안건 및 제약조건 프레이밍
-    par Round 1 병렬 독립 스폰 (invoke_subagent)
+    Host->>Host: 1단계: 안건 프레이밍 및 토폴로지 선택 (Swarm Board vs Subagent)
+    par Round 1 병렬 독립 발제 (Swarm: read_board 금지 / Subagent: invoke_subagent)
         Host->>Arch: 2단계: 아키텍처 제안 독립 발제 요청
         Host->>Impl: 2단계: 구현/실용 관점 독립 제안 요청
     end
-    Arch-->>Host: 아키텍처 및 SSOT 설계안 제출
-    Impl-->>Host: 구현 전략 및 인터페이스 제출
+    Arch-->>Host: 아키텍처 및 SSOT 설계안 게시 (#seq 또는 응답)
+    Impl-->>Host: 구현 전략 및 인터페이스 게시 (#seq 또는 응답)
     Host->>Red: 3단계: 적대적 교차 비판 및 결함 공격 요청 (Zero Quota & 4-Element Proof)
-    Red-->>Host: 입증된 취약점/병목 보고 또는 Clean Pass
-    Host->>Arch: 4단계: send_message 핸들 재사용으로 지적사항 반영 합의안 종합(ADR)
+    Red-->>Host: 입증된 취약점/병목 보고 (#seq 인용) 또는 Clean Pass
+    Host->>Arch: 4단계: #seq 보드 합의 또는 send_message 핸들 재사용으로 ADR 종합 (Swarm 시 즉시 kill 해체)
     Arch-->>Host: 최종 통합 사양서(ADR) 완성
     Host->>Flash: 5단계: 스펙 정합성 및 검증 게이트 심사
     Flash-->>Host: 검증 통과 (VERIFIED)
     Host->>Master: 👑 최종 회의록 및 ADR 결재 상정
 ```
 
-### [Stage 1] 안건 및 제약조건 프레이밍 (Agenda Framing)
-- 해결하고자 하는 문제의 본질, 성공 기준, 불변의 전제 조건(하네스 격리, 성능 목표, 프로토콜 v5.7 준수 등)을 명문화한다.
-- 회의 참석 페르소나 및 배정 역할을 확정한다.
+### [Stage 1] 안건 및 제약조건 프레이밍 (Agenda Framing & Mode Selection)
+- 해결하고자 하는 문제의 본질, 성공 기준, 불변의 전제 조건(하네스 격리, 성능 목표, 프로토콜 v5.8 준수 등)을 명문화한다.
+- 활성 컨텍스트가 `/swarm` 또는 인가된 `UltimateMake` 세션이면 **Mode A (Native `swarm` Board)**를, 일반 대화 요청이나 저쿼터 모드이면 **Mode B (`invoke_subagent` + `send_message`)**를 선택한다.
 
-### [Stage 2] 도메인별 독립 제안 발제 (Round 1: Independent Proposals via Parallel `invoke_subagent`)
-- Round 1 독립 발제는 `invoke_subagent` 병렬 스폰으로 수행하여 타 참가자의 발언에 끌려가는 앵커링 편향(Anchoring Bias)을 원천 차단한다.
-- 각 전문가 페르소나는 자신의 전문 관점에서 최적의 설계·구현·UX·QA 제안서를 독립 제출한다.
+### [Stage 2] 도메인별 독립 제안 발제 (Round 1: Anti-Anchoring Independent Proposals)
+- **Mode A (`swarm` Board)**: 페르소나 스폰(`action="add"`) 시 초기 브리프에 **"자신의 독립 1차 제안서를 `post_message`로 게시하기 전에는 절대로 `read_board`를 호출하지 말 것"**을 명시하여 앵커링 편향(Anchoring Bias)을 원천 차단한다.
+- **Mode B (`invoke_subagent`)**: 병렬 `invoke_subagent` 스폰으로 각 전문가가 독립 제안서를 제출한다.
 
-### [Stage 3] 적대적 교차 비판 및 결함 공격 (Round 2: Cross-Critique & Red Teaming)
-- 적대적 심판관(`Gemini 4 Argon`)이 제안서들의 보안 취약점, 경쟁 상태, 성능 병목, 도메인 경계 침범을 교차 검증한다.
-- Round 2~3에서 기존 발제자에게 반론이나 보완을 요청할 때는 중복 서브에이전트를 새로 스폰하지 않고 기존 `conversationId`에 `send_message(Recipient=conv_id, Message=...)`를 호출하여 핸들과 컨텍스트를 재사용한다.
+### [Stage 3] 적대적 교차 비판 및 결함 공격 (Round 2: `#seq` Cross-Critique & Red Teaming)
+- 적대적 심판관(`Gemini 4 Argon` 등)이 제안서들의 보안 취약점, 경쟁 상태, 성능 병목, 도메인 경계 침범을 교차 검증한다.
+- **Mode A (`swarm` Board)**: 참가자들이 `read_board`로 동료의 `#seq` 엔트리를 열람하고 번호를 직접 인용하여 반론·보완안을 게시한다.
+- **Mode B (`invoke_subagent`)**: 중복 서브에이전트를 새로 스폰하지 않고 기존 `conversationId`에 `send_message(Recipient=conv_id, Message=...)`를 호출하여 핸들과 컨텍스트를 재사용한다.
 
-### [Stage 4] 갈등 중재 및 통합 합의안(ADR) 도출 (Round 3: Consensus & ADR Synthesis)
-- 주재관(테르키르도) 및 수석 아키텍트(`send_message` 핸들 재사용)가 입증된 지적사항과 각 의견의 합리적 요소를 융합하여 갈등을 중재하고 단일 진실 공급원(SSOT) 아키텍처 결정서(ADR)를 작성한다.
+### [Stage 4] 갈등 중재, 통합 합의안(ADR) 도출 및 스웜 해체 (Round 3: Consensus, ADR Synthesis & Swarm Teardown)
+- 주재관(테르키르도) 및 수석 아키텍트(`read_board` 수합 또는 `send_message` 핸들 재사용)가 입증된 지적사항과 각 의견의 합리적 요소를 융합하여 단일 진실 공급원(SSOT) 아키텍처 결정서(ADR)를 작성한다.
+- **Swarm Clean Teardown 불변식**: Mode A(`swarm`)를 사용한 경우, ADR 초안 도출 직후 반드시 스폰한 모든 회의 워커에 대해 `swarm`(`action="kill"`)을 실행하여 활성 스웜 워커 `0`명 상태를 확인한 뒤 다음 단계(`validate_spec_lock.py` 또는 주인님 보고)로 전진한다.
 
 ### [Stage 5] 주인님 결재 상정 및 실행 위임 (Stage 5: Master Review & Actionable Handoff)
 - 최종 회의록 및 ADR 문서를 아티팩트로 렌더링하여 주인님께 보고하고 명시적 승인을 구한다.
@@ -85,10 +89,10 @@ sequenceDiagram
 
 ---
 
-## 4. Operating Rules & v5.7 Conference Contract (운영 원칙 및 v5.7 회의 규약)
+## 4. Operating Rules & v5.8 Conference Contract (운영 원칙 및 v5.8 회의 규약)
 
-1. **Anti-Echo Chamber (에코체임버 금지)**: 모든 주요 회의에는 반드시 최소 1개 이상의 적대적 비판자(Adversarial Red Team — `Gemini 4 Argon`) 역할을 필수 배치한다.
-2. **Subagent Handle Reuse (`invoke_subagent` → `send_message`)**: Round 1 독립 발제는 `invoke_subagent` 병렬 스폰으로 앵커링 편향을 차단하고, Round 2~3 교차 반론·재심문 시에는 중복 서브에이전트 생성 없이 기존 `conversationId`에 `send_message(Recipient=conv_id, Message=...)`를 호출하여 핸들을 재사용한다.
+1. **Anti-Echo Chamber & Round 1 Anti-Anchoring**: 모든 주요 회의에는 최소 1개 이상의 적대적 비판자(`Gemini 4 Argon` 등)를 필수 배치하며, 스웜 보드 운용 시 Round 1 초기 게시 전 `read_board` 호출을 금지한다.
+2. **Subagent Handle Reuse & Swarm Clean Teardown**: Mode B에서는 Round 2~3 교차 반론 시 기존 `conversationId`에 `send_message(Recipient=conv_id, Message=...)`를 호출하여 핸들을 재사용하고, Mode A(`swarm`)에서는 `narrator`/`monitor` 없이 핵심 페르소나만 가동한 뒤 회의 종료 즉시 전원 `swarm`(`action="kill"`)로 정리한다.
 3. **Zero Finding Quota & 4-Element Defect Contract (결함 할당량 없음 및 4요소 입증 계약)**: 적대적 레드팀 발언에는 의무적 결함 발굴 할당량이 없으며(Zero Finding Quota), 설계가 안전하고 완전하면 이를 인정하는 것이 성공이다. 설계 변경이나 블로킹 수정을 요구하는 중대 결함 제기 시에는 반드시 **(1) 위반된 계약/요구사항 + (2) 구체적 트리거 시나리오 + (3) 현재 코드/설계 근거 + (4) 실질적 피해/영향**의 4요소를 입증해야 한다.
 4. **Evidence-Based Arguments (증거 기반 주장)**: 모든 찬반 의견은 막연한 주관이 아닌 구체적인 코드/설계 근거, 벤치마크 수치, 기술 스펙, 보안 표준을 근거로 제시해야 한다.
 5. **Bounded Iteration (라운드 상한)**: 토론이 무한 루프에 빠지지 않도록 최대 3라운드 이내에 주재관이 합의안을 종합하며, 해결되지 않는 가치 판단은 주인님께 옵션별 득실로 에스컬레이션한다.

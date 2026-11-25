@@ -5,7 +5,7 @@ description: >-
 license: MIT
 metadata:
   author: keunwoo
-  version: "0.3.0-terukirdo-v5.7"
+  version: "0.3.0-terukirdo-v5.8"
 ---
 
 # Cluedoc
@@ -14,7 +14,7 @@ Cluedoc documents a repository by writing a set of **papers** — one focused do
 
 ## Terukirdo Governance & Opt-In Rule (`auto_sync: false`)
 
-Under `Terukirdo_Protocol_v5.7.md` (§9.4) and `.agents/rules/documentation.md`, Cluedoc strictly obeys the following governance rules:
+Under `Terukirdo_Protocol_v5.8.md` (§9.4) and `.agents/rules/documentation.md`, Cluedoc strictly obeys the following governance rules:
 
 1. **Explicit Opt-In Only (`auto_sync: false` Default):** The default configuration is `auto_sync: false`. Do **not** automatically create or modify `.cluedoc/` files after ordinary code changes unless the user explicitly instructs you to create/update Cluedoc papers or the project policy has explicitly opted in. After code changes when `.cluedoc/` exists, simply report if any Cluedoc papers may be stale and await user approval before updating them.
 2. **No Automatic SSOT / Agent-Instructions Injection:** Even when running `init` (e.g., `/cluedoc init`), **never** automatically edit or inject sync-trigger blocks into `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or any project SSOT / agent-instructions file. If persistent synchronization policy registration is desired, propose it only as a candidate agenda item to the user and wait for explicit approval.

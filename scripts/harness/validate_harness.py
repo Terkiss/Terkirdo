@@ -50,6 +50,23 @@ GEMINI_CLI_V1512_CATALOG_MODELS = (
     | GEMINI_CLI_ORCHESTRATOR_MODELS
 )
 
+AGY_CLI_EXTERNAL_MODELS = {
+    "claude-opus-5-5-low",
+    "claude-opus-5-5-medium",
+    "claude-opus-5-5-high",
+    "claude-sonnet-5-5-low",
+    "claude-sonnet-5-5-medium",
+    "claude-sonnet-5-5-high",
+    "gpt-oss-120b-medium",
+}
+
+AGY_CLI_V1516_CATALOG_MODELS = (
+    GEMINI_CLI_V1512_CATALOG_MODELS
+    | AGY_CLI_EXTERNAL_MODELS
+)
+
+FORBIDDEN_AGENT_TOOLS = {"run_workflow", "swarm"}
+
 GROUPED_HOOK_EVENTS = {"PreToolUse", "PostToolUse"}
 FLAT_HOOK_EVENTS = {"Stop", "SessionStart", "PreInvocation", "PostInvocation"}
 
@@ -108,6 +125,9 @@ FORBIDDEN_SKILL_PATTERNS = (
     ".claude4net",
     "model: neon",
     "model: gemini-4-neon",
+    "model: claude-",
+    "model: gpt-oss",
+    "run_workflow(",
 )
 
 FENCE_RE = re.compile(r"^`{3,}")
@@ -199,6 +219,10 @@ def parse_frontmatter(content):
             else:
                 if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
                     val = val[1:-1]
+                elif val == "true":
+                    val = True
+                elif val == "false":
+                    val = False
                 metadata[key] = val
                 current_key = key
         elif current_key and (line.startswith(" ") or line.startswith("\t")) and isinstance(metadata.get(current_key), str):
@@ -368,6 +392,8 @@ def validate_hooks_config(base_dir):
                 if not isinstance(val, list) or not val:
                     errors.append(f"Grouped hook event '{policy_name}.{key}' must be a non-empty list")
                     continue
+                union_matcher_tokens = set()
+                has_valid_group_matcher = False
                 for idx, group in enumerate(val):
                     ctx = f"{policy_name}.{key}[{idx}]"
                     if not isinstance(group, dict):
@@ -377,7 +403,9 @@ def validate_hooks_config(base_dir):
                     if not isinstance(matcher, str) or not matcher.strip():
                         errors.append(f"{ctx} missing non-empty 'matcher'")
                     else:
+                        has_valid_group_matcher = True
                         matcher_tokens = {tok.strip() for tok in matcher.split("|") if tok.strip()}
+                        union_matcher_tokens |= matcher_tokens
                         for req_tool in ("write_file", "edit_file"):
                             if req_tool not in matcher_tokens:
                                 errors.append(
@@ -389,6 +417,12 @@ def validate_hooks_config(base_dir):
                         continue
                     for h_idx, handler in enumerate(nested_hooks):
                         _validate_hook_handler(handler, f"{ctx}.hooks[{h_idx}]", agents_root, errors)
+                if key == "PreToolUse" and has_valid_group_matcher:
+                    for req_pre_tool in ("invoke_subagent", "run_workflow", "swarm"):
+                        if req_pre_tool not in union_matcher_tokens:
+                            errors.append(
+                                f"{policy_name}.PreToolUse matchers must include CLI v1.5.16 gated tool '{req_pre_tool}'"
+                            )
             elif key in FLAT_HOOK_EVENTS:
                 if not isinstance(val, list) or not val:
                     errors.append(f"Flat hook event '{policy_name}.{key}' must be a non-empty list of handlers")
@@ -542,11 +576,28 @@ def validate_harness(strict=False, base_dir=None):
             if expected_model and model != expected_model:
                 errors.append(f"Tri-Engine model mismatch in .agents/agents/{agent}/agent.md: got '{model}', expected '{expected_model}'")
 
+        subagent_flag = metadata.get("subagent")
+        if subagent_flag is not True:
+            errors.append(
+                f"Invalid or missing 'subagent: true' boolean in .agents/agents/{agent}/agent.md frontmatter (got {subagent_flag!r})"
+            )
+
+        main_agent_flag = metadata.get("mainAgent")
+        if main_agent_flag is not False:
+            errors.append(
+                f"Invalid or missing 'mainAgent: false' boolean in .agents/agents/{agent}/agent.md frontmatter (got {main_agent_flag!r})"
+            )
+
         tools = metadata.get("tools")
         if not isinstance(tools, list) or not tools:
             errors.append(f"Missing or empty 'tools' list in .agents/agents/{agent}/agent.md frontmatter")
         else:
             tool_set = set(tools)
+            forbidden_agent_tools = tool_set & FORBIDDEN_AGENT_TOOLS
+            if forbidden_agent_tools:
+                errors.append(
+                    f"Agent '{agent}' must not declare forbidden tool(s) in frontmatter: {sorted(forbidden_agent_tools)}"
+                )
             missing_agent_tools = REQUIRED_AGENT_TOOLS - tool_set
             if missing_agent_tools:
                 errors.append(

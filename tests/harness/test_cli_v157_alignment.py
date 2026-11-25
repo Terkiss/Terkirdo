@@ -390,7 +390,7 @@ class TestCliV157Alignment(unittest.TestCase):
         )
         target_docs = (
             REPO_ROOT / "AGENTS.md",
-            REPO_ROOT / "Terukirdo_Protocol_v5.7.md",
+            REPO_ROOT / "Terukirdo_Protocol_v5.8.md",
             REPO_ROOT / "README.md",
             REPO_ROOT / "reference" / "ai-performance-cards.md",
         )

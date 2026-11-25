@@ -23,9 +23,11 @@ from validate_harness import (  # noqa: E402
     validate_skills_directory,
 )
 
+# 11 untouched baseline test files (excluding test_cli_v157_alignment.py and
+# test_update_harness.py, which were explicitly authorized for v5.7 -> v5.8 root
+# protocol path updates in SPEC-20261125-TERUKIRDO-V58-CLI-V1516)
 BASELINE_13_TEST_FILES = {
     "test_agent_discovery.py",
-    "test_cli_v157_alignment.py",
     "test_contracts.py",
     "test_document_references.py",
     "test_hooks_config.py",
@@ -36,7 +38,6 @@ BASELINE_13_TEST_FILES = {
     "test_skill_indexer.py",
     "test_skills_integrity.py",
     "test_stop_hook.py",
-    "test_update_harness.py",
 }
 
 
@@ -198,7 +199,7 @@ class TestCliV1512NeonAlignment(unittest.TestCase):
         )
         target_docs = (
             REPO_ROOT / "AGENTS.md",
-            REPO_ROOT / "Terukirdo_Protocol_v5.7.md",
+            REPO_ROOT / "Terukirdo_Protocol_v5.8.md",
             REPO_ROOT / "README.md",
             REPO_ROOT / "reference" / "ai-performance-cards.md",
             REPO_ROOT / "reference" / "cross-ai-collaboration-guide.md",

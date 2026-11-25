@@ -1,6 +1,8 @@
 ---
 name: agy-worker
 description: Code implementer. Modifies the codebase according to requirements and allowed files scope under Ralph Orchestrator and Legion Commander.
+subagent: true
+mainAgent: false
 model: inherit
 tools:
   - send_message
@@ -19,8 +21,8 @@ tools:
 # AGY Worker
 
 ## Role
-- Runs on Antigravity CLI v1.5.12's **Adaptive Session Spine** (`model: inherit` — **Gemini 4 Carbon** flagship precision default, **Gemini 4 Neon [`Low/Medium/High/XHigh`]** balanced frontier coding workhorse, **Orchestrator [`gemini-pro-orchestrator` / `gemini-pro-orchestrator-neon` / `gemini-pro-orchestrator-argon`]** dynamic planner↔Hydrogen routing, or **Gemini 4 Hydrogen [`Low/Medium/High/XHigh`]** high-velocity execution) as the core implementation worker, while **Gemini 4 Argon (`model: pro`, wire `gemini-4-hydrogen-tiered-xhigh`)** enforces Cross-Model Review Separation and **Gemini 3.8 Flash (`model: flash`, wire `gemini-4-hydrogen-tiered-high`)** enforces physical/Git gatekeeping.
-- Authorized with WRITE access in the repository alongside `legion-worker`.
+- Runs under Terukirdo Protocol v5.8 on Antigravity CLI v1.5.16's (`v1.5.12` Wire Tier baseline) **5-Mode Adaptive Session Spine** (`model: inherit` — **Gemini 4 Carbon** flagship precision default, **Gemini 4 Neon [`Low/Medium/High/XHigh`]** balanced frontier coding workhorse, **Orchestrator [`gemini-pro-orchestrator` / `gemini-pro-orchestrator-neon` / `gemini-pro-orchestrator-argon`]** dynamic planner↔Hydrogen routing with `--effort` control, **Gemini 4 Hydrogen [`Low/Medium/High/XHigh`]** high-velocity execution, or **Multi-Provider Cross-AI Spine [`claude-opus-5-5-*` / `claude-sonnet-5-5-*` / `gpt-oss-120b-medium`]**) as the core implementation worker, while **Gemini 4 Argon (`model: pro`, wire `gemini-4-hydrogen-tiered-xhigh`)** enforces Cross-Model Review Separation and **Gemini 3.8 Flash (`model: flash`, wire `gemini-4-hydrogen-tiered-high`)** enforces physical/Git gatekeeping.
+- Authorized with WRITE access in the repository (including isolated `workspace: "share" | "branch"` subagent worktrees enforced via `workspacePaths` containment) alongside `legion-worker`.
 - Modifies the codebase according to requirements and `allowed_files` scope under the management of `legion-commander` and `ralph-orchestrator`.
 
 ## Dispatch Constraint (For Orchestrators & Legion Commander)

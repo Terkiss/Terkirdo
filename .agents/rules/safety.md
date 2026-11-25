@@ -17,6 +17,8 @@ This document outlines the safety guardrails, commands classifications, and perm
 
 ### 1. DENY (Strictly Prohibited)
 The following actions must be blocked by hooks immediately:
+- **`run_workflow` Tool Invocation**: Permanently prohibited and unconditionally **DENIED** by `pre_tool_use_policy.py` across all modes and prompts.
+- **Conversational / Unprompted `swarm` Tool Invocation**: Invoking `swarm` without an explicit `/swarm` slash command is strictly **DENIED**, **except** inside an authorized `UltimateMake` session where the user explicitly triggered `/ultimate-make` or `UltimateMake` AND `.agents/skills/ultimate-make/SKILL.md` is loaded (Phase 2+3 planning swarm, which must `kill` all workers prior to Phase 4 `validate_spec_lock.py`).
 - **Conversational / Auto-Triggering of `legion-commander` (`agent-legion`)**: Invoking `legion-commander` via natural language conversation without an explicit `/agent-legion` or `/legion` slash command from the user is strictly **DENIED** by `pre_tool_use_policy.py`.
 - `rm -rf /` or `rm -rf <workspace root>`
 - `git reset --hard`
@@ -48,6 +50,16 @@ The following actions require explicit user review and confirmation before execu
 - Read-only actions (`git status`, `git diff`, `git diff --check`, `git clean -n`)
 - Local build, lint, and test runs
 - Filesystem editing within the authorized workspace scope
+
+## Native Swarm & Workflow Guardrails (CLI v1.5.16 Alignment)
+
+- **`run_workflow` Unconditional Hard-Deny**: Antigravity CLI's dynamic Python scripting tool `run_workflow` is permanently prohibited across the entire Terukirdo harness. `.agents/hooks/pre_tool_use_policy.py` unconditionally returns `decision: "deny"` for every `run_workflow` call regardless of user prompt, mode, or arguments, and `validate_harness.py` rejects any `agent.md` or `SKILL.md` declaring or invoking `run_workflow`.
+- **`swarm` Slash-Only (`/swarm`) Lock & Dual-Anchored `UltimateMake` Exception**:
+  - Conversational or unprompted invocations of `swarm` are strictly **DENIED** by `pre_tool_use_policy.py`.
+  - `swarm` is permitted **ONLY** under two deterministic anchors:
+    1. **Explicit `/swarm` Slash Trigger**: The user explicitly invoked `/swarm` in the current turn or in an active multi-turn `/swarm` session.
+    2. **Authorized `UltimateMake` Phase 2+3 Session (Anti-Forgery Dual Check)**: Both (a) `lastUserInput` or `transcript.jsonl` `USER_INPUT` contains an explicit `/ultimate-make` or `UltimateMake` (`ultimate-make`, `ultimatemake`, `얼티밋 메이크`, `얼티밋메이크`) request from Master, **and** (b) the current turn invokes `/ultimate-make` or `transcript.jsonl` confirms `.agents/skills/ultimate-make/SKILL.md` was loaded. Self-reading `ultimate-make/SKILL.md` without a matching Master `USER_INPUT` trigger is blocked as forgery. All `UltimateMake` planning swarm workers MUST be terminated via `swarm{action:"kill"}` before Phase 4 `validate_spec_lock.py`.
+- **CLI `v1.5.16` Outside-VCS Write Defense & Worktree Containment**: Although Antigravity CLI `v1.5.16` Auto mode relaxes platform write prompts for external Git/VCS repositories, `pre_tool_use_policy.py` enforces strict lexical + symlink-resolved containment: writes to external Git repositories outside the active workspace are **DENIED**, while isolated subagent `workspace: "share" | "branch"` worktrees passed via `workspacePaths` are deterministically permitted within their assigned worktree boundaries.
 
 ## Agent Legion Slash-Command-Only Trigger Invariant (`legion-commander`)
 

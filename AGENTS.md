@@ -4,13 +4,13 @@
 
 이 저장소의 최상위 관리자는 **테르키르도(Terukirdo)** — 주인님을 보좌하는 1급 메이드 오케스트레이터다.
 
-테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.7.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
+테르키르도의 행동 기준은 `Terukirdo_Protocol_v5.8.md`에 정의되어 있다. 이 파일(`AGENTS.md`)은 테르키르도가 이 프로젝트에서 사용하는 **프로젝트별 harness 설정**이다.
 
 `AGENTS.md`는 프로토콜을 대체하지 않으며, 프로토콜에서 허용한 범위 안에서 프로젝트별 routing, skill, policy, hook, agent 구성을 정의한다.
 
 ### 우선순위
 
-1. **테르키르도 프로토콜 v5.7**
+1. **테르키르도 프로토콜 v5.8**
 
    * 정체성
    * 모드 및 Adaptive Loop Tier
@@ -198,7 +198,7 @@
 
 ### Final Controller Mode
 
-* skill이 아닌 `Terukirdo_Protocol_v5.7.md`의 최종관제 규칙을 기준으로 한다.
+* skill이 아닌 `Terukirdo_Protocol_v5.8.md`의 최종관제 규칙을 기준으로 한다.
 * Universal Final Controller와 Final Approach Control은 Read-Only다.
 * 실제 코드 또는 SSOT 수정은 수행하지 않는다.
 
@@ -206,49 +206,52 @@
 
 ## Ralph Loop 에이전트
 
-Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 서브 에이전트를 조율한다.
+Orchestrator Mode에서 Ralph Loop를 실행할 때, 테르키르도는 다음 서브 에이전트를 조율한다 (`subagent: true`, `mainAgent: false`).
 
-| 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)                                                                                   | 권한        |
-| -------- | -------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------- | --------- |
-| 자동검토 사령관 | Legion Commander (Ralph 총괄) | `.agents/agents/legion-commander/agent.md`           | `inherit` (Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen)                  | Read-Only |
-| 하위 루프 조율 | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `inherit` (Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen)                  | Read-Only |
-| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                              | Read-Only |
-| 단일 워커     | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `inherit` (Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen)                  | Write     |
-| 군단 코어 워커 | Legion Worker              | `.agents/agents/legion-worker/agent.md`              | `inherit` (Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen)                  | Write     |
-| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                              | Read-Only |
-| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                              | Read-Only |
-| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash — wire: `gemini-4-hydrogen-tiered-high`)                           | Read-Only |
-| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | `flash` (Gemini 3.8 Flash — wire: `gemini-4-hydrogen-tiered-high`)                           | Read-Only |
+| 역할       | 에이전트                       | 파일                                                   | 엔진 (Model)                                                                                                  | 권한        |
+| -------- | -------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------- |
+| 자동검토 사령관 | Legion Commander (Ralph 총괄) | `.agents/agents/legion-commander/agent.md`           | `inherit` (5-Mode Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen / Claude 5.5 · GPT-OSS)   | Read-Only |
+| 하위 루프 조율 | Ralph Orchestrator         | `.agents/agents/ralph-orchestrator/agent.md`         | `inherit` (5-Mode Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen / Claude 5.5 · GPT-OSS)   | Read-Only |
+| 구현계획 수립  | Terukirdo Plan             | `.agents/agents/terukirdo-plan/agent.md`             | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                                             | Read-Only |
+| 단일 워커     | AGY Worker                 | `.agents/agents/agy-worker/agent.md`                 | `inherit` (5-Mode Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen / Claude 5.5 · GPT-OSS)   | Write     |
+| 군단 코어 워커 | Legion Worker              | `.agents/agents/legion-worker/agent.md`              | `inherit` (5-Mode Session Spine: Gemini 4 Carbon / Neon / Orchestrator / Hydrogen / Claude 5.5 · GPT-OSS)   | Write     |
+| 리뷰어      | First Reviewer             | `.agents/agents/first-reviewer/agent.md`             | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                                             | Read-Only |
+| 심판       | Tech Expert                | `.agents/agents/tech-expert/agent.md`                | `pro` (Gemini 4 Argon — wire: `gemini-4-hydrogen-tiered-xhigh`)                                             | Read-Only |
+| 최종 컨트롤러  | Universal Final Controller | `.agents/agents/universal-final-controller/agent.md` | `flash` (Gemini 3.8 Flash — wire: `gemini-4-hydrogen-tiered-high`)                                          | Read-Only |
+| 최종 접근 관제 | Final Approach Control     | `.agents/agents/final-approach-control/agent.md`     | `flash` (Gemini 3.8 Flash — wire: `gemini-4-hydrogen-tiered-high`)                                          | Read-Only |
 
-### Multi-Engine Dispatch Policy (Antigravity CLI v1.5.12 — Gemini 4 Full-Spectrum Ecosystem)
+### Multi-Engine Dispatch Policy (Antigravity CLI v1.5.16 [v1.5.12 Wire Baseline] — 27-Slug Full-Spectrum Ecosystem)
 
-Antigravity CLI (`v1.5.12`) 내장 Gemini 카탈로그는 총 **6대 엔진 · 20개 공식 모델 슬러그**로 구성된다 (`GEMINI_CLI_V1512_CATALOG_MODELS`, v1.5.7 14종 베이스라인 `GEMINI_CLI_CATALOG_MODELS` 하위 호환 유지):
+Antigravity CLI (`v1.5.16`, `v1.5.12` 서버 측 Wire Tier 베이스라인 계승) 내장 카탈로그는 **6대 Gemini 엔진 · 20슬러그(`GEMINI_CLI_V1512_CATALOG_MODELS`, v1.5.7 14종 베이스라인 `GEMINI_CLI_CATALOG_MODELS` 하위 호환 유지) + 외부 프론티어 7슬러그(`AGY_CLI_EXTERNAL_MODELS`) = 총 27개 공식 모델 슬러그(`AGY_CLI_V1516_CATALOG_MODELS`)**로 구성된다:
 1. **Gemini 4 Carbon (3 slugs)**: `gemini-4-carbon-low` · `gemini-4-carbon-medium` · `gemini-4-carbon-high` (플래그십 장문 추론 및 엔터프라이즈 정밀 아키텍처·복합 코드 합성)
 2. **Gemini 4 Neon (4 slugs — 2026-11-18 Google DeepMind 출시)**: `gemini-4-neon-low` · `gemini-4-neon-medium` · `gemini-4-neon-high` · `gemini-4-neon-xhigh` (`Gemini 4 Carbon`에서 직접 파생되어 `Carbon`과 `Hydrogen` 사이의 스위트 스팟에 포지셔닝된 밸런스드 프론티어 코딩·엔터프라이즈 주력기; Artificial Analysis Coding Agent Index **#1 (`58.6`)**, 약 84 tok/s P50 처리량, 기본 `high` 티어 기준 `Carbon` 대비 과업당 약 32% 비용 절감, 1M 통합 멀티모달 컨텍스트[하네스 활성 표면 512K] 지원)
-3. **Orchestrator (3 slugs — 플래너↔Hydrogen 양방향 동적 라우팅 매트릭스)**:
+3. **Orchestrator (3 slugs + 로컬 `--effort` 제어 — 플래너↔Hydrogen 양방향 동적 라우팅 매트릭스)**:
    - `gemini-pro-orchestrator` (`Orchestrator (Carbon)` — `Carbon` 플래너 ↔ `Hydrogen` 고속 실행기 양방향 라우팅, 약 24% 쿼터 절감)
    - `gemini-pro-orchestrator-neon` (`Orchestrator (Neon)` — `Neon` 플래너/리뷰어 ↔ `Hydrogen` 고속 실행기 양방향 라우팅 및 궤적 중 자동 복구)
    - `gemini-pro-orchestrator-argon` (`Orchestrator (Argon)` — `Argon` 플래너 ↔ `Hydrogen` 고속 실행기 양방향 라우팅)
+   - CLI `v1.5.16` 로컬 `Planner`/`Executor` 추론 강도 설정 지원 (`--effort low|medium|high|xhigh|max`, 기본값 `high`)
 4. **Gemini 4 Hydrogen (4 slugs)**: `gemini-4-hydrogen-low` · `gemini-4-hydrogen-medium` · `gemini-4-hydrogen-high` · `gemini-4-hydrogen-xhigh` (1M 컨텍스트 초고속 데일리 에이전틱 실행 및 `xhigh` 심층 추론 티어)
 5. **Gemini 4 Argon (3 slugs)**: `gemini-4-argon-low` · `gemini-4-argon-medium` · `gemini-4-argon-high` (고밀도 정밀 실행 계획 수립 및 교차 모델 적대적 심판)
 6. **Gemini 3.8 Flash (3 slugs)**: `gemini-3.8-flash-low` · `gemini-3.8-flash-medium` · `gemini-3.8-flash-high` (초저지연 빌드·테스트 물리 검증 및 원시 Git 스테이징 게이트키핑)
+7. **External Multi-Provider Models (7 slugs — `AGY_CLI_EXTERNAL_MODELS`)**: `claude-opus-5-5-low` · `claude-opus-5-5-medium` · `claude-opus-5-5-high` · `claude-sonnet-5-5-low` · `claude-sonnet-5-5-medium` · `claude-sonnet-5-5-high` · `gpt-oss-120b-medium`
 
-#### 1. 2계층 모델 명세 계약 및 CLI v1.5.12 서버 측 서브에이전트 Wire Tier 해석
+#### 1. 2계층 모델 명세 계약, CLI v1.5.16 보안 경계 및 서버 측 서브에이전트 Wire Tier 해석
 
-* **Layer 1 — 서브에이전트 로더 티어 Enum (`.agents/agents/*/agent.md`)**: 커스텀 서브에이전트 YAML frontmatter의 `model` 필드는 반드시 Antigravity 로더 허용 4종 Enum인 **`inherit | pro | flash | flash_lite`**만 사용해야 한다 (`scripts/harness/validate_harness.py`의 `VALID_MODELS`로 물리 강제). `agent.md` frontmatter에 원시 모델 슬러그(예: `neon`, `gemini-4-neon-high`, `gemini-4-hydrogen-xhigh`)를 직접 기입하면 CLI 커스텀 에이전트 로더가 해당 에이전트 파일을 스킵하므로 절대 금지한다.
-* **Layer 2 — 세션 CLI `--model` 및 Native `/swarm` 20종 카탈로그**: 터미널 세션 기동(`agy --model <slug>`), 헤드리스 프린트(`agy -p --model <slug>`), 및 네이티브 스웜 오케스트레이션에서는 위 20개 공식 Gemini 슬러그(`GEMINI_CLI_V1512_CATALOG_MODELS`)를 직접 지정하여 운용한다.
-* **실증된 CLI `v1.5.12` 서버 측 서브에이전트 Wire Tier 해석**: 라이브 L2 `transcript.jsonl` 검증 결과, `model: inherit`은 부모 세션의 정확한 모델 슬러그(`gemini-4-carbon-*`, `gemini-4-neon-*`, `gemini-pro-orchestrator*`, `gemini-4-hydrogen-*`)를 그대로 유지하며, `model: pro`는 서버 측 Wire에서 `gemini-4-hydrogen-tiered-xhigh`로, `model: flash`는 `gemini-4-hydrogen-tiered-high`로, `model: flash_lite`는 `gemini-3.5-flash-lite`로 해석된다.
+* **Layer 1 — 서브에이전트 로더 티어 Enum & 전용 서브에이전트 플래그 (`.agents/agents/*/agent.md`)**: 커스텀 서브에이전트 YAML frontmatter의 `model` 필드는 반드시 Antigravity 로더 허용 4종 Enum인 **`inherit | pro | flash | flash_lite`**만 사용해야 하며, 불리언 `subagent: true` 및 `mainAgent: false`를 선언하고 금지 도구(`FORBIDDEN_AGENT_TOOLS = {"run_workflow", "swarm"}`)를 배제한다 (`scripts/harness/validate_harness.py`로 물리 강제). `agent.md` frontmatter에 원시 모델 슬러그(예: `neon`, `gemini-4-neon-high`, `claude-opus-5-5-high`)를 직접 기입하면 CLI 커스텀 에이전트 로더가 스킵하므로 절대 금지한다.
+* **Layer 2 — 세션 CLI `--model` 및 인가된 Native `swarm` 27종 카탈로그**: 터미널 세션 기동(`agy --model <slug>`), 헤드리스 프린트(`agy -p --model <slug>`), 및 인가된 네이티브 스웜(`/swarm` 슬래시 세션 또는 `UltimateMake` Phase 2+3 기획 세션; Phase 4 진입 전 전원 `swarm{action:"kill"}` 의무 해체)에서는 위 27개 공식 슬러그(`AGY_CLI_V1516_CATALOG_MODELS`)를 직접 지정하여 운용한다 (`run_workflow`는 영구 하드 차단 `DENY`).
+* **실증된 CLI `v1.5.12` / `v1.5.16` 서버 측 서브에이전트 Wire Tier 해석**: 라이브 L2 `transcript.jsonl` 검증 결과, `model: inherit`은 부모 세션의 정확한 모델 슬러그(20종 Gemini 및 7종 외부 슬러그 포함)를 그대로 유지하며, `model: pro`는 서버 측 Wire에서 `gemini-4-hydrogen-tiered-xhigh`로, `model: flash`는 `gemini-4-hydrogen-tiered-high`로, `model: flash_lite`는 `gemini-3.5-flash-lite`로 해석된다.
 
-#### 2. `inherit` 지휘 척추(Adaptive Session Spine)의 4대 전략 세션 모드
+#### 2. `inherit` 지휘 척추(Adaptive Session Spine)의 5대 전략 세션 모드
 
-* **`inherit` (Adaptive Session Spine — Carbon / Neon / Orchestrator / Hydrogen)**: 최상위 오케스트레이터(`Terukirdo`), 마스터 기획 하네스(`UltimateMake`), 지휘 척추(`legion-commander`, `ralph-orchestrator`), 및 코어/군단 구현 워커(`agy-worker`, `legion-worker`)는 모두 `model: inherit`으로 연결된다.
-  - **부모-자식 모델 상속 체인 불변식 (Parent-Child `inherit` Chain Invariant)**: 지휘 척추에 위치한 `legion-commander`와 `ralph-orchestrator`는 반드시 `model: inherit`을 유지해야 한다. 이를 통해 주인님이 선택한 상위 세션 엔진이 하위 구현 워커(`agy-worker`, `legion-worker`)까지 티어 변질 없이 그대로 무손실 전파된다:
+* **`inherit` (5-Mode Adaptive Session Spine — Carbon / Neon / Orchestrator / Hydrogen / Multi-Provider Cross-AI)**: 최상위 오케스트레이터(`Terukirdo`), 마스터 기획 하네스(`UltimateMake`), 지휘 척추(`legion-commander`, `ralph-orchestrator`), 및 코어/군단 구현 워커(`agy-worker`, `legion-worker`)는 모두 `model: inherit`으로 연결된다.
+  - **부모-자식 모델 상속 체인 불변식 (Parent-Child `inherit` Chain Invariant)**: 지휘 척추에 위치한 `legion-commander`와 `ralph-orchestrator`는 반드시 `model: inherit`을 유지해야 한다. 이를 통해 주인님이 선택한 상위 세션 엔진이 하위 구현 워커(`agy-worker`, `legion-worker`, 필요 시 CLI `v1.5.16`의 `workspace: "share" | "branch"` 격리 워크트리 포함)까지 티어 변질 없이 그대로 무손실 전파된다:
     1. **Flagship Precision Mode (`Gemini 4 Carbon`: `gemini-4-carbon-high|medium`)**: 최고 난이도 장문 아키텍처 설계(`UltimateMake`), 보안·동시성 핵심 코어 합성 모드.
     2. **Balanced Frontier Workhorse Mode (`Gemini 4 Neon`: `gemini-4-neon-high|xhigh|medium`)**: Coding Agent #1(`58.6`) 지능과 ~84 tok/s 처리량, `Carbon` 대비 약 32% 낮은 과업 비용을 결합한 프로덕션 소프트웨어 엔지니어링·복합 다중 파일 리팩터링·고정밀 `/agent-legion` Octa-Ralph 분대 주력 모드.
-    3. **Dynamic Hybrid Mode (`Orchestrator`: `gemini-pro-orchestrator` [`Carbon`], `gemini-pro-orchestrator-neon` [`Neon`], `gemini-pro-orchestrator-argon` [`Argon`])**: 프론티어 플래너(`Carbon`, `Neon`, 또는 `Argon`)와 `Gemini 4 Hydrogen` 고속 실행기를 양방향 동적 라우팅하고 궤적 중 자동 복구를 수행하는 균형 하이브리드 모드.
+    3. **Dynamic Hybrid Mode (`Orchestrator`: `gemini-pro-orchestrator` [`Carbon`], `gemini-pro-orchestrator-neon` [`Neon`], `gemini-pro-orchestrator-argon` [`Argon`])**: 프론티어 플래너(`Carbon`, `Neon`, 또는 `Argon`)와 `Gemini 4 Hydrogen` 고속 실행기를 양방향 동적 라우팅(`--effort` 기본 `high`)하고 궤적 중 자동 복구를 수행하는 균형 하이브리드 모드.
     4. **High-Velocity Agentic Mode (`Gemini 4 Hydrogen`: `gemini-4-hydrogen-high` / `gemini-4-hydrogen-xhigh`)**: 1M 컨텍스트 장문 탐색, 대량 `/agent-legion` Octa-Ralph 8분대 병렬 웨이브, 반복 프로토타이핑 및 헤드리스(`agy -p`) 실행 시 속도와 쿼터 효율을 극대화하는 고속 실행 모드.
+    5. **Multi-Provider Cross-AI Spine Mode (`Claude Opus 5.5` / `Claude Sonnet 5.5` / `GPT-OSS 120B`: `claude-opus-5-5-*` · `claude-sonnet-5-5-*` · `gpt-oss-120b-medium`)**: 외부 프론티어 메인 세션을 구현 워커가 `inherit`하고 `model: pro`(**Gemini 4 Argon**, Wire `gemini-4-hydrogen-tiered-xhigh`)가 이종 프로바이더 교차 심판을 수행하는 진정한 교차 AI 척추 모드.
 * **`pro` (Gemini 4 Argon 슬롯 / Wire `gemini-4-hydrogen-tiered-xhigh` — Cross-Model Review Separation)**: 정밀 실행 계획 및 Execution Card 수립(`terukirdo-plan`), 1차 마이크로 계약 및 정적 코드 리뷰(`first-reviewer`), 적대적 2차 아키텍처·보안·안티치팅 심판(`tech-expert`)에 고정 투입한다.
-  - **교차 모델 분리 검증 및 세션 안티-바이어스 수칙**: `inherit` 지휘 척추가 `Carbon`, `Neon`, 또는 `Orchestrator (Carbon/Neon)`으로 구현한 코드를 `model: pro` 슬롯(개념적 **Gemini 4 Argon**, 서버 측 Wire `gemini-4-hydrogen-tiered-xhigh`)이 1차·2차 교차 심사하여 동일 모델 자기합리화(Self-Justification) 편향을 원천 차단한다. 따라서 교차 모델 다양성을 극대화하기 위해 Tier 2/3 구현 세션에서는 메인 세션을 `Carbon`, `Neon`, 또는 `Orchestrator (Carbon/Neon)`으로 구동하고 `Argon`이나 원시 `Hydrogen` 단독 메인 세션 구동은 지양한다.
+  - **교차 모델 분리 검증 및 세션 안티-바이어스 수칙**: `inherit` 지휘 척추가 `Carbon`, `Neon`, `Orchestrator (Carbon/Neon)`, 또는 외부 프로바이더(`Claude 5.5` / `GPT-OSS 120B`)로 구현한 코드를 `model: pro` 슬롯(개념적 **Gemini 4 Argon**, 서버 측 Wire `gemini-4-hydrogen-tiered-xhigh`)이 1차·2차 교차 심사하여 동일 모델 자기합리화(Self-Justification) 편향을 원천 차단한다 (`Argon`이나 원시 `Hydrogen` 단독 메인 세션 구동은 지양한다).
 * **`flash` / `flash_lite` (Gemini 3.8 Flash 슬롯 / Wire `gemini-4-hydrogen-tiered-high` · `gemini-3.5-flash-lite`)**: 빌드/테스트 스위트 물리 검증(`universal-final-controller`), 원시 Git 인덱스 및 스테이징 게이트키핑(`final-approach-control`), 및 Tier 1 초고속 신속 보좌에 투입한다 (`flash_lite`는 서버 측 `gemini-3.5-flash-lite`로 해석되는 초경량 보조 서브태스크 예비 허용 티어로 지원).
 * **통합 Gemini 쿼터 풀 최적화**: 6대 Gemini 엔진은 단일 Gemini 쿼터 풀을 공유하므로, 주력 엔지니어링에는 `Neon (High/XHigh)` 또는 `Orchestrator (Neon/Carbon)`을, 초고속 병렬 실행에는 `Hydrogen (High/XHigh)`을, 최고 난이도 핵심 설계에는 `Carbon`을, 교차 심판에는 `Argon (pro)`을, 물리 검증에는 `3.8 Flash (flash)`를 배분하여 품질과 쿼터 수명을 동시에 극대화한다.
 

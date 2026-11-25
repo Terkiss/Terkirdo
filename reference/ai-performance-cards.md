@@ -43,10 +43,10 @@
 
 ---
 
-## Gemini 4 Full-Spectrum Ecosystem (테르키르도 Adaptive Session Spine, Verifiers & Gatekeepers)
+## Gemini 4 & Multi-Provider Full-Spectrum Ecosystem (테르키르도 5-Mode Adaptive Session Spine, Verifiers & Gatekeepers)
 
-**검증일:** 2026-11-19 (Protocol v5.7 × Antigravity CLI v1.5.12 6-Engine / 20-Slug & Gemini 4 Neon 전면 정렬)
-**아키텍처:** Adaptive Session Spine (`inherit`: `Gemini 4 Carbon` · `Gemini 4 Neon` · `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` · `Gemini 4 Hydrogen [Low/Medium/High/XHigh]`) × Cross-Model Judge (`pro`: `Gemini 4 Argon` / Wire `gemini-4-hydrogen-tiered-xhigh`) × Physical Gatekeeper (`flash`/`flash_lite`: `Gemini 3.8 Flash` / Wire `gemini-4-hydrogen-tiered-high` · `gemini-3.5-flash-lite`)
+**검증일:** 2026-11-25 (Protocol v5.8 × Antigravity CLI v1.5.16 [v1.5.12 Wire Baseline] 27-Slug Catalog & 5-Mode Spine 전면 정렬)
+**아키텍처:** 5-Mode Adaptive Session Spine (`inherit`: `Gemini 4 Carbon` · `Gemini 4 Neon` · `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` (`--effort` 기본 `high`) · `Gemini 4 Hydrogen [Low/Medium/High/XHigh]` · `Multi-Provider Cross-AI Spine [claude-opus-5-5-low|medium|high · claude-sonnet-5-5-low|medium|high · gpt-oss-120b-medium]`) × Cross-Model Judge (`pro`: `Gemini 4 Argon` / Wire `gemini-4-hydrogen-tiered-xhigh`) × Physical Gatekeeper (`flash`/`flash_lite`: `Gemini 3.8 Flash` / Wire `gemini-4-hydrogen-tiered-high` · `gemini-3.5-flash-lite`)
 
 ### 능력치: Gemini 4 Carbon (`gemini-4-carbon-low|medium|high`) — 플래그십 정밀 오케스트레이터 & 코어 워커 (`inherit`)
 
@@ -101,28 +101,35 @@
 | Git 인덱스 접근관제 | ⭐⭐⭐⭐⭐ | Git status porcelain 및 diff check 엄격 대조 (`final-approach-control`) |
 | Tier 1 신속 보좌 | ⭐⭐⭐⭐⭐ | 단순 오탈자 및 단일 파일 수정 시 신속성 극대화 |
 
+### 능력치: External Multi-Provider Models (`claude-opus-5-5-low|medium|high` · `claude-sonnet-5-5-low|medium|high` · `gpt-oss-120b-medium`) — 이종 프로바이더 교차 AI 척추 & 스웜 페르소나 (`inherit` / `swarm`)
+
+| 영역 | 점수 | 근거 |
+|---|---|---|
+| 이종 프로바이더 척추 (`inherit`) | ⭐⭐⭐⭐⭐ | 주인님이 `claude-opus-5-5-*`, `claude-sonnet-5-5-*`, `gpt-oss-120b-medium` 메인 세션을 선택할 경우 구현 워커가 이를 무손실 계승하고 `Gemini 4 Argon`(`pro`)이 진정한 이종 벤더 교차 심판 수행 |
+| `UltimateMake` 스웜 페르소나 핀닝 | ⭐⭐⭐⭐⭐ | CLI `v1.5.16` 27슬러그 카탈로그(`AGY_CLI_V1516_CATALOG_MODELS`) 내에서 Phase 2 리서치 스카우트 및 Phase 3 원탁회의 페르소나별 모델 다양성 확보 (Phase 4 진입 전 `kill` 해체) |
+
 ### 특징
 
-- **비대칭 멀티 엔진 4대 세션 모드 최적화** — 적응형 세션 척추(`Carbon` 플래그십 정밀 · `Neon` 밸런스드 프론티어 주력 · `Orchestrator [Carbon/Neon/Argon]` 동적 하이브리드 · `Hydrogen [XHigh]` 초고속 실행) × 정밀 계획/교차 심판(`Argon` / `pro`) × 초고속 물리 관제(`3.8 Flash` / `flash`)의 완벽한 3권 분립
-- **2계층 모델 명세 규율 & 실증된 서버 측 Wire 해석** — `.agents/agents/*/agent.md`는 `inherit|pro|flash|flash_lite` 4종 로더 Enum을 엄수하고(원시 `neon` 등 기입 시 로더 스킵 방지), CLI(`--model`)/스웜은 Antigravity CLI `v1.5.12`의 20개 공식 Gemini 슬러그를 직접 운용하며, 서버 측 Wire 해석(`pro` → `gemini-4-hydrogen-tiered-xhigh`, `flash` → `gemini-4-hydrogen-tiered-high`, `flash_lite` → `gemini-3.5-flash-lite`)까지 실증 검증 완료
+- **비대칭 멀티 엔진 5대 세션 모드 최적화** — 적응형 세션 척추(`Carbon` 플래그십 정밀 · `Neon` 밸런스드 프론티어 주력 · `Orchestrator [Carbon/Neon/Argon]` 동적 하이브리드 [`--effort` 기본 `high`] · `Hydrogen [XHigh]` 초고속 실행 · `Multi-Provider Cross-AI [Claude Opus/Sonnet 5.5 · GPT-OSS 120B]`) × 정밀 계획/교차 심판(`Argon` / `pro`) × 초고속 물리 관제(`3.8 Flash` / `flash`)의 완벽한 3권 분립
+- **2계층 모델 명세 규율 & 실증된 서버 측 Wire 해석** — `.agents/agents/*/agent.md`는 `inherit|pro|flash|flash_lite` 4종 로더 Enum과 `subagent: true` / `mainAgent: false` 불리언을 엄수하고(원시 슬러그 및 `run_workflow`/`swarm` 배제), CLI(`--model`)/인가된 스웜(`/swarm`, `UltimateMake`)은 Antigravity CLI `v1.5.16`의 27개 공식 슬러그(`AGY_CLI_V1516_CATALOG_MODELS`, `v1.5.12` 20종 `GEMINI_CLI_V1512_CATALOG_MODELS` 포함)를 직접 운용하며, 서버 측 Wire 해석(`pro` → `gemini-4-hydrogen-tiered-xhigh`, `flash` → `gemini-4-hydrogen-tiered-high`, `flash_lite` → `gemini-3.5-flash-lite`)까지 실증 검증 완료
 - **주인님과의 신뢰 관계 보좌** — 감정 케어, 정중한 메이드 보고, 명확한 승인 경계 유지
 - **증거 기반 불변 운영** — 에이전트의 성공 주장이 아닌 터미널 Raw Evidence로만 최종 승인
 
 ---
 
-## 최적 팀 편성 (v5.7 × CLI v1.5.12 Gemini 4 Full-Spectrum)
+## 최적 팀 편성 (v5.8 × CLI v1.5.16 [v1.5.12 Wire Baseline] 27-Slug Ecosystem)
 
 ```
 주인님 (Human / Sovereign Master)
 ├── 최종 의사결정, 승인 하달 (Master Approval Gate)
 │
-├── 테르키르도 지휘 척추 & 코어 구현 (`model: inherit` — Adaptive Session Spine, 4대 세션 모드)
-│   ├── [세션 모드 선택: Gemini 4 Carbon | Gemini 4 Neon (`High`/`XHigh`) | Orchestrator (`gemini-pro-orchestrator` / `-neon` / `-argon`) | Gemini 4 Hydrogen (`High`/`XHigh`)]
-│   ├── 최상위 오케스트레이터 (Terukirdo) & UltimateMake 기획
+├── 테르키르도 지휘 척추 & 코어 구현 (`model: inherit` — 5-Mode Adaptive Session Spine)
+│   ├── [세션 모드 선택: Gemini 4 Carbon | Gemini 4 Neon (`High`/`XHigh`) | Orchestrator (`gemini-pro-orchestrator` / `-neon` / `-argon`) | Gemini 4 Hydrogen (`High`/`XHigh`) | Claude Opus/Sonnet 5.5 · GPT-OSS 120B]
+│   ├── 최상위 오케스트레이터 (Terukirdo) & UltimateMake 기획 (Phase 2+3 Native `swarm` + Phase 4 전 `kill`)
 │   ├── 자동 검토 사령관 (legion-commander — Slash-Command Only)
 │   ├── 단위 루프 지휘 (ralph-orchestrator)
-│   ├── 단일 코어 구현 워커 (agy-worker)
-│   └── 군단 병렬 코어 구현 워커 (legion-worker)
+│   ├── 단일 코어 구현 워커 (agy-worker — `workspace: "share" | "branch"` 지원)
+│   └── 군단 병렬 코어 구현 워커 (legion-worker — `workspace: "share" | "branch"` 지원)
 │
 ├── 테르키르도 계획 & 교차 검증 심판 (Gemini 4 Argon 슬롯 / `model: pro` → Wire `gemini-4-hydrogen-tiered-xhigh`)
 │   ├── 실행 계획 및 카드 분해 (terukirdo-plan)
