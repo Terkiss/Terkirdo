@@ -39,6 +39,7 @@ PRESERVED_SUBPATHS = {
 OVERWRITE_FILES = [
     "AGENTS.md",
     "scripts/hermes_disasm.py",
+    "scripts/hermes_guest.py",
     "docs/README.md",
     "docs/V2_Architecture_Spec.md",
     "docs/V2_Implementation_Plan.md",

@@ -318,7 +318,7 @@ def main():
 4. 내부 추론 과정(Thinking/Scratchpad/Step-by-step trace), 불필요한 더미 struct 정의(flags1..flagsN 등), 또는 디스어셈블리에 없는 추측성 필드명을 절대 출력하지 마십시오.
 5. 오직 각 함수의 진입 주소(VA), 정확한 호출 대상 주소(func_0x...), 분기 조건(switch/if), 실제 참조된 구조체/스택 오프셋(+0x...)과 상수(hex)만 간결한 C 의사코드로 즉시 출력하십시오.
 """
-        hermes_extra_flags = ["--ignore-rules", "--reasoning", "none", "-t", "none", "--max-turns", "1"]
+        hermes_extra_flags = ["--ignore-rules", "--reasoning", "none", "-t", "", "--max-turns", "1"]
 
     temp_file = None
     try:

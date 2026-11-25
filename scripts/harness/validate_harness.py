@@ -654,6 +654,15 @@ def validate_harness(strict=False, base_dir=None):
         if not os.path.isfile(full_script):
             errors.append(f"Missing required Agent Legion script: {rel_script.replace(os.sep, '/')}")
 
+    if strict:
+        required_harness_scripts = [
+            os.path.join("scripts", "hermes_guest.py"),
+        ]
+        for rel_script in required_harness_scripts:
+            full_script = os.path.join(base_dir, rel_script)
+            if not os.path.isfile(full_script):
+                errors.append(f"Missing required harness script: {rel_script.replace(os.sep, '/')}")
+
     errors.extend(validate_rules_directory(base_dir))
     errors.extend(validate_hooks_config(base_dir))
     errors.extend(validate_skills_directory(base_dir, strict=strict))

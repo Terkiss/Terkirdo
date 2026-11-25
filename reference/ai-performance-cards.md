@@ -108,6 +108,16 @@
 | 이종 프로바이더 척추 (`inherit`) | ⭐⭐⭐⭐⭐ | 주인님이 `claude-opus-5-5-*`, `claude-sonnet-5-5-*`, `gpt-oss-120b-medium` 메인 세션을 선택할 경우 구현 워커가 이를 무손실 계승하고 `Gemini 4 Argon`(`pro`)이 진정한 이종 벤더 교차 심판 수행 |
 | `UltimateMake` 스웜 페르소나 핀닝 | ⭐⭐⭐⭐⭐ | CLI `v1.5.16` 27슬러그 카탈로그(`AGY_CLI_V1516_CATALOG_MODELS`) 내에서 Phase 2 리서치 스카우트 및 Phase 3 원탁회의 페르소나별 모델 다양성 확보 (Phase 4 진입 전 `kill` 해체) |
 
+### 능력치: Hermes-Bridged External Guest Trio (8-Seat Grand Council Read-Only Panelists — `scripts/hermes_guest.py`)
+
+`UltimateMake` Phase 3 / `multi-agent-conference` Mode 2B에서 `gemini-4-hydrogen-low` 스웜 브리지 워커가 `-t "" --ignore-rules --source tool --max-turns 1` 무도구 읽기 전용 샌드박스로 소환하는 외부 게스트 3석:
+
+| 게스트 좌석 (`swarm_name`) | 프로바이더 : 모델 슬러그 | 원탁회의 전담 역할 |
+|---|---|---|
+| `guest-deepseek` | `alibaba-coding-plan:deepseek-v4.1-flash` | Algorithmic Efficiency, Edge-Case & High-Density Systems Challenger (알고리즘 복잡도·경계 조건·고밀도 시스템 병목 검증) |
+| `guest-qwen` | `alibaba-coding-plan:qwen4-max` | Distributed Data, State Consistency & Enterprise Architecture Critic (분산 데이터·상태 일관성·엔터프라이즈 아키텍처 비평) |
+| `guest-gpt` | `openai-codex:gpt-6-sol` | Reproducibility-Driven Adversarial Red-Team & Non-Atomicity Auditor (재현성 기반 적대적 레드팀·비원자성 감사) |
+
 ### 특징
 
 - **비대칭 멀티 엔진 5대 세션 모드 최적화** — 적응형 세션 척추(`Carbon` 플래그십 정밀 · `Neon` 밸런스드 프론티어 주력 · `Orchestrator [Carbon/Neon/Argon]` 동적 하이브리드 [`--effort` 기본 `high`] · `Hydrogen [XHigh]` 초고속 실행 · `Multi-Provider Cross-AI [Claude Opus/Sonnet 5.5 · GPT-OSS 120B]`) × 정밀 계획/교차 심판(`Argon` / `pro`) × 초고속 물리 관제(`3.8 Flash` / `flash`)의 완벽한 3권 분립

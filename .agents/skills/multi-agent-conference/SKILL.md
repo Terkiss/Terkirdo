@@ -22,6 +22,7 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 
 회의는 문제의 성격과 호출 컨텍스트에 따라 테르키르도 v5.8 × Antigravity CLI `v1.5.16` (`v1.5.12` 서버 측 Wire Tier 베이스라인) 비대칭 멀티 엔진 페르소나 중 2~5인을 선별하여 구성한다:
 - **Mode A — Native `swarm` Zero-Copy Board Mode** (명시적 `/swarm` 슬래시 명령 또는 인가된 `UltimateMake` Phase 3 세션): `architect`, `implementer`, `red-team`, `ux-lead`, `qa-lead` 페르소나를 스웜 보드에 직접 스폰하며(`narrator`/`monitor` 오버헤드 워커 `0`명), 27슬러그 카탈로그(`gemini-4-carbon-high`, `gemini-4-neon-xhigh`, `gemini-pro-orchestrator-neon`, `gemini-4-argon-high`, `gemini-3.8-flash-high`, `claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `gpt-oss-120b-medium` 등)로 페르소나별 모델을 개별 핀닝하거나 세션 모델을 균일 적용할 수 있다.
+  - **Optional 8-Seat Grand Council Extension (Hermes Guest Bridge)**: Mode A 확장 시 `gemini-4-hydrogen-low` 브리지 워커 3기(`guest-deepseek` [`alibaba-coding-plan:deepseek-v4.1-flash`], `guest-qwen` [`alibaba-coding-plan:qwen4-max`], `guest-gpt` [`openai-codex:gpt-6-sol`])를 추가 투입할 수 있다. 각 브리지 워커는 `python -X utf8 scripts/hermes_guest.py --seat <deepseek|qwen|gpt> --session um-<slug>-<seat> --prompt-file <file>`로 외부 모델을 호출해 Round 2~3 세션 연속성을 유지하며 원문 그대로 게시하고, exit code `2` 시 `[guest-unavailable]`로 우아하게 폴백한다. 회의 종료 시 8기 전원 `swarm(action="kill")`으로 완전 해체한다 (`0` active workers).
 - **Mode B — Standard `invoke_subagent` + `send_message` Handle Reuse Mode** (일반 대화형 원탁회의 요청 또는 `UltimateMake` 저쿼터 폴백): `.agents/hooks/pre_tool_use_policy.py`가 비슬래시 일반 대화의 `swarm` 호출을 차단하므로, 일반 대화에서는 `invoke_subagent`(`inherit`: `Gemini 4 Carbon` / `Gemini 4 Neon` / `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` / `Gemini 4 Hydrogen [High/XHigh]` / `Claude 5.5 · GPT-OSS 120B` × `pro`: `Gemini 4 Argon` × `flash`: `Gemini 3.8 Flash`) 및 `send_message` 핸들 재사용으로 운용한다.
 
 | 역할 | 페르소나 모델 (Subagent Tier / Optional Swarm Slug) | 주요 전문 영역 및 책임 |
@@ -33,6 +34,7 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 | 🎨 **UX/UI & 접근성 리드 (`ux-lead`)** | **Gemini 4 Carbon / Neon / Hydrogen / Argon** | 사용자 여정, 화면 흐름, 로딩/빈/에러 상태, 접근성(WCAG) 및 디자인 시스템 정합성 검토 |
 | 🧪 **QA & 검증 전략가 (`qa-lead`)** | **Gemini 4 Argon / Gemini 3.8 Flash** | Given-When-Then 인수조건, 회귀 테스트 경계, 엣지 케이스 검증 매트릭스 및 물리 게이트(`verify.ps1`, 단위 테스트) 설계 |
 | ⚖️ **최종 관제 게이트키퍼 (Universal Controller)** | **Gemini 3.8 Flash (`flash`, Wire `gemini-4-hydrogen-tiered-high`)** | 스펙 정합성, 빌드·테스트 게이트 및 규정 준수 신속 판정 |
+| 🌐 **외부 게스트 3석 (`guest-deepseek` / `guest-qwen` / `guest-gpt`)** | **`gemini-4-hydrogen-low` + `scripts/hermes_guest.py` (`deepseek-v4.1-flash`, `qwen4-max`, `gpt-6-sol`)** | *(선택적 8-Seat Grand Council)* 알고리즘 효율·분산 상태 일관성·재현성 기반 비원자성 적대적 레드팀 검증 (Read-Only `-t ""` 샌드박스) |
 
 ---
 

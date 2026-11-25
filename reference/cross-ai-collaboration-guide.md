@@ -166,6 +166,7 @@ C# HttpListener ↔ PowerShell TCP 브릿지 ↔ agy CLI 에이전트
 - 지휘 척추(`legion-commander`, `ralph-orchestrator`)의 `inherit` 모델 상속 불변식으로 주인님의 5대 전략 세션 모드(`Carbon` / `Neon` / `Orchestrator` / `Hydrogen` / `Multi-Provider Cross-AI`)를 하위 워커까지 무손실 전달
 - CLI `v1.5.12` / `v1.5.16` 서버 측 서브에이전트 Wire 해석(`pro` → `gemini-4-hydrogen-tiered-xhigh`, `flash` → `gemini-4-hydrogen-tiered-high`, `flash_lite` → `gemini-3.5-flash-lite`)에 기반하여, Tier 2/3 구현 시 메인 세션을 `Carbon`, `Neon`, `Orchestrator (Carbon/Neon)`, 또는 외부 프로바이더(`Claude 5.5` / `GPT-OSS 120B`)로 운용함으로써 동일 모델 자기합리화 편향을 원천 차단 (`Argon` 또는 원시 `Hydrogen` 단독 메인 세션 구동 지양)
 - `.agents/agents/*/agent.md`는 `inherit|pro|flash|flash_lite` 4종 로더 티어와 `subagent: true` / `mainAgent: false` 불리언만 사용하고(`run_workflow`/`swarm` 배제), CLI `--model` 및 인가된 스웜(`/swarm`, `UltimateMake` Phase 2+3)에서만 27종 원시 슬러그를 지정하는 2계층 명세 계약으로 로더 스킵 원천 방지
+- 선택적 **8-Seat Grand Council (`UltimateMake` Phase 3 / `multi-agent-conference`)** 확장 시 `gemini-4-hydrogen-low` 워커 3기가 `scripts/hermes_guest.py`(`-t "" --ignore-rules --source tool --max-turns 1`)를 통해 외부 게스트 3석(`DeepSeek V4.1 Flash` [`alibaba-coding-plan:deepseek-v4.1-flash`], `Qwen 4 Max` [`alibaba-coding-plan:qwen4-max`], `GPT-6-Sol` [`openai-codex:gpt-6-sol`])을 Read-Only 패널리스트로 연결하고 `--session`으로 다중 라운드 맥락을 유지한다 (exit code `2` 시 `[guest-unavailable]` 폴백, Phase 4 진입 전 전원 `swarm{action:"kill"}` 해체)
 
 ### 서브 에이전트 (Ralph Loop & Agent Legion 9인 체제 — `subagent: true`, `mainAgent: false`)
 

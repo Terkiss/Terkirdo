@@ -9,7 +9,7 @@
 
 [![Protocol](https://img.shields.io/badge/Protocol-v5.8_Active-magenta.svg)](#-terukirdo-protocol-v58-핵심-진화)
 [![Engine](https://img.shields.io/badge/Engine-27_Slugs_(Gemini_4_Full--Spectrum_%2B_Claude_5.5_%2B_GPT--OSS)-blue.svg)](#-terukirdo-protocol-v58-핵심-진화)
-[![Tests](https://img.shields.io/badge/Harness_Tests-70_Passed-brightgreen.svg)](#-3중-안전장치--물리-검증기)
+[![Tests](https://img.shields.io/badge/Harness_Tests-79_Passed-brightgreen.svg)](#-3중-안전장치--물리-검증기)
 [![Skills](https://img.shields.io/badge/Skills-19_Verified-blueviolet.svg)](#-스킬-라이브러리-agentsskills--총-19종)
 [![Planning Gate](https://img.shields.io/badge/Planning_Gate-UltimateMake_Native_Swarm-gold.svg)](#-ultimatemake-마스터-기획-하네스)
 [![Agents](https://img.shields.io/badge/Agents-9_Octa--Ralph_Legion-orange.svg)](#-9인의-실무진-ralph-loop--agent-legion-3-tier-octa-ralph)
@@ -39,7 +39,7 @@ v5.8은 상류 공학(`UltimateMake` Native `swarm` 공용 보드 엔진) 위에
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
 │  Terukirdo v5.8 Full-Spectrum (5-Mode Spine [27 Slugs] × Argon [pro] × 3.8 Flash [flash])│
 │                                                                                          │
-│   👑 [주인님의 직관/대화]     🌐 [병렬 스웜 초심층 리서치]    🤖 [5인 스웜 적대적 원탁회의]    │
+│   👑 [주인님의 직관/대화]     🌐 [병렬 스웜 초심층 리서치]    🤖 [5인/8인 스웜 적대적 원탁회의] │
 │  (1:1 Socratic + 로스터 선택)  (1~4 Scouts on Swarm Board)  (Round 1 read_board 금지·#seq) │
 │             │                           │                           │                    │
 │             └───────────────────────────┼───────────────────────────┘                    │
@@ -70,7 +70,7 @@ v5.8은 상류 공학(`UltimateMake` Native `swarm` 공용 보드 엔진) 위에
 
 | # | 원칙 | 설명 |
 |:-:|------|------|
-| 1 | **상류 정보 무결성 & 네이티브 스웜 삼각측량 (Upstream Primacy & Native Swarm)** | "상류의 정보 품질이 하류 구현의 품질을 100% 지배한다." `UltimateMake` Phase 2(1~4인 병렬 리서치 스카우트)와 Phase 3(5인 전문가 적대적 원탁회의 — Round 1 `read_board` 금지, `narrator`/`monitor` 배제, Phase 4 진입 전 전원 `kill` 해체)를 네이티브 `swarm` 보드로 가속하여 기획 모호성을 0%로 증발시킵니다. |
+| 1 | **상류 정보 무결성 & 네이티브 스웜 삼각측량 (Upstream Primacy & Native Swarm)** | "상류의 정보 품질이 하류 구현의 품질을 100% 지배한다." `UltimateMake` Phase 2(1~4인 병렬 리서치 스카우트)와 Phase 3(5인 전문가 또는 선택적 **8-Seat Grand Council** [5 Native + 3 Hermes Guest AI Trio via `scripts/hermes_guest.py`] 적대적 원탁회의 — Round 1 `read_board` 금지, `narrator`/`monitor` 배제, Phase 4 진입 전 전원 `kill` 해체)를 네이티브 `swarm` 보드로 가속하여 기획 모호성을 0%로 증발시킵니다. |
 | 2 | **결정론적 파이썬 물리 게이트 (Python Code-Gate)** | 확률적 프롬프트의 한계를 극복하기 위해 `validate_spec_lock.py`, `validate_harness.py`, `partition_validator.py`, `legion_radio.py`를 탑재하여 스펙 린트, 27슬러그 카탈로그, `subagent: true` & `mainAgent: false` 불리언 메타데이터, 금지 도구(`run_workflow`, `swarm`), 병렬 파티션 무충돌 및 무전 2,000자 상한을 물리적으로 강제 검증합니다. |
 | 3 | **메이드 결재의 원칙 & 실시간 단계 추적 (Master Approval Gate & `update_steps`)** | 기획 검증이 끝나도 독단으로 코딩을 시작하지 않습니다. CLI `v1.5.16` `update_steps` 체크리스트로 진행률을 투명하게 공유하고 1페이지 요약 보고서를 올린 뒤, 주인님의 명시적 `승인`을 득해야만 랄프 루프를 가동합니다. |
 | 4 | **3계층 Octa-Ralph 무인 에이전트 군단 & 전술 무전망 (`/agent-legion`)** | 대규모 작업 시 최상위 자동 검토 사령관(`legion-commander`)이 하위에 최대 8기의 `ralph-orchestrator`(`Ralph #1 ~ #8`)를 동시 생성·운용하고, SQLite WAL 무락 공용 무전 게시판(`legion_radio.py`) + 직통 호출벨(`send_message`) 2중 교신 및 격리 워크트리(`workspace: "share" \| "branch"`)로 분대 간 인터페이스를 실시간 동기화하며 무인 Auto-Rework를 완수합니다. |
@@ -144,7 +144,7 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
         ↓
 🌐 [Phase 2: 병렬 스웜 초심층 웹 탐색]      ──> 1~4인 스카우트(rfc/oss/cve/bench, 0 narrator/monitor) 최대 1h 스캔
         ↓
-🤖 [Phase 3: 5인 스웜 적대적 원탁회의]      ──> Round 1 read_board 금지 · Round 2~3 #seq 교차 토론 · 경량 폴백 지원
+🤖 [Phase 3: 5인/8인 스웜 적대적 원탁회의] ──> Round 1 read_board 금지 · Round 2~3 #seq 교차 토론 · 8-Seat Grand Council 지원
         ↓
 🛑 [Phase 3 Teardown: 스웜 전원 해체]       ──> Phase 4 진입 전 전원 swarm(action="kill") 호출 (활성 워커 == 0)
         ↓
@@ -222,9 +222,9 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
 ### 🏛️ 마스터 기획 & 리서치 (3개)
 | 스킬 | 설명 |
 |------|------|
-| `ultimate-make` | 👑 **마스터 기획 하네스 진입점 (Native `swarm` Engine)** — 1:1 소크라테스 대화 × 병렬 스웜 리서치(최대 1h) × 5인 스웜 적대적 회의(Phase 4 전 `kill` 해체) × 파이썬 스펙 락 |
+| `ultimate-make` | 👑 **마스터 기획 하네스 진입점 (Native `swarm` Engine)** — 1:1 소크라테스 대화 × 병렬 스웜 리서치(최대 1h) × 5인/8인 스웜 적대적 회의(8-Seat Grand Council 지원, Phase 4 전 `kill` 해체) × 파이썬 스펙 락 |
 | `universal-crawler` | 🌐 **합법적·복원력 중심 범용 웹 수집 파이프라인** — 공식 API·피드·IETF RFC·GitHub 문서를 최우선 수집 (CAPTCHA·봇 차단 조우 시 즉시 STOP 준수) |
-| `multi-agent-conference` | 🤖 **다중 에이전트 적대적 원탁회의** — Mode A(네이티브 `swarm` 27슬러그 보드, Round 1 `read_board` 금지) & Mode B(`invoke_subagent` + `send_message` 핸들 재사용) |
+| `multi-agent-conference` | 🤖 **다중 에이전트 적대적 원탁회의** — Mode A(네이티브 `swarm` 27슬러그 보드 + 선택적 8-Seat Grand Council Hermes Guest AI Trio 브릿지, Round 1 `read_board` 금지) & Mode B(`invoke_subagent` + `send_message` 핸들 재사용) |
 
 ### 🔧 개발 생명주기 & 병렬 군단 (8개)
 | 스킬 | 설명 |
@@ -275,17 +275,22 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
 
 ### 🔬 바이너리 역공학 결정론적 살균 게이트 (`scripts/hermes_disasm.py`)
 네이티브 바이너리(PE32/PE32+) 분석 시 원시 x86/x64 어셈블리 바이트 덤프로 인한 상류 모델 안전 필터 오탐을 물리적으로 방지합니다.
-- **Mode A (In-Memory Capstone + Hermes)**: 메모리 상에서만 디스어셈블을 수행하고 터미널 노출 없이 로컬 `Offrail-27B-12G`에 직접 전달. `--ignore-rules --reasoning none -t none --max-turns 1` 플래그로 20,000+ 토큰 자동 주입 및 추론 오버헤드를 원천 제거하여 약 25배 속도 가속(질의당 27분 → 45~60초)을 달성하며, 바이트 단위 `--size`(`400`~`750` bytes)와 `--no-stop-at-ret`로 VA를 정렬.
+- **Mode A (In-Memory Capstone + Hermes)**: 메모리 상에서만 디스어셈블을 수행하고 터미널 노출 없이 로컬 `Offrail-27B-12G`에 직접 전달. `--ignore-rules --reasoning none -t "" --max-turns 1` 플래그(Hermes `v0.23.1` 빈 문자열 무도구 규격)로 20,000+ 토큰 자동 주입 및 추론 오버헤드를 원천 제거하여 약 25배 속도 가속(질의당 27분 → 45~60초)을 달성하며, 바이트 단위 `--size`(`400`~`750` bytes)와 `--no-stop-at-ret`로 VA를 정렬.
 - **Mode B (Hermes + REA MCP)**: `--use-rea` 모드로 리버스 엔지니어링 MCP 도구(`rea`)와 자율 연동하며, `--yolo --ignore-rules --reasoning low` 플래그로 고속 도구 호출 루프 유지.
 - **Mode C (정규식 살균 게이트)**: stdout 출력 직전 니모닉/명령어 라인을 `[REDACTED_ASM_LINE]`으로 결정론적 마스킹.
 - **안티 환각 C 의사코드 추출 (Anti-Hallucination C Pseudocode)**: 내부 추론 과정(Thinking/Scratchpad), 더미 `struct` 정의(`flags1..flagsN`), 추측성 필드명 출력을 엄격히 금지하고 진입 VA, 호출 대상 주소(`func_0x...`), 분기 조건(`switch`/`if`), 실제 참조 오프셋(`+0x...`), 상수(hex)만 간결한 C 의사코드로 즉시 추출.
 - **`[FORCE_ASK: HERMES_UNAVAILABLE]`**: `hermes` CLI 미설치 또는 로컬 모델 미구동/호출 실패(`proc.returncode != 0`) 시 결정론적으로 `exit(2)`로 종료하며 콘솔 폴백을 원천 금지하고 즉시 주인님께 확인 요청.
 
-### ⚙️ 결정론적 하네스 검증기 & 원클릭 동기화 엔진 (scripts/harness/ & tests/harness/ — 70 Tests)
+### 🌐 Hermes Guest AI Trio 브리지 (`scripts/hermes_guest.py` — 8-Seat Grand Council)
+`UltimateMake` Phase 3 / `multi-agent-conference` Mode 2B에서 `gemini-4-hydrogen-low` 스웜 브리지 워커가 3대 외부 프론티어 모델(`guest-deepseek`: `deepseek-v4.1-flash`, `guest-qwen`: `qwen4-max`, `guest-gpt`: `gpt-6-sol`)을 소환하는 결정론적 CLI 래퍼입니다.
+- **무도구 읽기 전용 샌드박스**: Round 1은 `-t "" --ignore-rules --source tool --max-turns 1`로 정책을 동결 생성하고, Round 2~3은 스레드별 `--session um-<slug>-<seat>` 매핑을 통해 `--resume <session_id> --no-restore-cwd`로 다중 라운드 맥락을 유지합니다.
+- **우아한 폴백 (`exit(2)`)**: Hermes CLI 미설치·네트워크 오류 시 시크릿 노출 없이 `[HERMES_GUEST_UNAVAILABLE: <seat>]`를 출력하고 `exit(2)`로 종료하여 스웜 보드가 `[guest-unavailable]` 상태로 안전하게 계속 진행할 수 있게 합니다.
+
+### ⚙️ 결정론적 하네스 검증기 & 원클릭 동기화 엔진 (scripts/harness/ & tests/harness/ — 79 Tests)
 하네스의 구조적 결함과 프로젝트 전파 시 발생할 수 있는 레거시 오염을 물리적으로 검증하고 원클릭으로 안전하게 동기화합니다.
-- **`validate_harness.py --strict`**: 9대 에이전트 모델 라우팅 계약(`EXPECTED_AGENT_MODELS`, `VALID_MODELS`), 전용 서브에이전트 불리언 플래그(`subagent: true`, `mainAgent: false`), 금지 도구(`FORBIDDEN_AGENT_TOOLS = {"run_workflow", "swarm"}`), CLI v1.5.16 27종 전체 카탈로그(`AGY_CLI_V1516_CATALOG_MODELS` = CLI v1.5.12 20종 Gemini `GEMINI_CLI_V1512_CATALOG_MODELS` + 외부 7종 `AGY_CLI_EXTERNAL_MODELS`, v1.5.7 14종 베이스라인 `GEMINI_CLI_CATALOG_MODELS` 보존), 역할별 `tools` 권한 및 별칭 충돌 방지(`TOOL_ALIAS_CONFLICTS`), `.agents/rules/*.md` Frontmatter(`trigger: always_on` 및 24KB 상한·무BOM), `.agents/hooks.json` 스키마(`write_file`/`edit_file`/`invoke_subagent`/`run_workflow`/`swarm` 매처 및 Flat `Stop` 구조), 군단 핵심 스크립트(`partition_validator.py`, `legion_radio.py`), 19종 스킬 규격(`FORBIDDEN_SKILL_PATTERNS`: `run_workflow(`, `model: claude-`, `model: gpt-oss`, `model: neon` 차단 포함)을 결정론적으로 전수 검증합니다.
+- **`validate_harness.py --strict`**: 9대 에이전트 모델 라우팅 계약(`EXPECTED_AGENT_MODELS`, `VALID_MODELS`), 전용 서브에이전트 불리언 플래그(`subagent: true`, `mainAgent: false`), 금지 도구(`FORBIDDEN_AGENT_TOOLS = {"run_workflow", "swarm"}`), CLI v1.5.16 27종 전체 카탈로그(`AGY_CLI_V1516_CATALOG_MODELS` = CLI v1.5.12 20종 Gemini `GEMINI_CLI_V1512_CATALOG_MODELS` + 외부 7종 `AGY_CLI_EXTERNAL_MODELS`, v1.5.7 14종 베이스라인 `GEMINI_CLI_CATALOG_MODELS` 보존), 역할별 `tools` 권한 및 별칭 충돌 방지(`TOOL_ALIAS_CONFLICTS`), `.agents/rules/*.md` Frontmatter(`trigger: always_on` 및 24KB 상한·무BOM), `.agents/hooks.json` 스키마(`write_file`/`edit_file`/`invoke_subagent`/`run_workflow`/`swarm` 매처 및 Flat `Stop` 구조), 군단 핵심 스크립트(`partition_validator.py`, `legion_radio.py`) 및 `scripts/hermes_guest.py`, 19종 스킬 규격(`FORBIDDEN_SKILL_PATTERNS`: `run_workflow(`, `model: claude-`, `model: gpt-oss`, `model: neon` 차단 포함)을 결정론적으로 전수 검증합니다.
 - **`sync_harness.py` (`update_harness.bat`)**: 타 프로젝트 대상 결정론적 미러링 & 레거시 좀비 파일 추적 소거 엔진. 마스터 템플릿에서 아카이빙·삭제된 구버전 루트 헌법(`Terukirdo_Protocol_v5.2~v5.7.md`)과 좀비 파일을 100% 추적 소거하며, 최신 `Terukirdo_Protocol_v5.8.md` 및 `docs/archive/Terukirdo_Protocol_v5.7.md`를 미러링하고, Windows 읽기 전용(`stat.S_IWRITE`) 파일 해제 소거·중첩 `.git` 복사 차단·`.agents/state/legion_radio.db` 런타임 상태 보존을 보장합니다.
-- **`tests/harness/` (70개 단위 테스트)**: CLI v1.5.16 27슬러그·`run_workflow` 영구 차단·`swarm` 이중 앵커/위조 방어/Phase 4 창 닫힘·외부 Git 저장소 쓰기 차단 및 `workspacePaths` 워크트리 격리·`agy plugin validate --strict --json` 0-error/0-warning 통합 테스트(`test_cli_v1516_v58_alignment.py`), CLI v1.5.12 Gemini 4 Neon 20슬러그 정렬(`test_cli_v1512_neon_alignment.py`), CLI v1.5.7 로더·도구 별칭 충돌 방지(`test_cli_v157_alignment.py`), 에이전트 디스커버리, Dual-Brain 4대 운영 계약, 19종 스킬 무결성, 스킬 인덱서, 파티션 검증기(`MAX_CONCURRENT_RALPH = 8`), 전술 무전망(`legion_radio.py` 200건 동시 폭격 무락 스트레스 테스트), 3중 시스템 훅, 하네스 동기화 무결성을 빈틈없이 검증합니다.
+- **`tests/harness/` (79개 단위 테스트)**: CLI v1.5.16 27슬러그·`run_workflow` 영구 차단·`swarm` 이중 앵커/위조 방어/Phase 4 창 닫힘·외부 Git 저장소 쓰기 차단 및 `workspacePaths` 워크트리 격리·`agy plugin validate --strict --json` 0-error/0-warning 통합 테스트(`test_cli_v1516_v58_alignment.py`), Hermes Guest AI Trio 브리지·`-t ""` 샌드박스·8-Seat Grand Council 계약(`test_hermes_guest_trio.py`), CLI v1.5.12 Gemini 4 Neon 20슬러그 정렬(`test_cli_v1512_neon_alignment.py`), CLI v1.5.7 로더·도구 별칭 충돌 방지(`test_cli_v157_alignment.py`), 에이전트 디스커버리, Dual-Brain 4대 운영 계약, 19종 스킬 무결성, 스킬 인덱서, 파티션 검증기(`MAX_CONCURRENT_RALPH = 8`), 전술 무전망(`legion_radio.py` 200건 동시 폭격 무락 스트레스 테스트), 3중 시스템 훅, 하네스 동기화 무결성을 빈틈없이 검증합니다.
 
 ---
 
@@ -312,7 +317,7 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
 │       ├── agent-legion/                   ⚔️ 슬래시 전용 3계층 Octa-Ralph 군단 (partition_validator.py, legion_radio.py 내장)
 │       ├── ultimate-make/                  👑 마스터 기획 하네스 (Native swarm + validate_spec_lock.py 내장)
 │       ├── universal-crawler/              🌐 합법적·복원력 중심 범용 웹 수집 파이프라인
-│       ├── multi-agent-conference/         🤖 5인 전문가 적대적 회의 (Native swarm 보드 & Subagent 모드)
+│       ├── multi-agent-conference/         🤖 5인/8인 전문가 적대적 회의 (Native swarm + Hermes Guest Trio & Subagent 모드)
 │       ├── plan-product/ / design-ui/      🔧 개발 주기 스킬군
 │       ├── plan-architecture/ ...          🔧
 │       ├── clean-code/ / code-reviewer/    🧠 품질 검증 스킬군
@@ -320,13 +325,14 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
 │
 ├── 📁 scripts/
 │   ├── 📄 hermes_disasm.py             ← 바이너리 역공학 결정론적 살균 래퍼 (Offrail-27B-12G & REA)
+│   ├── 📄 hermes_guest.py              ← 8-Seat Grand Council 외부 게스트 AI 3석 Read-Only 브리지 (DeepSeek / Qwen / GPT)
 │   └── 📁 harness/
 │       ├── 📄 sync_harness.py          ← 타 프로젝트 결정론적 미러링 및 레거시 파일(v5.2~v5.7 루트 헌법 포함) 추적 소거 엔진
 │       ├── 📄 validate_harness.py      ← 하네스 무결성 검증기 (27슬러그·subagent 불리언·금지도구·훅/규칙 스키마 검증)
 │       └── 📄 run_quality_gate.py      ← 크로스 플랫폼 품질 게이트 러너
 │
 ├── 📁 tests/
-│   └── 📁 harness/                     ← 70개 하네스 무결성·CLI v1.5.16/v1.5.12/v1.5.7·동시성 스트레스 단위 테스트 스위트
+│   └── 📁 harness/                     ← 79개 하네스 무결성·CLI v1.5.16/v1.5.12/v1.5.7·Hermes Guest Trio·동시성 스트레스 단위 테스트 스위트
 │
 ├── 📁 reference/                       ← AI 성능 평가 카드, 교차 협업 가이드, 실패 카탈로그, 리뷰 템플릿
 │
@@ -344,6 +350,7 @@ agy -r <conversation-id>                           # 중단·재부팅 후 특�
 
 | 날짜 | 버전 | 내용 |
 |------|:---:|------|
+| **2026-11-25** | **v5.8** | **🌐 8-Seat Grand Council: Hermes Guest AI Trio 브리지 및 Hermes v0.23.1 `-t ""` 호환 패치 (SPEC-20261125-HERMES-GUEST-TRIO-SWARM)**<br>• **`scripts/hermes_guest.py` 신규 구축**: `UltimateMake` Phase 3 및 `multi-agent-conference` Mode 2B에서 `gemini-4-hydrogen-low` 워커 3기가 `guest-deepseek`(`alibaba-coding-plan:deepseek-v4.1-flash`), `guest-qwen`(`alibaba-coding-plan:qwen4-max`), `guest-gpt`(`openai-codex:gpt-6-sol`)를 무도구 읽기 전용(`-t "" --ignore-rules --source tool --max-turns 1`) 샌드박스로 호출하고, Round 1 동결 정책 생성 후 스레드별 `--session` 매핑을 통해 Round 2~3 `--resume <session_id> --no-restore-cwd` 연속성·ANSI 제거·임시파일 정리·`exit(2)` 우아한 폴백을 보장<br>• **`hermes_disasm.py` Hermes `v0.23.1` 패치 & 동기화/검증 확장**: Mode A `-t none`을 `-t ""`로 교정하고 `sync_harness.py` `OVERWRITE_FILES` 및 `validate_harness.py --strict`에 `scripts/hermes_guest.py` 추가<br>• **9개 신규 단위 테스트 추가(`tests/harness/test_hermes_guest_trio.py`)**: 총 **79개 하네스 단위 테스트 100% 통과** 달성 |
 | **2026-11-25** | **v5.8** | **👑 Terukirdo Protocol v5.8 공식 승격 & Antigravity CLI v1.5.16 전면 정렬 (TASK-20261125-TERUKIRDO-V58-CLI-V1516)**<br>• **27슬러그 풀스펙트럼 카탈로그(`AGY_CLI_V1516_CATALOG_MODELS`) 및 5대 전략 세션 모드 확립**: CLI `v1.5.12` 20종 Gemini 카탈로그 위에 외부 프론티어 7종(`claude-opus-5-5-low\|medium\|high`, `claude-sonnet-5-5-low\|medium\|high`, `gpt-oss-120b-medium`)을 통합하여 총 27슬러그를 검증하고, `model: inherit` 지휘 척추를 **5대 전략 세션 모드**(Flagship `Carbon`, Workhorse `Neon`, Dynamic Hybrid `Orchestrator [로컬 Planner/Executor --effort 기본 high]`, High-Velocity `Hydrogen`, Multi-Provider Cross-AI `Claude 5.5 / GPT-OSS 120B × Argon pro`)로 확장<br>• **`UltimateMake` Phase 2+3 네이티브 `swarm` 엔진 통합**: Phase 2 병렬 리서치 스카우트(`1~4`명, `0` `narrator`/`monitor`) 및 Phase 3 5인 적대적 원탁회의(Round 1 `read_board` 호출 엄금 안티-앵커링, Round 2~3 `#seq` 교차 토론, 27슬러그 페르소나 핀닝, 경량 `invoke_subagent` 폴백)를 스웜 보드로 통합하고 Phase 4 진입 전 전원 `swarm(action="kill")` 의무 해체 및 `update_steps` 실시간 체크리스트 연동<br>• **`run_workflow` 영구 차단 · `swarm` 이중 앵커 & 창 닫힘 게이트 · 외부 VCS 쓰기 방어**: `.agents/hooks.json` 및 `pre_tool_use_policy.py`에서 `run_workflow`를 전 조건 무조건 `deny` 차단하고, `swarm`은 명시적 `/swarm` 슬래시 명령 또는 `USER_INPUT` 트리거 + `ultimate-make/SKILL.md` 로드가 동시 입증된 활성 `UltimateMake` 창(`validate_spec_lock.py` 실행 시 자동 종료, LLM 자가 해금 위조 원천 차단)에서만 허용하며, CLI `v1.5.16` Auto 모드의 외부 Git/VCS 쓰기 완화를 차단하고 `workspacePaths`(`share`/`branch` 격리 워크트리)만 허용<br>• **9대 서브에이전트 `subagent: true` · `mainAgent: false` 적용, `v5.7` 아카이빙 및 70개 단위 테스트 100% 통과**: `Terukirdo_Protocol_v5.7.md`를 `docs/archive/`로 아카이빙하고 루트 `Terukirdo_Protocol_v5.8.md` 및 `sync_harness.py` 구버전 루트 소거를 활성화하며, 신규 `tests/harness/test_cli_v1516_v58_alignment.py`(9개 통합·보안 테스트, `agy plugin validate --strict --json` 에러·경고 0건 포함)를 구축하여 총 **70개 하네스 단위 테스트 100% 통과** 달성 |
 | **2026-11-19** | **v5.7** | **⚡ Google DeepMind Gemini 4 Neon(2026-11-18 출시) 및 Antigravity CLI v1.5.12 6대 엔진·20슬러그 카탈로그 전면 정렬 (TASK-20261119-GEMINI4-NEON-V1512-ALIGNMENT)**<br>• **6대 Gemini 엔진 · 20슬러그 카탈로그 확장 (`GEMINI_CLI_V1512_CATALOG_MODELS`)**: Google DeepMind가 2026-11-18 출시한 밸런스드 프론티어 코딩 주력기 **Gemini 4 Neon** 4종(`gemini-4-neon-low\|medium\|high\|xhigh` — Coding Agent Index #1 `58.6`, Terminal-Bench 4.1 `65.2%`, CursorBench 4.1 최대 `65.4%`, SWE-sweep `39.0%`, ~84 tok/s, `Carbon` 대비 과업당 약 32% 비용 절감)과 확장된 3종 **Orchestrator** 매트릭스(`gemini-pro-orchestrator`, `gemini-pro-orchestrator-neon`, `gemini-pro-orchestrator-argon`)를 반영하고 v1.5.7 14종 베이스라인(`GEMINI_CLI_CATALOG_MODELS`) 하위 호환을 완벽 유지<br>• **4대 전략 세션 모드 및 CLI v1.5.12 서버 측 Wire Tier 해석 명문화**: `model: inherit` 적응형 지휘 척추를 4대 세션 모드(1. Flagship `Carbon`, 2. Balanced Frontier Workhorse `Neon`, 3. Dynamic Hybrid `Orchestrator [Carbon/Neon/Argon]`, 4. High-Velocity `Hydrogen [High/XHigh]`)로 확장하고, 라이브 L2 `transcript.jsonl` 검증을 통해 실증된 서버 측 서브에이전트 Wire 해석(`pro` → `gemini-4-hydrogen-tiered-xhigh`, `flash` → `gemini-4-hydrogen-tiered-high`, `flash_lite` → `gemini-3.5-flash-lite`) 및 교차 모델 다양성 수칙을 전 문서·9대 에이전트·스킬·성능 평가 카드에 동기화<br>• **원시 모델 기입 물리 차단 및 61개 단위 테스트 전수 통과**: `validate_harness.py`의 `FORBIDDEN_SKILL_PATTERNS`에 `model: neon`·`model: gemini-4-neon`을 추가하고, 기존 13개 베이스라인 테스트 파일 무수정(0-diff) 불변식을 유지한 채 신규 `tests/harness/test_cli_v1512_neon_alignment.py` (7개 통합·회귀 테스트)를 구축하여 총 **61개 하네스 단위 테스트 100% 통과** 달성 |
 | **2026-11-13** | **v5.7** | **🚀 Antigravity CLI v1.5.7 내장 Gemini 4 풀스펙트럼 모델군(Carbon · Orchestrator · Hydrogen [XHigh] · Argon · 3.8 Flash) 전면 재정렬 및 훅·규칙·도구 별칭 로더 무결성 패치 (TASK-20261113-GEMINI4-HARNESS-ALIGNMENT)**<br>• **2계층 Gemini 4 멀티 엔진 아키텍처 정렬**: CLI v1.5.7 공식 5대 엔진·14슬러그 카탈로그(`gemini-4-carbon-low\|medium\|high`, `gemini-pro-orchestrator`, `gemini-4-hydrogen-low\|medium\|high\|xhigh`, `gemini-4-argon-low\|medium\|high`, `gemini-3.8-flash-low\|medium\|high`)와 `.agents/agents/*/agent.md` 4종 로더 Enum(`inherit\|pro\|flash\|flash_lite`)의 2계층 계약을 확립하고, `inherit` 지휘 척추 3대 전략 세션 모드(Flagship `Carbon`, Dynamic Hybrid `Orchestrator`, High-Velocity `Hydrogen [High/XHigh]`) 전면 반영<br>• **CLI v1.5.7 훅·규칙 로더 및 서브에이전트 도구 별칭 충돌 방지**: `.agents/hooks.json`의 `Stop` 중첩 `hooks` 래퍼를 Flat 핸들러 배열로 교정하고 CWD 기준 상대 경로(`hooks/*.py`) 및 `write_file\|edit_file\|notebook_edit` 매처 적용, `.agents/rules/*.md` 4종에 `trigger: always_on` YAML Frontmatter 추가 (`agy plugin validate` 에러·경고 0건 달성), 그리고 CLI v1.5.7 서브에이전트 스폰 시 `view_file -> read_file` 내부 별칭 중복으로 발생하는 executor 생성 충돌을 차단하는 `TOOL_ALIAS_CONFLICTS` 게이트 탑재<br>• **3중 훅 런타임 업그레이드**: `pre_tool_use_policy.py`·`post_tool_use_review.py`의 `write_file`/`edit_file` 인자(`Path`, `Content`, `Replacement`) 및 이식형 `lastUserInput`/`transcriptPath`/`artifactDirectoryPath` 지원, `stop_quality_gate.py`의 `<repo>/.agents/state/stop_gate_state.json` 절대 앵커링 및 `decision` + `continuationActive` 무한 루프 차단 계약 구현<br>• **결정론적 검증 게이트 확장 및 54개 단위 테스트 전수 통과**: `validate_harness.py --strict`에 `validate_rules_directory`·`validate_hooks_config`·`TOOL_ALIAS_CONFLICTS`·`GEMINI_CLI_CATALOG_MODELS` 추가 및 기존 베이스라인 테스트 무수정 보존 하에 신규 `tests/harness/test_cli_v157_alignment.py` (9개 통합 검증) 구축으로 총 54개 테스트 100% 통과 |
