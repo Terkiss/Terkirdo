@@ -8,6 +8,7 @@ for 8-Seat Grand Council debates in UltimateMake / multi-agent-conference.
 """
 
 import argparse
+import concurrent.futures
 import hashlib
 import json
 import os
@@ -16,6 +17,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 GUEST_SEATS = {
@@ -41,6 +43,8 @@ GUEST_SEATS = {
 
 DEFAULT_REASONING = "medium"
 DEFAULT_RUN_BUDGET = 180
+DEFAULT_PREFLIGHT_BUDGET = 25
+DEFAULT_PREFLIGHT_PROMPT = "Reply with exactly OK"
 VALID_REASONING_LEVELS = ("none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra")
 DEFAULT_SESSION_STORE_DIR = Path(tempfile.gettempdir()) / "terukirdo_hermes_guest_sessions"
 
@@ -48,6 +52,14 @@ DEFAULT_SESSION_STORE_DIR = Path(tempfile.gettempdir()) / "terukirdo_hermes_gues
 ANSI_CSI_RE = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
 ANSI_OSC_RE = re.compile(r"\x1B\][^\x07\x1B]*(?:\x07|\x1B\\)")
 SESSION_ID_RE = re.compile(r"session_id:\s*(\S+)")
+QUOTA_ERROR_RE = re.compile(
+    r"\b(429|rate[ _-]?limit(?:ed)?|too many requests|quota[ _-]?exceeded|insufficient_quota|exceeded your current quota|usage limit|billing hard limit|credit balance|token limit|out of quota)\b",
+    re.IGNORECASE,
+)
+FAILURE_LINE_RE = re.compile(
+    r"^\s*(?:error\s*:|api call failed|connection error|invalid_params\b)",
+    re.IGNORECASE,
+)
 
 
 def resolve_seat(
@@ -140,8 +152,8 @@ def save_session_id(
             delete=False,
             suffix=".tmp",
         ) as tf:
-            json.dump(payload, tf, indent=2, ensure_ascii=False)
             tmp_path = tf.name
+            json.dump(payload, tf, indent=2, ensure_ascii=False)
         os.replace(tmp_path, record_path)
     finally:
         if tmp_path and os.path.exists(tmp_path):
@@ -224,6 +236,24 @@ def _summarize_error(stderr_text: str, stdout_text: str) -> str:
     return "No diagnostic output returned."
 
 
+def classify_failure(returncode: int, cleaned_stdout: str, cleaned_stderr: str) -> str | None:
+    """Classify Hermes CLI failure as 'quota_exceeded', 'unavailable', or None."""
+    stripped_stdout = cleaned_stdout.strip()
+    if QUOTA_ERROR_RE.search(cleaned_stderr) or (
+        (returncode != 0 or len(stripped_stdout) <= 400) and QUOTA_ERROR_RE.search(cleaned_stdout)
+    ):
+        return "quota_exceeded"
+    if returncode != 0:
+        return "unavailable"
+    if not stripped_stdout:
+        return "unavailable"
+    if any(marker in cleaned_stderr for marker in ("API call failed", "Connection error", "invalid_params")):
+        return "unavailable"
+    if len(stripped_stdout) <= 400 and any(FAILURE_LINE_RE.match(line) for line in cleaned_stdout.splitlines()):
+        return "unavailable"
+    return None
+
+
 def run_guest_query(
     seat_label: str,
     provider: str,
@@ -263,8 +293,8 @@ def run_guest_query(
             delete=False,
             suffix=".txt",
         ) as tf:
-            tf.write(prompt_text)
             temp_file = tf.name
+            tf.write(prompt_text)
 
         cmd = build_hermes_cmd(
             query_file=temp_file,
@@ -306,25 +336,20 @@ def run_guest_query(
 
     cleaned_stdout = strip_ansi(proc.stdout or "")
     cleaned_stderr = strip_ansi(proc.stderr or "")
-    failure_markers = ("API call failed", "Connection error", "invalid_params")
-
-    has_failure_marker = any(
-        marker in cleaned_stderr or marker in cleaned_stdout for marker in failure_markers
-    )
-    if proc.returncode != 0 or (has_failure_marker and not cleaned_stdout.strip()):
+    failure_kind = classify_failure(proc.returncode, cleaned_stdout, cleaned_stderr)
+    if failure_kind == "quota_exceeded":
+        detail = _summarize_error(cleaned_stderr, cleaned_stdout)
+        return (
+            2,
+            "",
+            f"[HERMES_GUEST_UNAVAILABLE: {seat_label}] (quota_exceeded) {detail}\n",
+        )
+    if failure_kind == "unavailable":
         detail = _summarize_error(cleaned_stderr, cleaned_stdout)
         return (
             2,
             "",
             f"[HERMES_GUEST_UNAVAILABLE: {seat_label}] Hermes CLI exited with code {proc.returncode}: {detail}\n",
-        )
-
-    if has_failure_marker:
-        detail = _summarize_error(cleaned_stderr, cleaned_stdout)
-        return (
-            2,
-            "",
-            f"[HERMES_GUEST_UNAVAILABLE: {seat_label}] Hermes CLI reported failure: {detail}\n",
         )
 
     sid_match = SESSION_ID_RE.search(cleaned_stderr)
@@ -334,6 +359,88 @@ def run_guest_query(
 
     session_line = _extract_session_line(cleaned_stderr) if emit_session_id else ""
     return (0, cleaned_stdout, session_line)
+
+
+def run_preflight(
+    seats: list[str] | None = None,
+    run_budget: int = DEFAULT_PREFLIGHT_BUDGET,
+    profile: str | None = None,
+    hermes_bin: str = "hermes",
+) -> dict:
+    """Probe target guest seats in parallel and classify ready vs evicted seats."""
+    raw_seats = [s.strip().lower() for s in seats if s and s.strip()] if seats else list(GUEST_SEATS.keys())
+    target_seats = list(dict.fromkeys(raw_seats))
+    resolved: list[tuple[str, str, str, str]] = []
+    for seat_name in target_seats:
+        seat_label, provider, model = resolve_seat(seat_name)
+        resolved.append((seat_name, seat_label, provider, model))
+
+    def _probe(item: tuple[str, str, str, str]) -> tuple[str, dict]:
+        seat_name, seat_label, provider, model = item
+        t0 = time.monotonic()
+        code, _out, err = run_guest_query(
+            seat_label=seat_label,
+            provider=provider,
+            model=model,
+            prompt_text=DEFAULT_PREFLIGHT_PROMPT,
+            session=None,
+            resume_session_id=None,
+            reasoning="none",
+            run_budget=run_budget,
+            profile=profile,
+            hermes_bin=hermes_bin,
+            emit_session_id=False,
+        )
+        latency_ms = round((time.monotonic() - t0) * 1000)
+        swarm_name = GUEST_SEATS[seat_name]["swarm_name"]
+        if code == 0:
+            ok = True
+            status = "ready"
+            reason = ""
+        else:
+            ok = False
+            status = "quota_exceeded" if "(quota_exceeded)" in err else "unavailable"
+            reason = err.strip()
+        return seat_name, {
+            "ok": ok,
+            "status": status,
+            "swarm_name": swarm_name,
+            "provider": provider,
+            "model": model,
+            "latency_ms": latency_ms,
+            "reason": reason,
+        }
+
+    probe_map: dict[str, dict] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(resolved))) as executor:
+        for seat_name, entry in executor.map(_probe, resolved):
+            probe_map[seat_name] = entry
+
+    ready: list[str] = []
+    evicted: list[dict] = []
+    results: dict[str, dict] = {}
+    for seat_name in target_seats:
+        entry = probe_map[seat_name]
+        results[seat_name] = entry
+        if entry["ok"]:
+            ready.append(seat_name)
+        else:
+            evicted.append(
+                {
+                    "seat": seat_name,
+                    "swarm_name": entry["swarm_name"],
+                    "provider": entry["provider"],
+                    "model": entry["model"],
+                    "status": entry["status"],
+                    "reason": entry["reason"],
+                }
+            )
+
+    return {
+        "ready": ready,
+        "evicted": evicted,
+        "results": results,
+    }
 
 
 def _configure_utf8_streams() -> None:
@@ -414,6 +521,23 @@ def build_arg_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Print preset GUEST_SEATS JSON and exit.",
     )
+    parser.add_argument(
+        "--preflight",
+        action="store_true",
+        help="Probe target guest seats in parallel and print ready/evicted JSON.",
+    )
+    parser.add_argument(
+        "--seats",
+        nargs="+",
+        choices=sorted(GUEST_SEATS.keys()),
+        help="Target guest seats for --preflight (default: all preset seats).",
+    )
+    parser.add_argument(
+        "--preflight-budget",
+        type=int,
+        default=DEFAULT_PREFLIGHT_BUDGET,
+        help=f"Per-seat Hermes preflight run budget in seconds (minimum 10, default: {DEFAULT_PREFLIGHT_BUDGET}).",
+    )
     return parser
 
 
@@ -425,6 +549,17 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.list_seats:
         sys.stdout.write(json.dumps(GUEST_SEATS, indent=2, ensure_ascii=False) + "\n")
+        return 0
+
+    if args.preflight:
+        if args.preflight_budget < 10:
+            parser.error("--preflight-budget must be >= 10")
+        report = run_preflight(
+            seats=args.seats,
+            run_budget=args.preflight_budget,
+            profile=args.profile,
+        )
+        sys.stdout.write(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
         return 0
 
     if args.run_budget < 10:

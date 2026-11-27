@@ -103,3 +103,4 @@ The following actions require explicit user review and confirmation before execu
 
 - **Zero-Tool Read-Only Sandbox**: `UltimateMake` / `multi-agent-conference` 8-Seat Grand Council에서 외부 게스트 AI(`deepseek-v4.1-flash`, `qwen4-max`, `gpt-6-sol`)를 호출할 때는 반드시 `scripts/hermes_guest.py`를 통해 `-t "" --ignore-rules --source tool --max-turns 1` 무도구 읽기 전용 샌드박스로만 실행한다.
 - **Zero-Secret-Leakage & Graceful Fallback**: Hermes 환경 설정(`.env`, `auth.json`)의 키·토큰을 읽거나 로그에 노출하지 않으며, CLI 미설치·네트워크 오류 시 `[HERMES_GUEST_UNAVAILABLE: <seat>]` 메시지와 함께 `exit(2)`로 우아하게 실패하여 오케스트레이터가 `[guest-unavailable]`로 처리할 수 있게 한다.
+- **Pre-Flight Quota Verification & Eviction (`--preflight`)**: 스웜 브리지 워커 스폰 전 `scripts/hermes_guest.py --preflight --seats deepseek qwen gpt`로 병렬 가용성을 사전 점검하여 `ready` 좌석만 착석시키고, `429`/rate-limit/quota 초과 시 `(quota_exceeded)` 태그와 함께 `exit(2)`로 분류해 스폰 없이 자동 퇴출(Pre-Seating Eviction)한다.

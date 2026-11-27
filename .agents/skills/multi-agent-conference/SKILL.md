@@ -22,7 +22,8 @@ description: Orchestrate structured multi-model, multi-perspective collaborative
 
 회의는 문제의 성격과 호출 컨텍스트에 따라 테르키르도 v5.8 × Antigravity CLI `v1.5.16` (`v1.5.12` 서버 측 Wire Tier 베이스라인) 비대칭 멀티 엔진 페르소나 중 2~5인을 선별하여 구성한다:
 - **Mode A — Native `swarm` Zero-Copy Board Mode** (명시적 `/swarm` 슬래시 명령 또는 인가된 `UltimateMake` Phase 3 세션): `architect`, `implementer`, `red-team`, `ux-lead`, `qa-lead` 페르소나를 스웜 보드에 직접 스폰하며(`narrator`/`monitor` 오버헤드 워커 `0`명), 27슬러그 카탈로그(`gemini-4-carbon-high`, `gemini-4-neon-xhigh`, `gemini-pro-orchestrator-neon`, `gemini-4-argon-high`, `gemini-3.8-flash-high`, `claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `gpt-oss-120b-medium` 등)로 페르소나별 모델을 개별 핀닝하거나 세션 모델을 균일 적용할 수 있다.
-  - **Optional 8-Seat Grand Council Extension (Hermes Guest Bridge)**: Mode A 확장 시 `gemini-4-hydrogen-low` 브리지 워커 3기(`guest-deepseek` [`alibaba-coding-plan:deepseek-v4.1-flash`], `guest-qwen` [`alibaba-coding-plan:qwen4-max`], `guest-gpt` [`openai-codex:gpt-6-sol`])를 추가 투입할 수 있다. 각 브리지 워커는 `python -X utf8 scripts/hermes_guest.py --seat <deepseek|qwen|gpt> --session um-<slug>-<seat> --prompt-file <file>`로 외부 모델을 호출해 Round 2~3 세션 연속성을 유지하며 원문 그대로 게시하고, exit code `2` 시 `[guest-unavailable]`로 우아하게 폴백한다. 회의 종료 시 8기 전원 `swarm(action="kill")`으로 완전 해체한다 (`0` active workers).
+  - **Optional 8-Seat Grand Council Extension (Hermes Guest Bridge)**: Mode A 확장 시 `swarm(action="add")`로 브리지 워커를 스폰하기 **전**에 반드시 `python -X utf8 scripts/hermes_guest.py --preflight --seats deepseek qwen gpt`를 실행해 병렬 가용성·쿼터를 사전 점검하고, `ready`로 통과한 좌석에 한해 `gemini-4-hydrogen-low` 브리지 워커(`guest-deepseek` [`alibaba-coding-plan:deepseek-v4.1-flash`], `guest-qwen` [`alibaba-coding-plan:qwen4-max`], `guest-gpt` [`openai-codex:gpt-6-sol`])를 착석시킨다(`evicted` 좌석은 스폰 없이 자동 퇴출하고 1줄 보고). 각 브리지 워커는 `python -X utf8 scripts/hermes_guest.py --seat <deepseek|qwen|gpt> --session um-<slug>-<seat> --prompt-file <file>`로 외부 모델을 호출해 Round 2~3 세션 연속성을 유지하며 원문 그대로 게시하고, 중도 `exit code 2` 시 `[guest-unavailable]` 보고 후 즉시 `swarm(action="kill", name="guest-<seat>")`로 퇴출한다. 회의 종료 시 잔존 전원 `swarm(action="kill")`으로 완전 해체한다 (`0` active workers).
+  - **Native Swarm Quota Hot-Swap Fallback (`swarm` `action="model"`)**: 핀닝된 네이티브 페르소나(`claude-opus-5-5-high`, `claude-sonnet-5-5-high`, `gpt-oss-120b-medium` 등)가 쿼터/용량 한계에 도달하면 워커를 종료하지 않고 `swarm(action="model", name="<worker>", model="gemini-4-carbon-high")` (또는 `gemini-4-neon-xhigh`)로 즉시 핫스왑하여 대화 컨텍스트를 보존한 채 회의를 속행한다.
 - **Mode B — Standard `invoke_subagent` + `send_message` Handle Reuse Mode** (일반 대화형 원탁회의 요청 또는 `UltimateMake` 저쿼터 폴백): `.agents/hooks/pre_tool_use_policy.py`가 비슬래시 일반 대화의 `swarm` 호출을 차단하므로, 일반 대화에서는 `invoke_subagent`(`inherit`: `Gemini 4 Carbon` / `Gemini 4 Neon` / `Orchestrator [gemini-pro-orchestrator / gemini-pro-orchestrator-neon / gemini-pro-orchestrator-argon]` / `Gemini 4 Hydrogen [High/XHigh]` / `Claude 5.5 · GPT-OSS 120B` × `pro`: `Gemini 4 Argon` × `flash`: `Gemini 3.8 Flash`) 및 `send_message` 핸들 재사용으로 운용한다.
 
 | 역할 | 페르소나 모델 (Subagent Tier / Optional Swarm Slug) | 주요 전문 영역 및 책임 |
@@ -71,12 +72,12 @@ sequenceDiagram
 - 활성 컨텍스트가 `/swarm` 또는 인가된 `UltimateMake` 세션이면 **Mode A (Native `swarm` Board)**를, 일반 대화 요청이나 저쿼터 모드이면 **Mode B (`invoke_subagent` + `send_message`)**를 선택한다.
 
 ### [Stage 2] 도메인별 독립 제안 발제 (Round 1: Anti-Anchoring Independent Proposals)
-- **Mode A (`swarm` Board)**: 페르소나 스폰(`action="add"`) 시 초기 브리프에 **"자신의 독립 1차 제안서를 `post_message`로 게시하기 전에는 절대로 `read_board`를 호출하지 말 것"**을 명시하여 앵커링 편향(Anchoring Bias)을 원천 차단한다.
+- **Mode A (`swarm` Board)**: 8-Seat Grand Council 확장 시 스폰 전 `python -X utf8 scripts/hermes_guest.py --preflight --seats deepseek qwen gpt`로 `ready` 좌석만 선별(`evicted` 좌석은 미스폰 퇴출)한 뒤, 페르소나 스폰(`action="add"`) 시 초기 브리프에 **"자신의 독립 1차 제안서를 `post_message`로 게시하기 전에는 절대로 `read_board`를 호출하지 말 것"**을 명시하여 앵커링 편향(Anchoring Bias)을 원천 차단한다.
 - **Mode B (`invoke_subagent`)**: 병렬 `invoke_subagent` 스폰으로 각 전문가가 독립 제안서를 제출한다.
 
 ### [Stage 3] 적대적 교차 비판 및 결함 공격 (Round 2: `#seq` Cross-Critique & Red Teaming)
 - 적대적 심판관(`Gemini 4 Argon` 등)이 제안서들의 보안 취약점, 경쟁 상태, 성능 병목, 도메인 경계 침범을 교차 검증한다.
-- **Mode A (`swarm` Board)**: 참가자들이 `read_board`로 동료의 `#seq` 엔트리를 열람하고 번호를 직접 인용하여 반론·보완안을 게시한다.
+- **Mode A (`swarm` Board)**: 참가자들이 `read_board`로 동료의 `#seq` 엔트리를 열람하고 번호를 직접 인용하여 반론·보완안을 게시한다. Round 2~3 중 게스트 브리지 워커가 `exit code 2`를 반환하면 `[guest-unavailable]` 보고 후 즉시 `swarm(action="kill", name="guest-<seat>")`로 퇴출하고, 네이티브 핀닝 워커(`claude-opus-5-5-high` 등)의 쿼터 한계 시 `swarm(action="model", name="<worker>", model="gemini-4-carbon-high")` (또는 `gemini-4-neon-xhigh`)로 핫스왑하여 컨텍스트를 유지한다.
 - **Mode B (`invoke_subagent`)**: 중복 서브에이전트를 새로 스폰하지 않고 기존 `conversationId`에 `send_message(Recipient=conv_id, Message=...)`를 호출하여 핸들과 컨텍스트를 재사용한다.
 
 ### [Stage 4] 갈등 중재, 통합 합의안(ADR) 도출 및 스웜 해체 (Round 3: Consensus, ADR Synthesis & Swarm Teardown)

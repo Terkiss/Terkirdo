@@ -336,6 +336,104 @@ class TestHermesGuestTrio(unittest.TestCase):
         self.assertEqual(data["qwen"]["model"], "qwen4-max")
         self.assertEqual(data["gpt"]["model"], "gpt-6-sol")
 
+    def test_quota_and_rate_limit_classification_and_prose_false_positive_guard(self):
+        self.assertEqual(
+            hermes_guest.classify_failure(1, "", "Error 429: rate limit exceeded"),
+            "quota_exceeded",
+        )
+        self.assertEqual(
+            hermes_guest.classify_failure(0, "insufficient_quota for current billing period", ""),
+            "quota_exceeded",
+        )
+        self.assertEqual(
+            hermes_guest.classify_failure(0, "Error: upstream rejected request", ""),
+            "unavailable",
+        )
+        self.assertEqual(
+            hermes_guest.classify_failure(0, "   ", ""),
+            "unavailable",
+        )
+        self.assertEqual(
+            hermes_guest.classify_failure(0, "Valid analysis", "API call failed: socket reset"),
+            "unavailable",
+        )
+
+        # Long (>400 chars) normal architectural prose mentioning 429 / rate limit / Error: must NOT trigger false positive.
+        long_prose = (
+            "Architectural recommendation: implement HTTP 429 rate limit handling and "
+            "quota_exceeded backoff across gateway nodes.\n"
+            "Error: handling should be idempotent.\n"
+            + ("Detail paragraph on distributed consensus and circuit breakers. " * 8)
+        )
+        self.assertGreater(len(long_prose.strip()), 400)
+        self.assertIsNone(hermes_guest.classify_failure(0, long_prose, ""))
+
+        quota_proc = subprocess.CompletedProcess(
+            args=["hermes"],
+            returncode=1,
+            stdout="",
+            stderr="HTTP 429 Too Many Requests: insufficient_quota",
+        )
+        with mock.patch("hermes_guest.shutil.which", return_value="hermes"), \
+             mock.patch("hermes_guest.subprocess.run", return_value=quota_proc):
+            code, out, err = hermes_guest.run_guest_query(
+                "gpt",
+                "openai-codex",
+                "gpt-6-sol",
+                "Reply OK",
+            )
+        self.assertEqual(code, 2)
+        self.assertEqual(out, "")
+        self.assertIn("[HERMES_GUEST_UNAVAILABLE: gpt] (quota_exceeded)", err)
+
+    def test_preflight_parallel_evicts_quota_exceeded_and_keeps_ready_seats(self):
+        seen_calls: list[tuple[str, str, int]] = []
+
+        def fake_query(**kwargs):
+            seat_label = kwargs["seat_label"]
+            seen_calls.append((seat_label, kwargs["reasoning"], kwargs["run_budget"]))
+            if seat_label == "qwen":
+                return (2, "", "[HERMES_GUEST_UNAVAILABLE: qwen] (quota_exceeded) 429 rate limit\n")
+            if seat_label == "gpt":
+                return (2, "", "[HERMES_GUEST_UNAVAILABLE: gpt] Hermes CLI exited with code 1: Connection error\n")
+            return (0, "OK\n", "")
+
+        with mock.patch("hermes_guest.run_guest_query", side_effect=fake_query):
+            report = hermes_guest.run_preflight(seats=["gpt", "deepseek", "qwen", "deepseek"], run_budget=25)
+
+        self.assertEqual(report["ready"], ["deepseek"])
+        self.assertEqual([e["seat"] for e in report["evicted"]], ["gpt", "qwen"])
+        self.assertEqual(report["evicted"][0]["status"], "unavailable")
+        self.assertEqual(report["evicted"][1]["status"], "quota_exceeded")
+        self.assertEqual(list(report["results"].keys()), ["gpt", "deepseek", "qwen"])
+        self.assertTrue(report["results"]["deepseek"]["ok"])
+        self.assertEqual(report["results"]["deepseek"]["status"], "ready")
+        self.assertEqual(report["results"]["deepseek"]["swarm_name"], "guest-deepseek")
+        self.assertFalse(report["results"]["qwen"]["ok"])
+        self.assertEqual(len(seen_calls), 3)
+        self.assertTrue(all(r == "none" and b == 25 for _, r, b in seen_calls))
+
+    def test_preflight_cli_and_quota_hotswap_docs_contract(self):
+        parser = hermes_guest.build_arg_parser()
+        args = parser.parse_args(["--preflight", "--seats", "deepseek", "gpt", "--preflight-budget", "30"])
+        self.assertTrue(args.preflight)
+        self.assertEqual(args.seats, ["deepseek", "gpt"])
+        self.assertEqual(args.preflight_budget, 30)
+
+        with self.assertRaises(SystemExit):
+            hermes_guest.main(["--preflight", "--preflight-budget", "5"])
+
+        um_skill = (REPO_ROOT / ".agents" / "skills" / "ultimate-make" / "SKILL.md").read_text(encoding="utf-8")
+        mac_skill = (REPO_ROOT / ".agents" / "skills" / "multi-agent-conference" / "SKILL.md").read_text(encoding="utf-8")
+        safety_rule = (REPO_ROOT / ".agents" / "rules" / "safety.md").read_text(encoding="utf-8")
+
+        for doc in (um_skill, mac_skill):
+            self.assertIn("--preflight", doc)
+            self.assertIn('action="model"', doc)
+            self.assertIn("gemini-4-carbon-high", doc)
+        self.assertIn("--preflight", safety_rule)
+        self.assertIn("(quota_exceeded)", safety_rule)
+
 
 if __name__ == "__main__":
     unittest.main()
